@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, RotateCcw } from 'lucide-react';
 
-const SentenceBuilder: React.FC = () => {
-  const correctOrder = ["The", "chart", "shows", "the", "duration", "of", "three", "separate", "flight", "trials."];
+interface SentenceBuilderProps {
+  sentence: string[];
+}
+
+const SentenceBuilder: React.FC<SentenceBuilderProps> = ({ sentence }) => {
   const [pool, setPool] = useState<string[]>([]);
   const [built, setBuilt] = useState<string[]>([]);
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
      // Shuffle on mount
-     setPool([...correctOrder].sort(() => Math.random() - 0.5));
+     setPool([...sentence].sort(() => Math.random() - 0.5));
      // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [sentence]);
 
   const handleAdd = (word: string, index: number) => {
     const newBuilt = [...built, word];
@@ -30,17 +33,17 @@ const SentenceBuilder: React.FC = () => {
   
   const reset = () => {
       setBuilt([]);
-      setPool([...correctOrder].sort(() => Math.random() - 0.5));
+      setPool([...sentence].sort(() => Math.random() - 0.5));
       setIsSuccess(false);
   }
 
   useEffect(() => {
-    if (built.join(" ") === correctOrder.join(" ")) {
+    if (built.join(" ") === sentence.join(" ")) {
       setIsSuccess(true);
     } else {
       setIsSuccess(false);
     }
-  }, [built]);
+  }, [built, sentence]);
 
   return (
     <div className="bg-indigo-50/50 p-6 lg:p-8 rounded-2xl border border-indigo-100 h-full flex flex-col">

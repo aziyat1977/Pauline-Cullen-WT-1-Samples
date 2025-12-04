@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye } from 'lucide-react';
 import { CHART_DATA } from '../../constants';
 
 const Chart3D: React.FC = () => {
   const [hoveredBar, setHoveredBar] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+      setMounted(true);
+  }, []);
 
   const colors = [
     { face: '#818cf8', side: '#6366f1', top: '#a5b4fc' }, // Indigo
@@ -15,21 +20,21 @@ const Chart3D: React.FC = () => {
   const maxVal = 16;
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-3xl shadow-inner mb-8 perspective-1000 relative overflow-hidden group border border-gray-200">
+    <div className="glass-panel p-8 rounded-3xl shadow-2xl mb-8 perspective-1000 relative overflow-hidden group border border-white/40">
       <div className="absolute top-4 right-4 flex gap-2 z-10">
         <span className="text-xs bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm text-gray-500 flex items-center gap-1.5 font-medium border border-gray-100">
           <Eye size={12}/> Interactive 3D Model
         </span>
       </div>
       
-      <h3 className="text-center text-2xl font-bold mb-12 text-gray-800 tracking-tight">Flight Duration Results</h3>
+      <h3 className="text-center text-2xl font-bold mb-12 text-gray-800 dark:text-white tracking-tight text-shadow">Flight Duration Results</h3>
       
       {/* Chart Container */}
-      <div className="flex justify-around items-end h-72 lg:h-80 px-4 pb-2 border-b-4 border-gray-300 transform-style-3d mb-8 relative">
+      <div className="flex justify-around items-end h-72 lg:h-80 px-4 pb-2 border-b-4 border-gray-300 dark:border-gray-600 transform-style-3d mb-8 relative">
         {/* Y Axis Grid Lines */}
         <div className="absolute inset-0 pointer-events-none w-full h-full">
            {[0, 4, 8, 12, 16].map(val => (
-             <div key={val} className="absolute w-full border-t border-gray-300 dashed opacity-40 transition-opacity group-hover:opacity-60" style={{ bottom: `${(val / maxVal) * 100}%` }}>
+             <div key={val} className="absolute w-full border-t border-gray-300 dark:border-gray-600 dashed opacity-40 transition-opacity group-hover:opacity-60" style={{ bottom: `${(val / maxVal) * 100}%` }}>
                <span className="absolute -left-8 -top-3 text-xs font-mono text-gray-400">{val}s</span>
              </div>
            ))}
@@ -40,20 +45,23 @@ const Chart3D: React.FC = () => {
             {[group.f1, group.f2, group.f3, group.avg].map((val, bIdx) => (
               <div 
                 key={bIdx}
-                className="relative w-6 lg:w-8 transition-all duration-500 ease-out hover:-translate-y-2 cursor-pointer group/bar"
-                style={{ height: `${(val / maxVal) * 100}%` }}
+                className={`relative w-6 lg:w-8 transition-all duration-500 ease-out hover:-translate-y-4 cursor-pointer group/bar ${mounted ? 'animate-grow-y' : 'scale-y-0'}`}
+                style={{ 
+                    height: `${(val / maxVal) * 100}%`,
+                    animationDelay: `${(gIdx * 4 + bIdx) * 100}ms`
+                }}
                 onMouseEnter={() => setHoveredBar(`${gIdx}-${bIdx}`)}
                 onMouseLeave={() => setHoveredBar(null)}
               >
                  {/* Floating Tooltip */}
-                 <div className={`absolute -top-14 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs py-1.5 px-3 rounded-lg z-20 shadow-xl transition-all duration-300 pointer-events-none ${hoveredBar === `${gIdx}-${bIdx}` ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-2 scale-95'}`}>
-                   <span className="font-bold">{val}</span> sec
+                 <div className={`absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs py-2 px-3 rounded-lg z-20 shadow-xl transition-all duration-300 pointer-events-none ${hoveredBar === `${gIdx}-${bIdx}` ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-2 scale-95'}`}>
+                   <span className="font-bold text-lg">{val}</span> <span className="text-gray-400">sec</span>
                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
                  </div>
                  
                 {/* Front Face */}
                 <div 
-                  className="absolute inset-0 w-full h-full rounded-t-[2px]"
+                  className="absolute inset-0 w-full h-full rounded-t-[2px] shadow-sm"
                   style={{ backgroundColor: colors[bIdx].face }}
                 ></div>
                 
@@ -76,11 +84,11 @@ const Chart3D: React.FC = () => {
       </div>
       
       {/* Legend */}
-      <div className="flex flex-wrap justify-center gap-4 lg:gap-8 mt-12 pt-4 border-t border-gray-200/50">
+      <div className="flex flex-wrap justify-center gap-4 lg:gap-8 mt-12 pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
         {['Flight #1', 'Flight #2', 'Flight #3', 'Average'].map((label, idx) => (
-          <div key={idx} className="flex items-center gap-3 bg-white px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-all cursor-default border border-gray-100">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: colors[idx].side }}></div>
-            <span className="text-sm font-medium text-gray-600">{label}</span>
+          <div key={idx} className="flex items-center gap-3 bg-white/60 dark:bg-slate-800/60 px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-all cursor-default border border-gray-100 dark:border-gray-700">
+            <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: colors[idx].side }}></div>
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">{label}</span>
           </div>
         ))}
       </div>

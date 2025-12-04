@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
-import { 
-  BookOpen, Star, RefreshCw, Trophy, Layout, 
-  Info, Award, ArrowRight
-} from 'lucide-react';
-import Chart3D from './components/features/Chart3D';
-import FlipCard from './components/features/FlipCard';
-import GamifiedQuiz from './components/features/GamifiedQuiz';
-import SentenceBuilder from './components/features/SentenceBuilder';
-import { VOCAB_LIST, QUIZ_A, QUIZ_B, STEPS } from './constants';
+import React, { useState, useEffect } from 'react';
+import { Star, Menu, X, BarChart2, Home, Layout, Coffee, Globe, Map, Moon, Sun, ArrowLeft, Trophy, Zap, Activity, BookOpen, ChevronRight } from 'lucide-react';
 import { AppState } from './types';
+import LessonFlight from './components/lessons/LessonFlight';
+import LessonHousing from './components/lessons/LessonHousing';
+import LessonTransport from './components/lessons/LessonTransport';
+import LessonCoffee from './components/lessons/LessonCoffee';
+import LessonDegradation from './components/lessons/LessonDegradation';
+import LessonMaps from './components/lessons/LessonMaps';
+import ReactiveBackground from './components/ui/ReactiveBackground';
+
+type LessonId = 'flight' | 'housing' | 'transport' | 'coffee' | 'degradation' | 'maps';
+type ViewState = 'dashboard' | 'lesson';
 
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>({ xp: 0, completedSections: [] });
-  const [show3D, setShow3D] = useState(true);
+  const [view, setView] = useState<ViewState>('dashboard');
+  const [activeLesson, setActiveLesson] = useState<LessonId>('flight');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  // Apply Theme to HTML
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [theme]);
 
   const addXp = (amount: number, sectionId: string) => {
     if (!state.completedSections.includes(sectionId)) {
@@ -23,232 +38,210 @@ const App: React.FC = () => {
     }
   };
 
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
+  const lessons = [
+    { id: 'flight', title: 'Task 1 Basics', subtitle: 'Flight Duration Analysis', icon: <BarChart2 size={24} />, color: 'bg-indigo-500', shadow: 'shadow-indigo-500/40', progress: 0 },
+    { id: 'housing', title: 'Time Trends', subtitle: 'Housing Tenure Changes', icon: <Home size={24} />, color: 'bg-blue-500', shadow: 'shadow-blue-500/40', progress: 0 },
+    { id: 'transport', title: 'Comparisons', subtitle: 'Transport CO₂ Data', icon: <Layout size={24} />, color: 'bg-purple-500', shadow: 'shadow-purple-500/40', progress: 0 },
+    { id: 'coffee', title: 'Tables', subtitle: 'Sales Performance', icon: <Coffee size={24} />, color: 'bg-amber-500', shadow: 'shadow-amber-500/40', progress: 0 },
+    { id: 'degradation', title: 'Multi-Chart', subtitle: 'Land Degradation', icon: <Globe size={24} />, color: 'bg-emerald-500', shadow: 'shadow-emerald-500/40', progress: 0 },
+    { id: 'maps', title: 'Process Maps', subtitle: 'Island Development', icon: <Map size={24} />, color: 'bg-cyan-500', shadow: 'shadow-cyan-500/40', progress: 0 },
+  ] as const;
+
+  const handleStartLesson = (id: LessonId) => {
+    setActiveLesson(id);
+    setView('lesson');
+    setIsMenuOpen(false);
+    window.scrollTo(0, 0);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-800 pb-20">
+    <div className={`min-h-screen font-sans text-gray-800 dark:text-slate-100 transition-colors duration-500 relative overflow-x-hidden selection:bg-indigo-500 selection:text-white`}>
       
-      {/* Gamification Header */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-lg shadow-sm z-50 border-b border-gray-100 px-6 py-4">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-200">
-              I7
+      {/* 1. Reactive Background Layer */}
+      <ReactiveBackground theme={theme} />
+      
+      {/* 2. Gradient Underlay (Subtle fallback/depth) */}
+      <div className={`fixed inset-0 pointer-events-none z-[-1] bg-gradient-to-br opacity-50 transition-colors duration-1000 ${theme === 'dark' ? 'from-slate-900 via-purple-900/10 to-slate-900' : 'from-indigo-50/50 via-white to-purple-50/50'}`}></div>
+
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl z-50 border-b border-white/20 dark:border-white/5 px-6 py-4 transition-all duration-300 shadow-sm">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            {view === 'lesson' && (
+              <button 
+                onClick={() => setView('dashboard')}
+                className="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/10 transition-transform hover:-translate-x-1"
+                aria-label="Back to Dashboard"
+              >
+                <ArrowLeft size={24} />
+              </button>
+            )}
+            
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-all active:scale-95 lg:hidden"
+            >
+              {isMenuOpen ? <X size={26} /> : <Menu size={26} />}
+            </button>
+
+            <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setView('dashboard')}>
+              <div className="w-10 h-10 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/30 transform transition-transform group-hover:rotate-12 group-hover:scale-110">
+                I7
+              </div>
+              <span className="font-heading font-bold text-gray-800 dark:text-white hidden sm:block tracking-tight text-xl group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">IELTS Mastery</span>
             </div>
-            <span className="font-bold text-gray-800 hidden sm:block tracking-tight text-lg">IELTS Mastery</span>
           </div>
           
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={toggleTheme}
+              className="p-2.5 rounded-full bg-white/50 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 hover:scale-110 transition-all shadow-sm backdrop-blur-sm group"
+            >
+              {theme === 'light' ? <Moon size={20} className="text-slate-600 group-hover:text-indigo-600" /> : <Sun size={20} className="text-yellow-400 group-hover:rotate-90 transition-transform" />}
+            </button>
+
             <div className="hidden md:flex flex-col items-end">
-               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Progress</span>
-               <div className="w-32 h-1.5 bg-gray-100 rounded-full overflow-hidden mt-1.5">
-                 <div className="h-full bg-indigo-500 transition-all duration-1000 ease-out rounded-full" style={{ width: `${Math.min(state.xp, 100)}%` }}></div>
+               <span className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest">Rank Progress</span>
+               <div className="w-32 h-1.5 bg-gray-200 dark:bg-slate-800 rounded-full overflow-hidden mt-1 shadow-inner">
+                 <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full animate-pulse-glow" style={{ width: `${Math.min(state.xp / 10, 100)}%`, transition: 'width 1s ease-out' }}></div>
                </div>
             </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-gray-100 shadow-sm">
-               <Star className="text-yellow-400 fill-current animate-spin-slow" size={18} />
-               <span className="font-bold text-indigo-900 text-sm">{state.xp} XP</span>
+            
+            <div className="flex items-center gap-2 bg-white/80 dark:bg-slate-800/80 px-4 py-2 rounded-full border border-gray-100 dark:border-slate-700 shadow-sm backdrop-blur-sm group cursor-default hover:scale-105 transition-transform hover:shadow-md">
+               <Star className="text-yellow-400 fill-current group-hover:rotate-180 transition-transform duration-700 filter drop-shadow-sm" size={20} />
+               <span className="font-bold text-indigo-900 dark:text-indigo-200 text-base">{state.xp} XP</span>
             </div>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-6 pt-28 space-y-20">
-        
-        {/* Intro Hero */}
-        <section className="text-center space-y-6 animate-fade-in-up py-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-wide mb-2">
-            Academic Task 1
-          </div>
-          <h1 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tight leading-tight">
-            Data Response <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Masterclass</span>
-          </h1>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-             Learn to analyze, structure, and report on visual data with precision. 
-             Based on the Band 9 approach.
-          </p>
-        </section>
-
-        {/* Visuals Section */}
-        <section className="grid lg:grid-cols-12 gap-8 items-start animate-fade-in-up delay-100">
-           <div className="lg:col-span-7 space-y-4">
-              <div className="flex items-center justify-between mb-2 px-1">
-                 <h2 className="text-lg font-bold flex items-center gap-2 text-gray-700"><Layout size={18}/> Visual Data Source</h2>
-                 <button 
-                   onClick={() => setShow3D(!show3D)}
-                   className="text-xs text-indigo-500 font-medium hover:text-indigo-700 flex items-center gap-1 transition-colors"
-                 >
-                   <RefreshCw size={12}/> Switch View
-                 </button>
-              </div>
-              
-              {show3D ? (
-                <Chart3D />
-              ) : (
-                <div className="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 text-center min-h-[400px] flex items-center justify-center">
-                  <p className="text-gray-400 italic">Static Reference View</p>
+      {/* Side Menu (Mobile) */}
+      {isMenuOpen && (
+        <>
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 animate-fade-in" onClick={() => setIsMenuOpen(false)} />
+          <div className="fixed top-[85px] left-4 bottom-4 w-80 bg-white/95 dark:bg-slate-900/95 shadow-2xl z-40 overflow-y-auto rounded-3xl border border-white/20 dark:border-slate-800 animate-slide-in-right p-2">
+             <div className="p-4">
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 px-2">Modules</h3>
+                <div className="space-y-2">
+                  {lessons.map((lesson) => (
+                    <button
+                      key={lesson.id}
+                      onClick={() => handleStartLesson(lesson.id as LessonId)}
+                      className="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all group"
+                    >
+                       <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md ${lesson.color} group-hover:scale-110 transition-transform`}>
+                          {lesson.icon}
+                       </div>
+                       <div className="text-left">
+                          <span className="block font-bold text-sm text-slate-800 dark:text-slate-200">{lesson.title}</span>
+                       </div>
+                    </button>
+                  ))}
                 </div>
-              )}
-           </div>
+             </div>
+          </div>
+        </>
+      )}
 
-           <div className="lg:col-span-5 flex flex-col h-full gap-6">
-              <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 flex-grow">
-                  <div className="bg-orange-50 border-l-4 border-orange-400 p-6 rounded-r-xl mb-8">
-                    <h3 className="font-bold text-orange-800 mb-2 flex items-center gap-2">
-                      <Info size={18}/> The Mission
-                    </h3>
-                    <p className="text-orange-900/80 text-sm leading-relaxed">
-                      "Your job is to report <strong>what you see</strong>, not explain <strong>why</strong> it happened. Stick to the data provided."
-                    </p>
+      <main className="max-w-7xl mx-auto px-4 md:px-6 pt-32 pb-20 relative z-10">
+        
+        {/* VIEW: DASHBOARD */}
+        {view === 'dashboard' && (
+          <div className="animate-fade-in-up">
+            {/* Hero Section */}
+            <div className="mb-20 text-center space-y-8 relative">
+               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50/80 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-300 font-bold text-xs uppercase tracking-widest border border-indigo-100 dark:border-indigo-500/30 backdrop-blur-sm animate-pop-in">
+                 <Zap size={14} className="fill-current"/> Interactive Learning v2.0
+               </div>
+               <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-slate-900 dark:text-white mb-4 leading-tight">
+                 Master IELTS<br/>
+                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-400 bg-[length:200%_auto] animate-float">Data Response</span>
+               </h1>
+               <p className="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-light">
+                 Dive into 3D visualizations, interactive quizzes, and gamified progress tracking.
+               </p>
+               
+               {state.xp > 0 && (
+                 <div className="animate-slide-in-left inline-block mt-4 px-6 py-2 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full font-medium text-sm border border-green-200 dark:border-green-800">
+                    Welcome back! You're on a roll. 🚀
+                 </div>
+               )}
+            </div>
+
+            {/* Stats Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+              {[
+                { label: 'Total XP', value: state.xp, sub: 'Points earned', icon: <Activity size={24}/>, color: 'text-green-600', bg: 'bg-green-100 dark:bg-green-900/30' },
+                { label: 'Mastery', value: `${Math.round((state.completedSections.length / 12) * 100)}%`, sub: 'Course completion', icon: <Trophy size={24}/>, color: 'text-orange-600', bg: 'bg-orange-100 dark:bg-orange-900/30' },
+                { label: 'Current Rank', value: 'Analyst', sub: 'Keep learning', icon: <BookOpen size={24}/>, color: 'text-blue-600', bg: 'bg-blue-100 dark:bg-blue-900/30' }
+              ].map((stat, i) => (
+                <div key={i} className={`glass-panel p-8 rounded-3xl shadow-xl hover:translate-y-[-5px] transition-all duration-300 stagger-${i+1} animate-fade-in-up hover:shadow-2xl group`}>
+                   <div className="flex items-center gap-4 mb-4">
+                      <div className={`p-3 rounded-2xl ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform`}>
+                        {stat.icon}
+                      </div>
+                      <h3 className="font-bold text-lg text-slate-700 dark:text-slate-200">{stat.label}</h3>
+                   </div>
+                   <p className="text-4xl font-black text-slate-900 dark:text-white mb-2">{stat.value}</p>
+                   <p className="text-sm text-slate-400 dark:text-slate-500 font-medium">{stat.sub}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Module Grid */}
+            <h3 className="text-2xl font-bold mb-8 px-2 text-slate-800 dark:text-white flex items-center gap-3">
+              <div className="w-2 h-8 bg-indigo-500 rounded-full shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div> Available Modules
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {lessons.map((lesson, idx) => (
+                <div 
+                  key={lesson.id}
+                  onClick={() => handleStartLesson(lesson.id as LessonId)}
+                  className="group relative bg-white dark:bg-slate-800 rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 cursor-pointer overflow-hidden border border-gray-100 dark:border-slate-700 animate-fade-in-up"
+                  style={{ animationDelay: `${idx * 100}ms` }}
+                >
+                  {/* Background decoration */}
+                  <div className={`absolute -top-10 -right-10 w-40 h-40 ${lesson.color} opacity-5 rounded-full transition-all group-hover:scale-150 group-hover:opacity-10 blur-3xl`}></div>
+                  
+                  <div className="flex justify-between items-start mb-6 relative z-10">
+                    <div className={`w-16 h-16 rounded-2xl ${lesson.color} flex items-center justify-center text-white shadow-lg ${lesson.shadow} transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-300`}>
+                      {lesson.icon}
+                    </div>
+                    <div className="w-8 h-8 rounded-full border-2 border-gray-100 dark:border-slate-700 flex items-center justify-center group-hover:border-indigo-500 transition-colors">
+                      <ChevronRight size={16} className="text-gray-300 group-hover:text-indigo-500 transition-colors" />
+                    </div>
                   </div>
                   
-                  <h4 className="font-bold text-gray-400 text-xs uppercase tracking-widest mb-4">Key Features</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl transition-all hover:bg-white hover:shadow-md cursor-default border border-transparent hover:border-gray-100">
-                        <div className="w-10 h-10 rounded-full bg-white border border-gray-100 text-gray-600 flex items-center justify-center font-bold shadow-sm">1</div>
-                        <div>
-                          <p className="font-bold text-gray-800">Trend</p>
-                          <p className="text-xs text-gray-500 font-medium">Inverse: More candles = Less time</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl transition-all hover:bg-white hover:shadow-md cursor-default border border-transparent hover:border-gray-100">
-                        <div className="w-10 h-10 rounded-full bg-white border border-gray-100 text-gray-600 flex items-center justify-center font-bold shadow-sm">2</div>
-                        <div>
-                          <p className="font-bold text-gray-800">Peak</p>
-                          <p className="text-xs text-gray-500 font-medium">1 Candle setup was consistently highest</p>
-                        </div>
-                    </div>
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{lesson.title}</h3>
+                  <p className="text-slate-500 dark:text-slate-400 font-medium">{lesson.subtitle}</p>
+                  
+                  <div className="mt-8 pt-6 border-t border-gray-100 dark:border-slate-700/50 flex items-center justify-between">
+                     <span className="text-xs font-bold uppercase tracking-widest text-gray-400 group-hover:text-indigo-500 transition-colors">Start Now</span>
+                     <div className="w-20 h-1.5 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                        <div className={`h-full ${lesson.color} w-0 group-hover:w-full transition-all duration-700 ease-out`}></div>
+                     </div>
                   </div>
-              </div>
-           </div>
-        </section>
-
-        {/* Vocabulary Deck */}
-        <section>
-          <div className="flex items-center gap-3 mb-8">
-             <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><BookOpen size={24}/></div>
-             <h2 className="text-2xl font-bold text-gray-900">Essential Vocabulary</h2>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {VOCAB_LIST.map((item, idx) => (
-              <FlipCard key={idx} {...item} />
-            ))}
-          </div>
-        </section>
-
-        {/* Introduction Builder */}
-        <section className="bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden relative">
-           <div className="absolute -top-24 -right-24 w-96 h-96 bg-gray-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
-           <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
-           
-           <div className="relative z-10 mb-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Structure & Strategy</h2>
-              <p className="text-gray-500">Master the art of the introduction.</p>
-           </div>
-           
-           <div className="grid lg:grid-cols-2 gap-12 relative z-10">
-             <div>
-               <h3 className="font-bold text-gray-700 mb-6 flex items-center gap-2"><Award size={18} className="text-indigo-500"/> Exercise: Sentence Scramble</h3>
-               <SentenceBuilder />
-             </div>
-             
-             <div className="space-y-6">
-               <h3 className="font-bold text-gray-700 mb-6 flex items-center gap-2"><Layout size={18} className="text-indigo-500"/> The Formula</h3>
-               <div className="space-y-4">
-                 {STEPS.map((item) => (
-                   <div key={item.step} className="flex items-center gap-5 p-4 bg-white rounded-2xl border border-gray-100 hover:border-indigo-100 hover:shadow-lg transition-all group cursor-default">
-                      <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300 shadow-sm">{item.step}</div>
-                      <div>
-                        <p className="font-bold text-gray-800 text-lg">{item.text}</p>
-                        <p className="text-sm text-gray-400 font-medium">{item.sub}</p>
-                      </div>
-                   </div>
-                 ))}
-               </div>
-             </div>
-           </div>
-        </section>
-
-        {/* Quizzes */}
-        <div className="grid lg:grid-cols-2 gap-8">
-          <section className="flex flex-col">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-2 text-gray-800"><Trophy className="text-yellow-500"/> Vocab & Grammar</h2>
-            <div className="flex-grow">
-               <GamifiedQuiz questions={QUIZ_A} title="Vocab & Grammar" onComplete={() => addXp(50, 'quizA')} />
-            </div>
-          </section>
-          
-          <section className="flex flex-col">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-2 text-gray-800"><Award className="text-indigo-500"/> Task Achievement</h2>
-            <div className="flex-grow">
-               <GamifiedQuiz questions={QUIZ_B} title="Analysis Strategy" onComplete={() => addXp(50, 'quizB')} />
-            </div>
-          </section>
-        </div>
-
-        {/* Overview Strategy - The "Step Back" */}
-        <section className="bg-slate-900 text-white rounded-[2.5rem] p-8 lg:p-16 relative overflow-hidden shadow-2xl">
-           <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-600 rounded-full filter blur-[100px] opacity-30 -mr-20 -mt-20"></div>
-           <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600 rounded-full filter blur-[100px] opacity-30 -ml-20 -mb-20"></div>
-
-           <div className="relative z-10 text-center max-w-3xl mx-auto space-y-10">
-              <div>
-                <h2 className="text-4xl font-bold mb-6">The "Step Back" Technique</h2>
-                <p className="text-slate-300 text-xl leading-relaxed font-light">
-                  Imagine standing 3 meters away from the chart. <br/>
-                  You can't see the specific numbers anymore, only the <span className="text-white font-semibold border-b-2 border-indigo-500">shapes</span> and <span className="text-white font-semibold border-b-2 border-purple-500">movements</span>.
-                </p>
-              </div>
-              
-              <div className="grid sm:grid-cols-2 gap-6 text-left">
-                <div className="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors group">
-                   <ArrowRight className="text-indigo-400 mb-4 rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={40} />
-                   <h4 className="font-bold text-2xl mb-2">The Trend</h4>
-                   <p className="text-slate-400 leading-relaxed">As we go right (add candles), the bars drop consistently.</p>
                 </div>
-                <div className="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors group">
-                   <Trophy className="text-purple-400 mb-4 group-hover:scale-110 transition-transform" size={40} />
-                   <h4 className="font-bold text-2xl mb-2">The Extremes</h4>
-                   <p className="text-slate-400 leading-relaxed">1 Candle is clearly the highest. 3 Candles is the lowest.</p>
-                </div>
-              </div>
-           </div>
-        </section>
+              ))}
+            </div>
+          </div>
+        )}
 
-        {/* Model Answer */}
-        <section className="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border border-gray-100">
-           <div className="p-10 lg:p-16">
-             <div className="flex flex-col md:flex-row md:items-center gap-6 mb-12 border-b border-gray-100 pb-8">
-               <div className="bg-green-100 p-4 rounded-2xl w-fit">
-                 <Award className="text-green-600" size={40} />
-               </div>
-               <div>
-                 <h2 className="text-3xl font-bold text-gray-900">Band 9 Model Report</h2>
-                 <p className="text-green-600 font-semibold mt-1">Written by an expert examiner</p>
-               </div>
-             </div>
-
-             <div className="prose prose-lg text-gray-600 max-w-none space-y-8 leading-loose">
-               <p className="bg-gray-50 p-6 rounded-2xl border-l-4 border-gray-300 hover:bg-gray-100 transition-colors">
-                 The bar chart illustrates the duration of three separate flights, measured in seconds, under three distinct conditions: with one, two, and three candles lit. An average flight time is also provided for each category.
-               </p>
-               <p className="bg-indigo-50 p-6 rounded-2xl border-l-4 border-indigo-500 hover:bg-indigo-100 transition-colors">
-                 <span className="font-bold text-indigo-700 text-xs uppercase tracking-widest block mb-2">The Overview</span>
-                 Overall, there is a clear inverse relationship between the number of candles used and the duration of the flight. The longest flight times were recorded when only a single candle was lit, while the addition of subsequent candles resulted in consistently shorter durations across all trials.
-               </p>
-               <p className="hover:bg-gray-50 p-6 rounded-2xl transition-colors">
-                 Looking first at the results for the single-candle setup, the flight times were at their peak. Flight #2 achieved the longest duration on the chart at just over 15 seconds, followed closely by Flight #3 and the average, both hovering around 15 seconds. Flight #1 was slightly shorter, recording a time of approximately 14 seconds.
-               </p>
-               <p className="hover:bg-gray-50 p-6 rounded-2xl transition-colors">
-                 When a second candle was introduced, a noticeable decrease in flight time occurred. The average duration dropped to roughly 13 seconds, with individual flights ranging between 12.5 and 13.5 seconds. This downward trend continued with the three-candle setup, where the shortest times were observed. Flight #3 recorded the lowest duration of the entire experiment at 10 seconds, while the average for this group fell to just above 10 seconds, significantly lower than the 15-second average seen in the first category.
-               </p>
-             </div>
-           </div>
-        </section>
-
-        <footer className="text-center py-12 text-gray-400 text-sm border-t border-gray-100">
-           <p>© 2024 Interactive IELTS Prep • Educational Use Only</p>
-        </footer>
+        {/* VIEW: LESSON */}
+        {view === 'lesson' && (
+          <div key={activeLesson} className="animate-fade-in-up">
+            {activeLesson === 'flight' && <LessonFlight onAddXp={addXp} />}
+            {activeLesson === 'housing' && <LessonHousing onAddXp={addXp} />}
+            {activeLesson === 'transport' && <LessonTransport onAddXp={addXp} />}
+            {activeLesson === 'coffee' && <LessonCoffee onAddXp={addXp} />}
+            {activeLesson === 'degradation' && <LessonDegradation onAddXp={addXp} />}
+            {activeLesson === 'maps' && <LessonMaps onAddXp={addXp} />}
+          </div>
+        )}
 
       </main>
     </div>
