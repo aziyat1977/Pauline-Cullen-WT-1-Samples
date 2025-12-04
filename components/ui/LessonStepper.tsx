@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, ArrowLeft, CheckCircle, Zap } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
 
 interface Step {
   title: string;
@@ -17,7 +17,9 @@ const LessonStepper: React.FC<LessonStepperProps> = ({ steps, onComplete, colorT
   const [animating, setAnimating] = useState(false);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Reset any internal scroll
+    const el = document.getElementById('step-content');
+    if (el) el.scrollTop = 0;
   }, [currentStep]);
 
   const handleNext = () => {
@@ -57,62 +59,67 @@ const LessonStepper: React.FC<LessonStepperProps> = ({ steps, onComplete, colorT
   };
 
   return (
-    <div className="min-h-[85vh] flex flex-col relative pb-40">
-      {/* Glowing Progress Line */}
-      <div className="fixed top-[85px] left-0 right-0 h-1.5 bg-gray-100 dark:bg-gray-800 z-30">
+    <div className="h-full flex flex-col relative w-full overflow-hidden">
+      {/* Glowing Progress Line - Absolute Top */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gray-100 dark:bg-gray-800 z-30">
         <div 
-          className={`h-full transition-all duration-700 ease-out ${getColorClass('bg')} shadow-[0_0_15px_currentColor] relative overflow-hidden`}
+          className={`h-full transition-all duration-700 ease-out ${getColorClass('bg')} shadow-[0_0_10px_currentColor] relative overflow-hidden`}
           style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
         >
             <div className="absolute inset-0 bg-white/30 animate-[slide-in-right_1s_infinite]"></div>
         </div>
       </div>
 
-      {/* Step Indicator */}
-      <div className="flex justify-center mt-8 mb-4">
-         <div className="flex items-center gap-2 bg-white/50 dark:bg-black/20 px-4 py-1.5 rounded-full backdrop-blur-md border border-white/20 shadow-sm animate-fade-in-up">
-            <div className={`w-2 h-2 rounded-full ${getColorClass('bg')} animate-pulse`}></div>
-            <span className="text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-[0.2em] font-heading">
+      {/* Step Indicator Header */}
+      <div className="shrink-0 flex justify-center py-4 z-20">
+         <div className="flex items-center gap-2 bg-white/50 dark:bg-black/20 px-3 py-1 rounded-full backdrop-blur-md border border-white/20 shadow-sm animate-fade-in-up">
+            <div className={`w-1.5 h-1.5 rounded-full ${getColorClass('bg')} animate-pulse`}></div>
+            <span className="text-gray-500 dark:text-gray-400 font-bold text-[10px] uppercase tracking-[0.2em] font-heading">
                 Step {currentStep + 1} of {steps.length}
             </span>
          </div>
       </div>
 
-      {/* Content Area - Animated Transition */}
+      {/* Content Area - Filling available space */}
       <div 
-        key={currentStep} 
-        className={`flex-grow flex flex-col justify-center px-4 md:px-0 transition-all duration-300 ease-in-out ${animating ? 'opacity-0 translate-y-4 scale-95' : 'opacity-100 translate-y-0 scale-100 animate-fade-in-up'}`}
+        id="step-content"
+        className="flex-1 overflow-y-auto overflow-x-hidden flex flex-col justify-center items-center w-full px-4 relative z-10"
       >
-        {steps[currentStep].content}
+        <div 
+           key={currentStep} 
+           className={`w-full max-w-7xl mx-auto flex flex-col items-center justify-center transition-all duration-300 ease-in-out py-2 ${animating ? 'opacity-0 translate-y-4 scale-95' : 'opacity-100 translate-y-0 scale-100 animate-fade-in-up'}`}
+        >
+          {steps[currentStep].content}
+        </div>
       </div>
 
-      {/* Navigation Footer - Floating Island Design */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 p-6 pointer-events-none flex justify-center">
-        <div className="w-full max-w-2xl pointer-events-auto">
-             <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-3 rounded-3xl shadow-2xl border border-white/20 dark:border-slate-700 flex justify-between items-center gap-4 transition-all hover:scale-[1.01] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.2)]">
+      {/* Navigation Footer - Fixed/Shrink at bottom */}
+      <div className="shrink-0 p-4 pb-6 flex justify-center z-40 bg-transparent">
+        <div className="w-full max-w-lg">
+             <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-2 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700 flex justify-between items-center gap-3 transition-all hover:shadow-2xl">
                 
                 <button
                     onClick={handlePrev}
                     disabled={currentStep === 0}
                     className={`
-                    w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300
+                    w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300
                     ${currentStep === 0 
                         ? 'opacity-20 cursor-not-allowed bg-gray-100 dark:bg-slate-800 text-gray-400' 
                         : 'bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 text-gray-700 dark:text-white shadow-sm hover:shadow-md active:scale-95'}
                     `}
                 >
-                    <ArrowLeft size={24} />
+                    <ArrowLeft size={20} />
                 </button>
 
                 <div className="flex-grow flex flex-col items-center justify-center hidden sm:flex">
-                     <span className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Current Task</span>
-                     <span className="text-sm font-bold text-gray-800 dark:text-white truncate max-w-[200px]">{steps[currentStep].title}</span>
+                     <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Current Task</span>
+                     <span className="text-xs font-bold text-gray-800 dark:text-white truncate max-w-[150px]">{steps[currentStep].title}</span>
                 </div>
 
                 <button
                     onClick={handleNext}
                     className={`
-                    flex-grow sm:flex-grow-0 group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 active:scale-95
+                    flex-grow sm:flex-grow-0 group flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm shadow-md transition-all duration-300 active:scale-95
                     ${currentStep === steps.length - 1 
                         ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-slate-900/20' 
                         : `${getColorClass('bg')} text-white ${getColorClass('shadow')} hover:brightness-110`}
@@ -120,9 +127,9 @@ const LessonStepper: React.FC<LessonStepperProps> = ({ steps, onComplete, colorT
                 >
                     <span>{currentStep === steps.length - 1 ? 'Finish' : 'Next'}</span>
                     <div className={`
-                    p-1 rounded-full bg-white/20 transition-transform group-hover:translate-x-1
+                    p-0.5 rounded-full bg-white/20 transition-transform group-hover:translate-x-1
                     `}>
-                    {currentStep === steps.length - 1 ? <CheckCircle size={20} /> : <ArrowRight size={20} />}
+                    {currentStep === steps.length - 1 ? <CheckCircle size={16} /> : <ArrowRight size={16} />}
                     </div>
                 </button>
 

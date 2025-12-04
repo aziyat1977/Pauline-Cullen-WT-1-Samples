@@ -19,11 +19,11 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
     {
       title: "Intro",
       content: (
-        <section className="text-center flex flex-col items-center justify-center min-h-[50vh] space-y-8">
-          <div className="inline-block px-4 py-2 rounded-full bg-indigo-50 text-indigo-600 text-xs font-black uppercase tracking-widest border border-indigo-100">
+        <section className="text-center flex flex-col items-center justify-center h-full space-y-4">
+          <div className="inline-block px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest border border-indigo-100">
             Task 1 Mastery
           </div>
-          <h1 className="text-7xl md:text-9xl font-black text-slate-900 tracking-tighter leading-none">
+          <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-none">
             Data<br/>
             <span className="text-indigo-600">Response</span>
           </h1>
@@ -33,15 +33,15 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
     {
       title: "Chart",
       content: (
-        <div className="max-w-5xl mx-auto w-full">
-           <div className="flex justify-end mb-4">
-             <button onClick={() => setShow3D(!show3D)} className="text-xs font-bold text-indigo-600 bg-indigo-50 px-4 py-2 rounded-full hover:bg-indigo-100 transition-colors flex items-center gap-2">
-                <RefreshCw size={12}/> {show3D ? "2D" : "3D"}
+        <div className="max-w-4xl mx-auto w-full">
+           <div className="flex justify-end mb-2">
+             <button onClick={() => setShow3D(!show3D)} className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full hover:bg-indigo-100 transition-colors flex items-center gap-2">
+                <RefreshCw size={10}/> {show3D ? "2D" : "3D"}
               </button>
            </div>
            {show3D ? <Chart3D /> : (
-              <div className="bg-white p-20 rounded-[3rem] shadow-xl border border-gray-100 text-center min-h-[500px] flex items-center justify-center">
-                <p className="text-slate-300 font-bold text-2xl">Static View Placeholder</p>
+              <div className="bg-white p-12 rounded-[2rem] shadow-xl border border-gray-100 text-center min-h-[300px] flex items-center justify-center">
+                <p className="text-slate-300 font-bold text-xl">Static View Placeholder</p>
               </div>
            )}
         </div>
@@ -50,12 +50,12 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
     {
       title: "Mission",
       content: (
-        <div className="max-w-4xl mx-auto text-center space-y-12">
-           <div className="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mx-auto text-orange-600">
-               <Info size={48} />
+        <div className="max-w-3xl mx-auto text-center space-y-8">
+           <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto text-orange-600">
+               <Info size={32} />
             </div>
-            <h3 className="text-6xl font-black text-slate-800 tracking-tight">Your Objective</h3>
-            <p className="text-4xl text-slate-500 leading-normal font-light">
+            <h3 className="text-4xl font-black text-slate-800 tracking-tight">Your Objective</h3>
+            <p className="text-2xl text-slate-500 leading-normal font-light">
               "Report <strong>what you see</strong>.<br/>Not <strong>why</strong> it happened."
             </p>
         </div>
@@ -64,20 +64,20 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
     {
       title: "Feature 1",
       content: (
-        <div className="max-w-2xl mx-auto p-12 bg-slate-50 rounded-[3rem] border border-slate-100 text-center space-y-6 shadow-lg">
-           <div className="text-sm font-bold uppercase tracking-widest text-slate-400">Key Feature 1</div>
-           <div className="text-5xl font-black text-slate-800">Inverse Trend</div>
-           <div className="text-2xl text-slate-500 font-medium">More candles = Less time</div>
+        <div className="max-w-xl mx-auto p-8 bg-slate-50 rounded-[2rem] border border-slate-100 text-center space-y-4 shadow-lg">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Key Feature 1</div>
+           <div className="text-3xl font-black text-slate-800">Inverse Trend</div>
+           <div className="text-lg text-slate-500 font-medium">More candles = Less time</div>
         </div>
       )
     },
     {
       title: "Feature 2",
       content: (
-        <div className="max-w-2xl mx-auto p-12 bg-indigo-50 rounded-[3rem] border border-indigo-100 text-center space-y-6 shadow-lg">
-           <div className="text-sm font-bold uppercase tracking-widest text-indigo-400">Key Feature 2</div>
-           <div className="text-5xl font-black text-indigo-900">Peak Value</div>
-           <div className="text-2xl text-indigo-600 font-medium">1 Candle = Highest duration</div>
+        <div className="max-w-xl mx-auto p-8 bg-indigo-50 rounded-[2rem] border border-indigo-100 text-center space-y-4 shadow-lg">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Key Feature 2</div>
+           <div className="text-3xl font-black text-indigo-900">Peak Value</div>
+           <div className="text-lg text-indigo-600 font-medium">1 Candle = Highest duration</div>
         </div>
       )
     },
@@ -85,7 +85,7 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
     ...VOCAB_LIST.map((item) => ({
       title: "Vocabulary",
       content: (
-        <div className="w-full flex items-center justify-center">
+        <div className="w-full flex items-center justify-center px-4">
           <FlipCard {...item} large />
         </div>
       )
@@ -93,8 +93,8 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
     {
       title: "Builder",
       content: (
-        <div className="max-w-4xl mx-auto w-full">
-          <div className="bg-white rounded-[3rem] p-10 shadow-2xl border border-indigo-50">
+        <div className="max-w-3xl mx-auto w-full">
+          <div className="bg-white rounded-[2rem] p-6 shadow-xl border border-indigo-50">
              <SentenceBuilder sentence={sentence} />
           </div>
         </div>
@@ -102,14 +102,14 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
     },
     {
       title: "Quiz A",
-      content: <div className="max-w-3xl mx-auto h-[650px] w-full"><GamifiedQuiz questions={QUIZ_A} title="Vocab" onComplete={() => onAddXp(50, 'quizA')} /></div>
+      content: <div className="max-w-2xl mx-auto w-full"><GamifiedQuiz questions={QUIZ_A} title="Vocab" onComplete={() => onAddXp(50, 'quizA')} /></div>
     },
     {
       title: "Strategy Intro",
       content: (
-         <div className="text-center max-w-4xl mx-auto space-y-8">
-            <h2 className="text-7xl font-black text-slate-900">The "Step Back"</h2>
-            <p className="text-4xl text-slate-500 font-light leading-relaxed">
+         <div className="text-center max-w-3xl mx-auto space-y-6">
+            <h2 className="text-5xl font-black text-slate-900">The "Step Back"</h2>
+            <p className="text-3xl text-slate-500 font-light leading-relaxed">
               Stand back 3 meters.<br/>Ignore the numbers.<br/><span className="text-indigo-600 font-bold">See the shape.</span>
             </p>
          </div>
@@ -118,41 +118,41 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
     {
       title: "Strategy 1",
       content: (
-         <div className="bg-slate-900 text-white p-16 rounded-[3rem] text-center max-w-2xl mx-auto shadow-2xl">
-            <ArrowRight className="text-indigo-400 mb-8 mx-auto" size={64} />
-            <h4 className="font-black text-5xl mb-6">The Trend</h4>
-            <p className="text-indigo-100 text-2xl font-light">As we add candles, the bars drop consistently.</p>
+         <div className="bg-slate-900 text-white p-10 rounded-[2rem] text-center max-w-xl mx-auto shadow-2xl">
+            <ArrowRight className="text-indigo-400 mb-6 mx-auto" size={48} />
+            <h4 className="font-black text-3xl mb-4">The Trend</h4>
+            <p className="text-indigo-100 text-xl font-light">As we add candles, the bars drop consistently.</p>
          </div>
       )
     },
     {
       title: "Strategy 2",
       content: (
-         <div className="bg-slate-900 text-white p-16 rounded-[3rem] text-center max-w-2xl mx-auto shadow-2xl">
-            <Trophy className="text-purple-400 mb-8 mx-auto" size={64} />
-            <h4 className="font-black text-5xl mb-6">The Extremes</h4>
-            <p className="text-purple-100 text-2xl font-light">1 Candle is highest.<br/>3 Candles is lowest.</p>
+         <div className="bg-slate-900 text-white p-10 rounded-[2rem] text-center max-w-xl mx-auto shadow-2xl">
+            <Trophy className="text-purple-400 mb-6 mx-auto" size={48} />
+            <h4 className="font-black text-3xl mb-4">The Extremes</h4>
+            <p className="text-purple-100 text-xl font-light">1 Candle is highest.<br/>3 Candles is lowest.</p>
          </div>
       )
     },
     {
       title: "Model Intro",
       content: (
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-           <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto text-green-600 mb-4">
-             <Award size={48} />
+        <div className="max-w-3xl mx-auto text-center space-y-6">
+           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto text-green-600 mb-2">
+             <Award size={32} />
            </div>
-           <h2 className="text-6xl font-black text-slate-900">Band 9 Report</h2>
-           <p className="text-3xl text-slate-500 font-light">A breakdown of a perfect answer.</p>
+           <h2 className="text-5xl font-black text-slate-900">Band 9 Report</h2>
+           <p className="text-2xl text-slate-500 font-light">A breakdown of a perfect answer.</p>
         </div>
       )
     },
     {
       title: "Model Para 1",
       content: (
-        <div className="max-w-3xl mx-auto">
-           <div className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4 ml-4">Introduction</div>
-           <p className="bg-white p-12 rounded-[2.5rem] shadow-xl text-3xl text-slate-700 leading-relaxed font-light border-l-8 border-gray-300">
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3 ml-4">Introduction</div>
+           <p className="bg-white p-8 rounded-[2rem] shadow-xl text-xl text-slate-700 leading-relaxed font-light border-l-4 border-gray-300">
              The bar chart illustrates the duration of three separate flights, measured in seconds, under three distinct conditions: with one, two, and three candles lit.
            </p>
         </div>
@@ -161,9 +161,9 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
     {
       title: "Model Para 2",
       content: (
-        <div className="max-w-3xl mx-auto">
-           <div className="text-sm font-bold uppercase tracking-widest text-indigo-400 mb-4 ml-4">Overview</div>
-           <p className="bg-indigo-50 p-12 rounded-[2.5rem] shadow-xl text-3xl text-slate-800 leading-relaxed font-light border-l-8 border-indigo-500">
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-indigo-400 mb-3 ml-4">Overview</div>
+           <p className="bg-indigo-50 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-indigo-500">
              Overall, there is a clear <span className="font-bold text-indigo-600">inverse relationship</span> between the number of candles used and the duration of the flight.
            </p>
         </div>
@@ -171,7 +171,7 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
     },
     {
       title: "Quiz B",
-      content: <div className="max-w-3xl mx-auto h-[650px] w-full"><GamifiedQuiz questions={QUIZ_B} title="Analysis" onComplete={() => onAddXp(50, 'quizB')} /></div>
+      content: <div className="max-w-2xl mx-auto w-full"><GamifiedQuiz questions={QUIZ_B} title="Analysis" onComplete={() => onAddXp(50, 'quizB')} /></div>
     }
   ];
 

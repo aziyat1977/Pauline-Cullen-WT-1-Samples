@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Eye, Anchor } from 'lucide-react';
 
@@ -6,23 +5,23 @@ const InteractiveMap: React.FC = () => {
   const [view, setView] = useState<'before' | 'after'>('before');
 
   return (
-    <div className="bg-blue-50 p-6 rounded-xl shadow-inner mb-8 relative overflow-hidden group font-sans border-t-8 border-blue-600 transition-colors duration-500">
+    <div className="bg-blue-50 p-5 rounded-xl shadow-inner mb-4 relative overflow-hidden group font-sans border-t-8 border-blue-600 transition-colors duration-500">
       <div className="absolute top-2 right-2 flex gap-2">
-        <span className="text-xs bg-white px-2 py-1 rounded shadow text-blue-500 flex items-center gap-1">
-          <Eye size={12}/> Interactive Map
+        <span className="text-[10px] bg-white px-2 py-1 rounded shadow text-blue-500 flex items-center gap-1">
+          <Eye size={10}/> Interactive
         </span>
       </div>
       
-      <div className="flex justify-center mb-6 gap-8">
+      <div className="flex justify-center mb-5 gap-4">
         <button 
           onClick={() => setView('before')}
-          className={`px-6 py-2 rounded-full font-bold transition-all border-2 ${view === 'before' ? 'bg-green-600 text-white border-green-600 scale-105' : 'bg-white text-gray-500 border-gray-300'}`}
+          className={`px-4 py-1.5 rounded-full font-bold text-xs transition-all border-2 ${view === 'before' ? 'bg-green-600 text-white border-green-600 scale-105' : 'bg-white text-gray-500 border-gray-300'}`}
         >
           Before Construction
         </button>
         <button 
           onClick={() => setView('after')}
-          className={`px-6 py-2 rounded-full font-bold transition-all border-2 ${view === 'after' ? 'bg-blue-600 text-white border-blue-600 scale-105' : 'bg-white text-gray-500 border-gray-300'}`}
+          className={`px-4 py-1.5 rounded-full font-bold text-xs transition-all border-2 ${view === 'after' ? 'bg-blue-600 text-white border-blue-600 scale-105' : 'bg-white text-gray-500 border-gray-300'}`}
         >
           After Development
         </button>
@@ -50,7 +49,7 @@ const InteractiveMap: React.FC = () => {
                   <div className="w-6 h-6 bg-green-600 rounded-full -mt-5 opacity-90"></div>
                 </div>
               ))}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-amber-900/20 font-bold text-4xl rotate-12 pointer-events-none">DESERTED</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-amber-900/20 font-bold text-3xl rotate-12 pointer-events-none">DESERTED</div>
            </div>
 
            {/* -- AFTER FEATURES -- */}
@@ -91,14 +90,14 @@ const InteractiveMap: React.FC = () => {
         </div>
 
         {/* Legend */}
-        <div className="absolute bottom-2 right-2 bg-white/90 p-2 rounded text-[10px] shadow">
+        <div className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded text-[9px] shadow">
            <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-orange-300 border border-orange-500"></div> Hut</div>
            <div className="flex items-center gap-1"><div className="w-2 h-2 bg-red-700"></div> Building</div>
            <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-green-600"></div> Tree</div>
         </div>
       </div>
       
-      <p className="text-center mt-4 text-sm text-blue-800 italic">
+      <p className="text-center mt-3 text-xs text-blue-800 italic">
         {view === 'before' ? "The island in its natural state." : "The island after tourist infrastructure was developed."}
       </p>
     </div>
