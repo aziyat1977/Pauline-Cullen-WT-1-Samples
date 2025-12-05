@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid, RotateCcw, ChevronRight, Hash, TrendingUp, Search, Umbrella, Edit3, Check, Clock, TrendingDown } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid, RotateCcw, ChevronRight, Hash, TrendingUp, Search, Umbrella, Edit3, Check, Clock, TrendingDown, ClipboardCheck, ArrowDown, Headphones } from 'lucide-react';
 import ChartDualView from '../features/ChartDualView';
 import InteractiveMap from '../features/InteractiveMap';
 import ChartHousing from '../features/ChartHousing';
@@ -10,280 +10,211 @@ import ChartFish from '../features/ChartFish';
 
 // --- MICRO-COMPONENTS FOR INTERACTIVITY ---
 
-const GapFill = ({ parts, options, correct }: { parts: string[], options: string[], correct: string[] }) => {
-    const [slots, setSlots] = useState<string[]>(new Array(parts.length - 1).fill(null));
-    const [pool, setPool] = useState(options);
-    const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+const GapFill = ({ textWithGaps, answers }: { textWithGaps: string, answers: string[] }) => {
+    // textWithGaps format: "Some text [gap] more text."
+    const parts = textWithGaps.split(/\[gap\]/g);
+    const [inputs, setInputs] = useState<string[]>(Array(parts.length - 1).fill(''));
+    const [showAnswers, setShowAnswers] = useState(false);
 
-    const fillSlot = (slotIdx: number, word: string) => {
-        const newSlots = [...slots];
-        if (newSlots[slotIdx]) {
-            setPool([...pool, newSlots[slotIdx]]); // Return old word
-        }
-        newSlots[slotIdx] = word;
-        setSlots(newSlots);
-        setPool(pool.filter(w => w !== word));
+    return (
+        <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-700 shadow-inner font-serif text-lg leading-loose text-slate-300">
+            {parts.map((part, i) => (
+                <React.Fragment key={i}>
+                    {part}
+                    {i < parts.length - 1 && (
+                        <span className="relative inline-block mx-1">
+                            <input 
+                                type="text" 
+                                value={inputs[i]}
+                                onChange={(e) => {
+                                    const newInputs = [...inputs];
+                                    newInputs[i] = e.target.value;
+                                    setInputs(newInputs);
+                                }}
+                                className={`bg-slate-800 border-b-2 border-indigo-500/50 text-indigo-300 px-2 py-0 w-32 focus:outline-none focus:border-indigo-400 text-center transition-colors ${showAnswers && inputs[i].toLowerCase().trim() === answers[i].toLowerCase() ? 'text-emerald-400 border-emerald-500' : ''}`}
+                            />
+                            {showAnswers && (
+                                <div className="absolute top-full left-0 w-full text-[10px] text-emerald-500 font-sans font-bold text-center bg-slate-900 z-10 border border-emerald-900 rounded shadow-xl mt-1">
+                                    {answers[i]}
+                                </div>
+                            )}
+                        </span>
+                    )}
+                </React.Fragment>
+            ))}
+            <div className="mt-6 flex justify-end">
+                <button 
+                    onClick={() => setShowAnswers(!showAnswers)} 
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-xs font-bold uppercase tracking-widest transition-colors"
+                >
+                    {showAnswers ? 'Hide Answers' : 'Show Answers'}
+                </button>
+            </div>
+        </div>
+    );
+};
+
+const VocabSorter = () => {
+    const categories = [
+        "BUILDING MATERIALS", "FURNITURE", "PARTS OF A BUILDING", 
+        "EXTERNAL FEATURES", "FACILITIES", "TYPES OF BUILDINGS", "NATURAL FEATURES"
+    ];
+    
+    const initialWords = [
+        { id: 1, text: "shed", cat: "TYPES OF BUILDINGS" },
+        { id: 2, text: "stairway", cat: "PARTS OF A BUILDING" },
+        { id: 3, text: "concrete", cat: "BUILDING MATERIALS" },
+        { id: 4, text: "footpath", cat: "EXTERNAL FEATURES" },
+        { id: 5, text: "toilets", cat: "FACILITIES" },
+        { id: 6, text: "roof", cat: "PARTS OF A BUILDING" },
+        { id: 7, text: "cupboard", cat: "FURNITURE" },
+        { id: 8, text: "cafe", cat: "FACILITIES" },
+        { id: 9, text: "corridor", cat: "PARTS OF A BUILDING" },
+        { id: 10, text: "stone", cat: "BUILDING MATERIALS" },
+        { id: 11, text: "entrance", cat: "PARTS OF A BUILDING" },
+        { id: 12, text: "table", cat: "FURNITURE" },
+        { id: 13, text: "chair", cat: "FURNITURE" },
+        { id: 14, text: "vegetation", cat: "NATURAL FEATURES" },
+        { id: 15, text: "desk", cat: "FURNITURE" },
+        { id: 16, text: "driveway", cat: "EXTERNAL FEATURES" },
+        { id: 17, text: "block of flats", cat: "TYPES OF BUILDINGS" },
+        { id: 18, text: "beach", cat: "NATURAL FEATURES" },
+        { id: 19, text: "wood", cat: "BUILDING MATERIALS" },
+        { id: 20, text: "changing rooms", cat: "FACILITIES" },
+        { id: 21, text: "garden", cat: "EXTERNAL FEATURES" },
+        { id: 22, text: "lake", cat: "NATURAL FEATURES" },
+        { id: 23, text: "cliff", cat: "NATURAL FEATURES" },
+        { id: 24, text: "hut", cat: "TYPES OF BUILDINGS" },
+        { id: 25, text: "car park", cat: "EXTERNAL FEATURES" },
+        { id: 26, text: "glass", cat: "BUILDING MATERIALS" },
+        { id: 27, text: "restaurant", cat: "FACILITIES" },
+    ];
+
+    const [words, setWords] = useState(initialWords);
+    const [selectedWord, setSelectedWord] = useState<number | null>(null);
+    const [assignments, setAssignments] = useState<Record<string, number[]>>({}); // Category -> Word IDs
+
+    const handleWordClick = (id: number) => {
+        setSelectedWord(id);
     };
 
-    const check = () => {
-        const isCorrect = slots.every((s, i) => s === correct[i]);
-        setStatus(isCorrect ? 'success' : 'error');
+    const handleCategoryClick = (cat: string) => {
+        if (selectedWord === null) return;
+        
+        // Correct check?
+        const word = words.find(w => w.id === selectedWord);
+        if (word) {
+            setAssignments(prev => ({
+                ...prev,
+                [cat]: [...(prev[cat] || []), word.id]
+            }));
+            setWords(prev => prev.filter(w => w.id !== selectedWord));
+            setSelectedWord(null);
+        }
+    };
+
+    const isCorrect = (cat: string, id: number) => {
+        const word = initialWords.find(w => w.id === id);
+        return word?.cat === cat;
     };
 
     return (
-        <div className="bg-slate-900/50 p-6 rounded-lg border border-slate-800">
-            <div className="flex flex-wrap gap-2 mb-6 p-4 bg-slate-950 rounded border border-slate-800 min-h-[60px]">
-                {pool.map((word, i) => (
-                    <button key={i} onClick={() => {
-                        const firstEmpty = slots.findIndex(s => s === null);
-                        if (firstEmpty !== -1) fillSlot(firstEmpty, word);
-                    }} className="px-3 py-1 bg-slate-800 text-teal-400 text-xs font-bold rounded hover:bg-slate-700 transition-colors border border-teal-900/30">
-                        {word}
+        <div className="space-y-6">
+            {/* Word Bank */}
+            <div className="flex flex-wrap gap-2 min-h-[100px] p-4 bg-slate-900 rounded-xl border border-slate-700">
+                {words.map(w => (
+                    <button
+                        key={w.id}
+                        onClick={() => handleWordClick(w.id)}
+                        className={`px-3 py-1.5 rounded text-xs font-bold transition-all ${selectedWord === w.id ? 'bg-indigo-500 text-white shadow-lg scale-110 ring-2 ring-indigo-300' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+                    >
+                        {w.text}
                     </button>
                 ))}
+                {words.length === 0 && <div className="text-slate-500 text-sm italic w-full text-center py-2">All items sorted!</div>}
             </div>
-            <div className="text-lg leading-loose text-slate-300 font-light">
-                {parts.map((part, i) => (
-                    <React.Fragment key={i}>
-                        {part}
-                        {i < parts.length - 1 && (
-                            <button 
-                                onClick={() => {
-                                    if(slots[i]) {
-                                        setPool([...pool, slots[i]]);
-                                        const newSlots = [...slots];
-                                        newSlots[i] = null as any;
-                                        setSlots(newSlots);
-                                        setStatus('idle');
-                                    }
-                                }}
-                                className={`mx-1 min-w-[80px] px-2 py-0 border-b-2 inline-block text-center transition-colors ${
-                                    slots[i] 
-                                    ? (status === 'success' ? 'border-emerald-500 text-emerald-400' : (status === 'error' ? 'border-red-500 text-red-400' : 'border-teal-500 text-white')) 
-                                    : 'border-slate-600 bg-slate-800/50 text-transparent'
-                                }`}
-                            >
-                                {slots[i] || "___"}
-                            </button>
-                        )}
-                    </React.Fragment>
+
+            {/* Categories */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {categories.map(cat => (
+                    <div 
+                        key={cat}
+                        onClick={() => handleCategoryClick(cat)}
+                        className={`p-3 rounded-lg border-2 border-dashed transition-colors min-h-[120px] relative ${selectedWord ? 'border-indigo-500/50 bg-indigo-900/10 cursor-pointer hover:bg-indigo-900/30' : 'border-slate-700 bg-slate-900/50'}`}
+                    >
+                        <h4 className="text-[10px] font-bold text-slate-400 uppercase mb-2">{cat}</h4>
+                        <div className="flex flex-wrap gap-1">
+                            {assignments[cat]?.map(id => {
+                                const word = initialWords.find(w => w.id === id);
+                                const correct = isCorrect(cat, id);
+                                return (
+                                    <span key={id} className={`px-2 py-0.5 rounded text-[10px] font-bold ${correct ? 'bg-emerald-900/50 text-emerald-400 border border-emerald-500/30' : 'bg-red-900/50 text-red-400 border border-red-500/30'}`}>
+                                        {word?.text}
+                                    </span>
+                                )
+                            })}
+                        </div>
+                    </div>
                 ))}
             </div>
-            <div className="mt-6 flex justify-end">
-                <button onClick={check} className={`px-6 py-2 rounded font-bold text-sm uppercase tracking-widest transition-all ${status === 'success' ? 'bg-emerald-500 text-black' : 'bg-white text-black hover:bg-slate-200'}`}>
-                    {status === 'success' ? 'Verified' : 'Check Protocol'}
-                </button>
-            </div>
         </div>
     );
 };
 
-const UmbrellaDrill = () => {
-    const data = [
-        { term: "Regions of the World", items: ["South Asia, Latin America, Oceania"] },
-        { term: "Fields of Study", items: ["Education, psychology, architecture"] },
-        { term: "Community Services", items: ["Hospitals, police, fire brigade"] },
-        { term: "Different Genders", items: ["Males, females"] },
-        { term: "Types of Energy", items: ["Wind, solar, coal, oil"] },
-        { term: "Dairy Products", items: ["Cheese, milk, yoghurt"] },
-        { term: "Physical Activities", items: ["Cycling, swimming, running"] },
-        { term: "Types of Media", items: ["Television, radio, podcast"] },
-        { term: "Types of Transport", items: ["Bus, train, plane"] },
-        { term: "Amenities", items: ["Shopping centre, restaurant, cinema"] }
-    ];
-
-    const [revealed, setRevealed] = useState<number[]>([]);
+// Interactive Text Error Spotter
+const TextErrorSpotter = ({ text, errors }: { text: string, errors: { id: number, match: string, correction: string, note: string }[] }) => {
+    const [activeError, setActiveError] = useState<number | null>(null);
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {data.map((item, idx) => (
-                <button 
-                    key={idx}
-                    onClick={() => setRevealed(prev => [...prev, idx])}
-                    className={`p-4 rounded border text-left transition-all ${
-                        revealed.includes(idx) 
-                        ? 'bg-emerald-950/30 border-emerald-500/50' 
-                        : 'bg-slate-900 border-slate-800 hover:border-slate-600'
-                    }`}
-                >
-                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider">{item.items[0]}</div>
-                    <div className={`font-bold ${revealed.includes(idx) ? 'text-emerald-400' : 'text-transparent bg-slate-800 rounded animate-pulse'}`}>
-                        {revealed.includes(idx) ? item.term : "???"}
-                    </div>
-                </button>
-            ))}
+        <div className="bg-[#1e1e24] p-6 rounded-lg border-l-4 border-red-500 shadow-xl leading-8 text-slate-300 font-serif text-lg">
+            {text.split('__').map((segment, i) => {
+                const err = errors.find(e => e.match === segment);
+                if (err) {
+                    return (
+                        <span key={i} className="relative inline-block mx-1">
+                            <button
+                                onClick={() => setActiveError(err.id)}
+                                className={`px-1 rounded border-b-2 transition-all ${activeError === err.id ? 'bg-red-900/50 border-red-400 text-white' : 'border-red-500/50 text-red-200 hover:bg-red-900/20'}`}
+                            >
+                                {segment}
+                            </button>
+                            {activeError === err.id && (
+                                <div className="absolute z-20 bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-slate-900 border border-red-500 rounded p-3 shadow-xl animate-pop-in">
+                                    <div className="text-xs font-bold text-red-400 mb-1">PROBLEM:</div>
+                                    <div className="text-xs text-slate-300 mb-2">{err.note}</div>
+                                    <div className="text-xs font-bold text-emerald-400">FIX: {err.correction}</div>
+                                </div>
+                            )}
+                        </span>
+                    )
+                }
+                return <span key={i}>{segment}</span>
+            })}
         </div>
     )
 }
 
-const MiniTrendChart = ({ type }: { type: 'one' | 'two' | 'all' }) => {
-    // A simplified SVG generator for the specific exercise in the PDF
-    const renderPath = () => {
-        if (type === 'one') {
-            return (
-                <>
-                    <path d="M 0 80 L 30 70 L 60 40 L 100 20" fill="none" stroke="#10b981" strokeWidth="2" /> {/* Rising */}
-                    <path d="M 0 30 L 30 40 L 60 40 L 100 50" fill="none" stroke="#64748b" strokeWidth="1" strokeDasharray="4" />
-                    <path d="M 0 50 L 30 60 L 60 80 L 100 90" fill="none" stroke="#ef4444" strokeWidth="1" />
-                </>
-            );
-        } else if (type === 'two') {
-            return (
-                <>
-                    <path d="M 0 80 Q 50 20 100 10" fill="none" stroke="#10b981" strokeWidth="2" /> 
-                    <path d="M 0 90 Q 50 50 100 30" fill="none" stroke="#10b981" strokeWidth="2" /> 
-                    <path d="M 0 40 L 20 60 L 40 30 L 60 70 L 80 40 L 100 50" fill="none" stroke="#f59e0b" strokeWidth="1" /> 
-                </>
-            );
-        } else {
-            return (
-                <>
-                    <path d="M 0 90 L 100 10" fill="none" stroke="#10b981" strokeWidth="1" />
-                    <path d="M 0 85 L 100 20" fill="none" stroke="#10b981" strokeWidth="1" />
-                    <path d="M 0 80 L 100 30" fill="none" stroke="#10b981" strokeWidth="1" />
-                    <path d="M 0 95 L 100 80" fill="none" stroke="#ef4444" strokeWidth="2" /> {/* Low but rising? Or flat */}
-                </>
-            );
-        }
-    };
+const AnnotatedFishChart = ({ focus }: { focus: 'all' | 'chicken' | 'beef' | 'lamb_fish' }) => {
+    const opacity = (target: string) => focus === 'all' || focus === target ? 1 : 0.2;
+    const stroke = (target: string) => focus === 'all' || focus === target ? 3 : 1;
 
     return (
-        <svg viewBox="0 0 100 100" className="w-full h-32 bg-slate-950 rounded border border-slate-800">
-            {renderPath()}
-        </svg>
-    )
-}
-
-const OverviewSelector = () => {
-    const options = [
-        { text: "Overall, people consumed chicken and beef more than lamb and fish during the 25-year period.", correct: false, feedback: "Incomplete. Fails to mention trends (rise/fall)." },
-        { text: "Overall, although beef was the most popular meat initially, it was overtaken by chicken. Moreover, lamb and fish consumption decreased.", correct: true, feedback: "Excellent. Captures the crossover, the new leader, and the decline of others." },
-        { text: "To sum up, residents relied mainly on red meats initially, they preferred chicken more compared to other items at the end.", correct: false, feedback: "Conclusion style. 'Relied on' and 'preferred' are assumptions not in data." },
-        { text: "Overall, it is clear that Chicken is the only food that experienced an increase in its administration over the whole time frame.", correct: false, feedback: "'Administration' is incorrect vocabulary. Misses other trends." },
-    ];
-
-    const [selected, setSelected] = useState<number | null>(null);
-
-    return (
-        <div className="space-y-4">
-            {options.map((opt, i) => (
-                <button
-                    key={i}
-                    onClick={() => setSelected(i)}
-                    className={`w-full text-left p-4 rounded border transition-all ${
-                        selected === i 
-                        ? (opt.correct ? 'bg-emerald-950/50 border-emerald-500' : 'bg-red-950/50 border-red-500')
-                        : 'bg-slate-900 border-slate-800 hover:border-slate-600'
-                    }`}
-                >
-                    <div className="text-sm text-slate-200">{opt.text}</div>
-                    {selected === i && (
-                        <div className={`mt-2 text-xs font-bold ${opt.correct ? 'text-emerald-400' : 'text-red-400'}`}>
-                            DIAGNOSIS: {opt.feedback}
-                        </div>
-                    )}
-                </button>
-            ))}
-        </div>
-    )
-}
-
-// Special Line Graph for Exercises
-const InteractiveLineGraph = ({ mode }: { mode: 'labels' | 'trends' }) => {
-    // Coordinates mapping for labels A-G
-    const targets = [
-        { id: 'A', x: 25, y: 30, val: "just under 200 grams", correct: 'just under 200 grams' }, // Beef peakish
-        { id: 'B', x: 50, y: 15, val: "250 grams", correct: '250 grams' }, // Chicken peak
-        { id: 'C', x: 80, y: 35, val: "approx 220 grams", correct: 'approximately 220 grams' },
-        { id: 'D', x: 70, y: 60, val: "about 130 grams", correct: 'about 130 grams' },
-        { id: 'E', x: 75, y: 80, val: "below 50 grams", correct: 'below 50 grams' },
-        { id: 'F', x: 60, y: 90, val: "the early 1990s", correct: 'the early 1990s' }, // X-axis roughly
-        { id: 'G', x: 15, y: 85, val: "early 80s", correct: 'the early 1980s' }
-    ];
-
-    const trends = [
-        { id: 'A', x: 15, y: 40, text: "it fell sharply initially then briefly recovered", target: 'beef' },
-        { id: 'B', x: 50, y: 10, text: "although there was a slight increase in 1994, the downward trend continued", target: 'beef' },
-        { id: 'C', x: 85, y: 25, text: "by 2004 it had reached 250 grams", target: 'chicken' },
-        { id: 'D', x: 60, y: 65, text: "within 20 years it had fallen to almost 50 grams", target: 'lamb' },
-        { id: 'E', x: 50, y: 90, text: "figures remained relatively stable", target: 'fish' }
-    ];
-
-    const [activeId, setActiveId] = useState<string | null>(null);
-    const [solved, setSolved] = useState<string[]>([]);
-
-    const items = mode === 'labels' ? targets : trends;
-
-    const handleSolve = (id: string) => {
-        if (!solved.includes(id)) {
-            setSolved([...solved, id]);
-            setActiveId(null);
-        }
-    };
-
-    return (
-        <div className="relative w-full aspect-[4/3] bg-white rounded-xl shadow-xl overflow-hidden select-none border-4 border-slate-200">
-            {/* Chart Lines SVG */}
-            <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-                {/* Grid */}
-                {[0,20,40,60,80,100].map(y => <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="#e2e8f0" strokeWidth="0.5" />)}
+        <div className="relative w-full aspect-video bg-white rounded-xl shadow-lg p-6 border-4 border-slate-200">
+            <div className="absolute top-2 left-4 text-xs font-bold text-slate-400">Grams / person / week</div>
+            <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible" preserveAspectRatio="none">
+                {[0, 25, 50, 75, 100].map(y => <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="#f1f5f9" strokeWidth="1" />)}
                 
-                {/* Chicken (Green) - Rising */}
-                <polyline points="0,50 20,40 40,30 60,20 80,15 100,18" fill="none" stroke="#22c55e" strokeWidth="2" />
-                {/* Beef (Red) - Falling with bumps */}
-                <polyline points="0,25 15,40 30,25 50,35 70,50 90,60 100,65" fill="none" stroke="#ef4444" strokeWidth="2" />
-                {/* Lamb (Blue) - Steady Fall */}
-                <polyline points="0,50 30,60 60,70 100,80" fill="none" stroke="#3b82f6" strokeWidth="2" />
-                {/* Fish (Orange) - Flat */}
-                <polyline points="0,85 50,88 100,86" fill="none" stroke="#f97316" strokeWidth="2" />
+                <path d="M 0 50 L 20 45 L 40 30 L 60 25 L 80 20 L 100 10" fill="none" stroke="#22c55e" strokeWidth={stroke('chicken')} opacity={opacity('chicken')} />
+                <path d="M 0 20 L 20 30 L 40 25 L 60 40 L 80 50 L 100 60" fill="none" stroke="#ef4444" strokeWidth={stroke('beef')} opacity={opacity('beef')} />
+                <path d="M 0 50 L 20 55 L 40 60 L 60 70 L 80 75 L 100 80" fill="none" stroke="#3b82f6" strokeWidth={stroke('lamb_fish')} opacity={opacity('lamb_fish')} />
+                <path d="M 0 80 L 100 82" fill="none" stroke="#f97316" strokeWidth={stroke('lamb_fish')} opacity={opacity('lamb_fish')} />
             </svg>
-
-            {/* Labels overlay */}
-            {items.map((item) => (
-                <div 
-                    key={item.id}
-                    className="absolute"
-                    style={{ left: `${item.x}%`, top: `${item.y}%` }}
-                >
-                    {/* Marker Point */}
-                    <div 
-                        className={`w-6 h-6 -ml-3 -mt-3 rounded-full flex items-center justify-center font-bold text-xs shadow-md cursor-pointer transition-all z-10 relative
-                        ${solved.includes(item.id) ? 'bg-emerald-500 text-white scale-90' : 'bg-yellow-400 text-black animate-pulse hover:scale-110'}`}
-                        onClick={() => !solved.includes(item.id) && setActiveId(item.id)}
-                    >
-                        {solved.includes(item.id) ? <Check size={14} /> : item.id}
-                    </div>
-
-                    {/* Popover Selection */}
-                    {activeId === item.id && (
-                        <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-slate-800 p-2 rounded shadow-xl z-20 w-48 flex flex-col gap-1 animate-pop-in">
-                            {items.map((opt) => (
-                                <button 
-                                    key={opt.id}
-                                    onClick={() => opt.id === item.id ? handleSolve(item.id) : null}
-                                    className="text-[10px] text-left text-white hover:bg-slate-700 p-1.5 rounded truncate"
-                                >
-                                    {mode === 'labels' ? (opt as any).correct : (opt as any).text}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-
-                    {/* Solved Label */}
-                    {solved.includes(item.id) && (
-                        <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-white/90 text-black text-[9px] font-bold px-2 py-1 rounded shadow whitespace-nowrap border border-emerald-200">
-                            {mode === 'labels' ? (item as any).correct : (item as any).text.substring(0, 20) + '...'}
-                        </div>
-                    )}
-                </div>
-            ))}
-            
-            <div className="absolute bottom-2 right-2 text-[10px] text-slate-400 font-mono bg-white/80 px-2 rounded">
-                FIG 1: Fish & Meat Cons.
+            <div className="absolute bottom-2 left-6 right-6 flex justify-between text-[8px] text-slate-500 font-mono">
+                <span>1979</span><span>1984</span><span>1989</span><span>1994</span><span>1999</span><span>2004</span>
             </div>
         </div>
-    );
-};
+    )
+}
 
 interface NexusMasterclassProps {
   onBack: () => void;
@@ -294,294 +225,305 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
   const [animate, setAnimate] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Restart animation on slide change
   useEffect(() => {
     setAnimate(false);
     setTimeout(() => setAnimate(true), 50);
   }, [currentSlide]);
 
   const slides = [
-    // --- EXISTING SLIDES (Preserved functionality) ---
+    // --- PDF PAGE 1 ---
     {
-      title: "SECTOR 1: DATA INTEGRITY",
-      headline: "THE INFOGRAPHIC TRAP",
-      icon: <AlertTriangle size={64} className="text-red-500" />,
+      title: "PDF PG 1: CONSUMPTION TRENDS",
+      headline: "LISTENING TASK",
+      icon: <Headphones size={64} className="text-indigo-500" />,
       content: (
         <div className="space-y-8">
-           <div className="bg-red-950/30 border-l-4 border-red-500 p-8">
-              <h3 className="text-2xl font-black text-red-500 mb-4">CRITICAL ERROR: WRONG MATERIALS</h3>
-              <p className="text-xl text-slate-300 leading-relaxed font-light">
-                 <span className="text-white font-bold">"Task 1 is a graph... so I can practice using any random infographic."</span>
-              </p>
-              <p className="text-red-400 mt-4 font-mono text-sm uppercase tracking-widest">>> INCORRECT ASSUMPTION DETECTED</p>
-           </div>
-           {/* ...content abbreviated for brevity, but logically present... */}
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-               <div className="bg-slate-900 p-6 rounded border border-slate-800 opacity-50">
-                   <h4 className="font-bold text-slate-500 mb-2">Random Internet Graphs</h4>
-                   <ul className="text-sm text-slate-600 space-y-2 list-disc pl-4">
-                       <li>Confusing layouts</li>
-                       <li>Require specialist knowledge</li>
-                       <li>Force irrelevant skills</li>
-                   </ul>
+           <div className="flex flex-col md:flex-row gap-8 items-center">
+               <div className="w-full md:w-1/2">
+                   <ChartFish />
+                   <p className="text-[10px] text-slate-500 mt-2 text-center font-mono">FIG 1.1: FISH & MEAT CONSUMPTION (1979-2004)</p>
                </div>
-               <div className="bg-emerald-950/20 p-6 rounded border border-emerald-500/50">
-                   <h4 className="font-bold text-emerald-400 mb-2">Real IELTS Data</h4>
-                   <ul className="text-sm text-emerald-100/70 space-y-2 list-disc pl-4">
-                       <li>Carefully edited</li>
-                       <li>Zero technical knowledge needed</li>
-                       <li>Tests specific summarization skills</li>
-                   </ul>
+               <div className="w-full md:w-1/2">
+                   <div className="bg-indigo-950/30 p-4 border-l-4 border-indigo-500 mb-4">
+                       <h4 className="text-indigo-400 font-bold mb-1">Instructions</h4>
+                       <p className="text-sm text-slate-300">Read the model answer logic below and complete the missing data points based on the graph.</p>
+                   </div>
+                   <GapFill 
+                     textWithGaps="The [gap] shows the weekly consumption of fish and three [gap] meat in one European country from 1979 to 2004. Although there [gap], overall, people in this country [gap] more meat [gap], and the [gap] was to move [gap] beef and lamb as chicken became [gap] food in this category."
+                     answers={["line graph", "types of", "were fluctuations", "consistently ate", "than fish", "general trend", "away from", "dominant"]}
+                   />
                </div>
            </div>
         </div>
       )
     },
-    
-    // --- NEW CONTENT FROM PDF ---
 
+    // --- PDF PAGE 2 ---
     {
-        title: "SECTOR 49: LINE GRAPHS INTRO",
-        headline: "UNDERSTANDING CHANGE",
-        icon: <TrendingUp size={64} className="text-indigo-500" />,
+        title: "PDF PG 2: MODEL ANSWER",
+        headline: "BAND 9 MODEL ANALYSIS",
+        icon: <CheckCircle2 size={64} className="text-emerald-500" />,
         content: (
             <div className="space-y-8">
-                <div className="bg-slate-900 p-6 rounded-xl border border-indigo-500/30">
-                    <ChartFish />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-slate-950 p-6 rounded border border-slate-800">
-                        <h4 className="text-indigo-400 font-bold mb-3 flex items-center gap-2"><Clock size={16}/> Time Intervals</h4>
-                        <p className="text-slate-400 text-sm leading-relaxed">
-                            Line graphs show changes over time. Always check the X-axis intervals. Are they yearly? Every 5 years? This dictates how much detail you can include.
-                        </p>
+                <div className="bg-slate-900 p-8 rounded-2xl border border-emerald-500/20 shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                        <Quote size={100} />
                     </div>
-                    <div className="bg-slate-950 p-6 rounded border border-slate-800">
-                        <h4 className="text-pink-400 font-bold mb-3 flex items-center gap-2"><Target size={16}/> Selectivity</h4>
-                        <p className="text-slate-400 text-sm leading-relaxed">
-                            Line graphs have infinite data points. You MUST ignore minor fluctuations. Focus on the start, end, peaks, and troughs.
-                        </p>
+                    <h3 className="text-emerald-400 font-bold mb-6 uppercase tracking-widest text-sm border-b border-emerald-900/50 pb-2">Full Response</h3>
+                    <div className="space-y-6 text-slate-300 font-serif leading-loose text-lg">
+                        <p><span className="text-white font-bold bg-emerald-900/50 px-1">The line graph shows variations</span> in the weekly consumption of fish and three types of meat in one European country from 1979 to 2004. Although there <span className="text-emerald-400 border-b border-emerald-500/50">were fluctuations</span>, overall, people in this country consistently ate more meat than fish, and the <span className="text-emerald-400 border-b border-emerald-500/50">general trend</span> was to move away from beef and lamb as chicken became the dominant food.</p>
+                        
+                        <p>In the first decade, beef was consumed in significantly higher quantities than the other foods listed. Despite an <span className="text-emerald-400 border-b border-emerald-500/50">initial sharp fall</span> to approximately 175 grams, it then recovered reaching a high of close to 240 grams per week. However, from 1989 onwards, beef consumption <span className="text-emerald-400 border-b border-emerald-500/50">fell almost continually</span>, and by 2004 had almost halved.</p>
+                        
+                        <p>In contrast, chicken <span className="text-emerald-400 border-b border-emerald-500/50">climbed from</span> less than 150 grams in 1979 and <span className="text-emerald-400 border-b border-emerald-500/50">took the lead</span> from around 1990 onwards. Interestingly, the increases in chicken <span className="text-emerald-400 border-b border-emerald-500/50">corresponded with the declines</span> in beef and lamb.</p>
                     </div>
                 </div>
             </div>
         )
     },
-    {
-        title: "SECTOR 50: TENSE LOGIC",
-        headline: "PAST PERFECT PROTOCOL",
-        icon: <RotateCcw size={64} className="text-amber-500" />,
-        content: (
-            <div className="space-y-8">
-                <div className="bg-amber-950/20 border-l-4 border-amber-500 p-6">
-                    <h3 className="text-xl font-bold text-amber-500 mb-2">GRAMMAR: THE PAST PERFECT</h3>
-                    <p className="text-slate-300">
-                        "It had fallen..." used to link two different times in the past. Usually with <span className="font-mono bg-amber-900/50 px-1 rounded text-white">by + year</span>.
-                    </p>
-                </div>
 
-                <div className="space-y-4">
-                    <div className="p-4 bg-slate-900 border border-slate-800 rounded flex justify-between items-center group hover:border-emerald-500 transition-colors">
-                        <div>
-                            <span className="text-xs text-slate-500 uppercase tracking-widest block mb-1">Simple Past</span>
-                            <p className="text-white">"Beef consumption <span className="text-emerald-400 font-bold">fell</span> from 200g in 1994 to 120g in 2004."</p>
+    // --- PDF PAGE 3 ---
+    {
+        title: "PDF PG 3: LESSON 7 - MAPS",
+        headline: "MODULE OVERVIEW: MAPS",
+        icon: <Map size={64} className="text-blue-500" />,
+        content: (
+            <div className="flex flex-col items-center justify-center h-full py-12">
+                <div className="bg-blue-950/20 p-12 rounded-full mb-8 border border-blue-500/20 animate-pulse">
+                    <Map size={80} className="text-blue-400" />
+                </div>
+                <h2 className="text-4xl font-black text-white mb-2">LESSON 7: MAP TASKS</h2>
+                <div className="h-1 w-24 bg-blue-500 rounded-full mb-8"></div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
+                    {[
+                        { id: "7.1", text: "How map tasks are different" },
+                        { id: "7.2", text: "Common problems in map tasks" },
+                        { id: "7.3", text: "My model answer" }
+                    ].map(item => (
+                        <div key={item.id} className="bg-slate-900 p-6 rounded-xl border border-slate-800 hover:border-blue-500 transition-all cursor-default group">
+                            <span className="block text-blue-500 font-mono text-xs mb-2 group-hover:text-blue-400">SECTION {item.id}</span>
+                            <span className="text-slate-300 font-bold group-hover:text-white">{item.text}</span>
                         </div>
-                        <CheckCircle2 size={20} className="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity"/>
-                    </div>
-                    <div className="p-4 bg-slate-900 border border-slate-800 rounded flex justify-between items-center group hover:border-purple-500 transition-colors">
-                        <div>
-                            <span className="text-xs text-slate-500 uppercase tracking-widest block mb-1">Past Perfect</span>
-                            <p className="text-white">"By 2004, beef consumption <span className="text-purple-400 font-bold">had fallen</span> to approximately 120g."</p>
-                        </div>
-                        <CheckCircle2 size={20} className="text-purple-500 opacity-0 group-hover:opacity-100 transition-opacity"/>
-                    </div>
+                    ))}
                 </div>
+            </div>
+        )
+    },
 
-                <div className="grid grid-cols-2 gap-4 mt-4">
-                    <div className="text-center p-3 bg-slate-950 rounded">
-                        <span className="block text-xs text-slate-500 mb-1">Estimating Up</span>
-                        <span className="text-white font-mono">just over, nearly</span>
-                    </div>
-                    <div className="text-center p-3 bg-slate-950 rounded">
-                        <span className="block text-xs text-slate-500 mb-1">Estimating Down</span>
-                        <span className="text-white font-mono">just under, approx</span>
-                    </div>
-                </div>
-            </div>
-        )
-    },
+    // --- PDF PAGE 4 ---
     {
-        title: "SECTOR 51: ERROR CORRECTION",
-        headline: "TENSE MISMATCH",
-        icon: <Bug size={64} className="text-red-500" />,
-        content: (
-            <div className="space-y-6">
-                <div className="bg-red-950/20 p-6 rounded border border-red-500/30">
-                    <h4 className="text-red-500 font-bold mb-2 flex items-center gap-2"><X size={16}/> INCORRECT SENTENCE</h4>
-                    <p className="text-slate-300 italic">
-                        "Although lamb was 150g in the first year, it <span className="underline decoration-wavy decoration-red-500">had experienced</span> a dramatic drop in the final year."
-                    </p>
-                    <p className="text-xs text-red-400 mt-3 font-mono">ERROR: Past perfect used with specific single time point.</p>
-                </div>
-
-                <div className="bg-emerald-950/20 p-6 rounded border border-emerald-500/30">
-                    <h4 className="text-emerald-500 font-bold mb-2 flex items-center gap-2"><Check size={16}/> CORRECTION 1 (Simple Past)</h4>
-                    <p className="text-white">
-                        "Although lamb was 150g in the first year, it <span className="text-emerald-400 font-bold">experienced</span> a dramatic drop in the final year."
-                    </p>
-                </div>
-
-                <div className="bg-purple-950/20 p-6 rounded border border-purple-500/30">
-                    <h4 className="text-purple-500 font-bold mb-2 flex items-center gap-2"><Check size={16}/> CORRECTION 2 (Past Perfect)</h4>
-                    <p className="text-white">
-                        "Although lamb was 150g in the first year, <span className="text-purple-400 font-bold">by the final year it had experienced</span> a dramatic drop."
-                    </p>
-                </div>
-            </div>
-        )
-    },
-    {
-        title: "SECTOR 52: DATA EXTRACTION",
-        headline: "IDENTIFYING VALUES",
-        icon: <Scan size={64} className="text-cyan-500" />,
-        content: (
-            <div className="space-y-6">
-                <div className="text-center mb-4">
-                    <h3 className="text-xl font-bold text-white">INTERACTIVE PROTOCOL: LABELS</h3>
-                    <p className="text-slate-400 text-sm">Click the yellow markers to identify the correct value or date.</p>
-                </div>
-                <div className="w-full max-w-lg mx-auto">
-                    <InteractiveLineGraph mode="labels" />
-                </div>
-            </div>
-        )
-    },
-    {
-        title: "SECTOR 53: TREND DESCRIPTION",
-        headline: "MATCHING MOVEMENT",
-        icon: <Activity size={64} className="text-orange-500" />,
-        content: (
-            <div className="space-y-6">
-                <div className="text-center mb-4">
-                    <h3 className="text-xl font-bold text-white">INTERACTIVE PROTOCOL: TRENDS</h3>
-                    <p className="text-slate-400 text-sm">Click markers to match the description to the graph segment.</p>
-                </div>
-                <div className="w-full max-w-lg mx-auto">
-                    <InteractiveLineGraph mode="trends" />
-                </div>
-            </div>
-        )
-    },
-    {
-        title: "SECTOR 54: PARAPHRASING LOGIC",
-        headline: "SUBJECT CLASSIFICATION",
-        icon: <RefreshCcw size={64} className="text-teal-500" />,
+        title: "PDF PG 4: MAP FUNDAMENTALS",
+        headline: "LANGUAGE & VOCABULARY",
+        icon: <BookOpen size={64} className="text-amber-500" />,
         content: (
             <div className="space-y-8">
-                <div className="bg-slate-900 p-6 border border-slate-800 rounded">
-                    <h4 className="text-slate-500 text-xs font-bold uppercase mb-2">SOURCE TEXT</h4>
-                    <p className="text-xl text-white font-serif">"The graph shows the consumption of fish and different kinds of meat..."</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-red-950/20 p-4 border border-red-500/30 rounded">
-                        <h5 className="text-red-400 font-bold text-sm mb-2">COMMON MISTAKE</h5>
-                        <p className="text-slate-300 text-sm">"Overall, the lowest consumption of <span className="text-red-500 font-bold underline">meat</span> was fish."</p>
-                        <p className="text-xs text-red-400 mt-2">LOGIC ERROR: Fish is not meat.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                        <div className="bg-slate-900 p-6 rounded-xl border-l-4 border-amber-500">
+                            <h4 className="text-amber-500 font-bold mb-2 flex items-center gap-2"><Clock size={16}/> Tenses & Voice</h4>
+                            <p className="text-slate-300 text-sm leading-relaxed">
+                                Unlike charts (active voice), map tasks often use the <strong>Passive Voice</strong>.
+                                <br/><br/>
+                                <span className="text-slate-500 italic">"The coffee was sold..."</span> (Chart)<br/>
+                                <span className="text-white font-bold">"The school was constructed..."</span> (Map)
+                            </p>
+                        </div>
+                        <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                            <h4 className="text-white font-bold mb-4">Umbrella Terms</h4>
+                            <ul className="grid grid-cols-2 gap-2 text-xs text-slate-400">
+                                <li>• Natural features</li>
+                                <li>• Outdoor spaces</li>
+                                <li>• Types of Buildings</li>
+                                <li>• Facilities</li>
+                                <li>• Parts of a building</li>
+                                <li>• Transport</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div className="bg-emerald-950/20 p-4 border border-emerald-500/30 rounded">
-                        <h5 className="text-emerald-400 font-bold text-sm mb-2">CORRECT UMBRELLA TERM</h5>
-                        <p className="text-slate-300 text-sm">"Overall, of the <span className="text-emerald-400 font-bold">four foods listed</span>, fish was the least consumed."</p>
-                    </div>
-                </div>
-
-                <div className="bg-teal-900/20 p-4 rounded border border-teal-500/30 text-center">
-                    <p className="text-teal-400 text-sm font-bold uppercase mb-2">Paraphrasing "Consumption"</p>
-                    <div className="flex justify-center gap-4 text-white font-mono text-sm">
-                        <span>was eaten</span>
-                        <span>was consumed</span>
-                        <span>intake</span>
+                    <div className="bg-white p-4 rounded-xl shadow-lg transform rotate-1">
+                        <InteractiveMap />
+                        <p className="text-center text-slate-500 text-[10px] mt-2 font-mono">FIG 4.1: ISLAND BEFORE CONSTRUCTION</p>
                     </div>
                 </div>
             </div>
         )
     },
+
+    // --- PDF PAGE 5 ---
     {
-        title: "SECTOR 55: OVERVIEW CONSTRUCTION",
-        headline: "GAP FILL CHALLENGE",
-        icon: <Hammer size={64} className="text-blue-500" />,
+        title: "PDF PG 5: KEY FEATURES",
+        headline: "READING THE MAP",
+        icon: <Scan size={64} className="text-purple-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="flex justify-center gap-4 mb-8">
+                    <div className="bg-slate-800 px-6 py-3 rounded-lg border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-3">
+                        <div className="w-12 h-1 bg-slate-500 relative"><div className="absolute -top-1 w-px h-3 bg-white left-0"></div><div className="absolute -top-1 w-px h-3 bg-white right-0"></div></div>
+                        SCALE: 100m
+                    </div>
+                    <div className="bg-slate-800 px-6 py-3 rounded-lg border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-3">
+                        <Move size={16} /> COMPASS: N/S/E/W
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="bg-purple-950/20 p-6 rounded-xl border border-purple-500/30">
+                        <h3 className="text-purple-400 font-bold mb-4 uppercase tracking-widest text-sm">Target Features</h3>
+                        <ul className="space-y-3 text-slate-300 text-sm">
+                            <li className="flex items-center gap-2"><Check size={14} className="text-purple-500"/> Features <strong>added</strong> (new buildings)</li>
+                            <li className="flex items-center gap-2"><Check size={14} className="text-purple-500"/> Features <strong>removed</strong> (trees cleared)</li>
+                            <li className="flex items-center gap-2"><Check size={14} className="text-purple-500"/> Features <strong>expanded</strong> (made bigger)</li>
+                            <li className="flex items-center gap-2"><Check size={14} className="text-purple-500"/> Features <strong>converted</strong> (changed use)</li>
+                        </ul>
+                    </div>
+                    <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                        <h3 className="text-slate-400 font-bold mb-4 uppercase tracking-widest text-sm">Passive Verbs</h3>
+                        <div className="flex flex-wrap gap-2">
+                            {['was constructed', 'were demolished', 'has been erected', 'was converted', 'were chopped down'].map((v, i) => (
+                                <span key={i} className="px-3 py-1 bg-slate-800 text-purple-300 rounded-full text-xs font-bold border border-slate-700">{v}</span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 6 ---
+    {
+        title: "PDF PG 6: AFTER DEVELOPMENT",
+        headline: "ANALYZING CHANGES",
+        icon: <Search size={64} className="text-teal-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-white p-6 rounded-xl shadow-2xl relative">
+                    <InteractiveMap />
+                    
+                    {/* Annotations Overlay Simulation */}
+                    <div className="absolute top-1/4 left-1/4">
+                        <div className="relative group">
+                            <div className="w-4 h-4 rounded-full bg-teal-500 animate-ping absolute"></div>
+                            <div className="w-4 h-4 rounded-full bg-teal-500 relative border-2 border-white"></div>
+                            <div className="absolute left-6 top-0 bg-black/80 text-teal-300 text-[10px] px-2 py-1 rounded w-32 opacity-0 group-hover:opacity-100 transition-opacity">
+                                Accomodation Cluster (West)
+                            </div>
+                        </div>
+                    </div>
+                    <div className="absolute bottom-1/3 right-1/3">
+                        <div className="relative group">
+                            <div className="w-4 h-4 rounded-full bg-amber-500 animate-ping absolute"></div>
+                            <div className="w-4 h-4 rounded-full bg-amber-500 relative border-2 border-white"></div>
+                            <div className="absolute left-6 top-0 bg-black/80 text-amber-300 text-[10px] px-2 py-1 rounded w-32 opacity-0 group-hover:opacity-100 transition-opacity">
+                                Central Amenities (Restaurant)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div className="flex justify-center gap-4 text-xs text-slate-400 font-mono uppercase">
+                    <span>Key Areas:</span>
+                    <span className="text-white">Accommodation</span>
+                    <span className="text-white">Amenities</span>
+                    <span className="text-white">Leisure</span>
+                </div>
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 7 ---
+    {
+        title: "PDF PG 7: ORGANISATION",
+        headline: "STRUCTURAL LOGIC",
+        icon: <Layout size={64} className="text-pink-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="bg-red-950/20 p-6 rounded-xl border border-red-500/30">
+                        <div className="flex items-center gap-2 text-red-500 font-bold mb-4">
+                            <X size={20} /> THE LIST METHOD
+                        </div>
+                        <h4 className="text-white font-bold mb-2">By Compass Point</h4>
+                        <div className="text-xs text-slate-400 leading-relaxed">
+                            "In the North there is X. In the South there is Y. In the East there is Z..."
+                            <br/><br/>
+                            <span className="text-red-400">Result:</span> Creates a boring list. Fails to group related information (e.g. all housing).
+                        </div>
+                    </div>
+
+                    <div className="bg-emerald-950/20 p-6 rounded-xl border border-emerald-500/30">
+                        <div className="flex items-center gap-2 text-emerald-500 font-bold mb-4">
+                            <Check size={20} /> THE GROUPING METHOD
+                        </div>
+                        <h4 className="text-white font-bold mb-2">By Time / Category</h4>
+                        <div className="text-xs text-slate-400 leading-relaxed">
+                            <strong>Para 1:</strong> The island Before + What was kept (Trees).<br/>
+                            <strong>Para 2:</strong> The island After + All new construction grouped by function (Housing, Services).
+                            <br/><br/>
+                            <span className="text-emerald-400">Result:</span> Clear comparison. Logical flow.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 8 ---
+    {
+        title: "PDF PG 8: VOCABULARY LAB",
+        headline: "CATEGORIZATION DRILL",
+        icon: <Grid size={64} className="text-indigo-500" />,
         content: (
             <div className="space-y-6">
-                <div className="flex items-center gap-3 bg-blue-950/20 p-4 rounded border border-blue-500/30 mb-4">
-                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-black font-bold">
-                        <Edit3 size={16} />
-                    </div>
-                    <div>
-                        <h4 className="text-blue-500 font-bold text-sm">BUILD THE PERFECT OVERVIEW</h4>
-                    </div>
+                <div className="bg-indigo-950/20 p-4 rounded-lg border border-indigo-500/30 text-center">
+                    <p className="text-indigo-300 text-sm">Drag or click the words to assign them to the correct <strong>Umbrella Term</strong>.</p>
                 </div>
+                <VocabSorter />
+            </div>
+        )
+    },
 
-                <GapFill 
-                    parts={[
-                        "Overall, of ",
-                        ", chicken was the ",
-                        " that experienced an upward trend ",
-                        ", and the food that was ",
-                        " was fish."
-                    ]}
-                    options={[
-                        "consistently consumed the least",
-                        "the four foods listed",
-                        "over this period",
-                        "only one"
-                    ]}
-                    correct={[
-                        "the four foods listed",
-                        "only one",
-                        "over this period",
-                        "consistently consumed the least"
-                    ]}
-                />
-            </div>
-        )
-    },
+    // --- PDF PAGE 9 ---
     {
-        title: "SECTOR 56: CRITIQUE PROTOCOL II",
-        headline: "SELECT THE BEST OVERVIEW",
-        icon: <CheckCircle2 size={64} className="text-purple-500" />,
+        title: "PDF PG 9: ANSWER KEY",
+        headline: "VERIFICATION",
+        icon: <ClipboardCheck size={64} className="text-slate-400" />,
         content: (
-            <div className="space-y-6">
-                <p className="text-slate-400 text-sm mb-4">Analyze the candidates below based on the Fish & Meat graph. Which one captures the trends accurately without unnecessary detail?</p>
-                <OverviewSelector /> {/* Reusing component but with props would be better, hardcoded for now per prompt speed req */}
-            </div>
-        )
-    },
-    {
-        title: "SECTOR 57: FINAL BRIEFING",
-        headline: "MODULE COMPLETE",
-        icon: <ShieldCheck size={64} className="text-emerald-500" />,
-        content: (
-            <div className="text-center space-y-8">
-                <div className="w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                    <Check size={48} className="text-emerald-500" />
-                </div>
-                <h2 className="text-4xl font-black text-white">DATA RESPONSE UPGRADED</h2>
-                <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-                    You have integrated the core protocols for Line Graphs, Tense Usage, and Overview Construction.
-                </p>
-                <div className="grid grid-cols-3 gap-4 text-xs font-mono text-slate-500 mt-8">
-                    <div className="p-4 bg-slate-900 rounded border border-slate-800">
-                        <span className="block text-emerald-400 mb-1">ACCURACY</span>
-                        Data extraction verified.
-                    </div>
-                    <div className="p-4 bg-slate-900 rounded border border-slate-800">
-                        <span className="block text-emerald-400 mb-1">GRAMMAR</span>
-                        Past Perfect logic installed.
-                    </div>
-                    <div className="p-4 bg-slate-900 rounded border border-slate-800">
-                        <span className="block text-emerald-400 mb-1">STRATEGY</span>
-                        Overview selection optimized.
-                    </div>
-                </div>
+            <div className="bg-white text-slate-900 p-8 rounded-xl shadow-2xl overflow-x-auto">
+                <table className="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr className="bg-slate-100 border-b-2 border-slate-300">
+                            <th className="p-2 font-bold">NATURAL FEATURES</th>
+                            <th className="p-2 font-bold">PARTS OF BUILDING</th>
+                            <th className="p-2 font-bold">TYPES OF BUILDINGS</th>
+                            <th className="p-2 font-bold">EXTERNAL FEATURES</th>
+                            <th className="p-2 font-bold">MATERIALS</th>
+                            <th className="p-2 font-bold">FURNITURE</th>
+                        </tr>
+                    </thead>
+                    <tbody className="align-top">
+                        <tr>
+                            <td className="p-2">
+                                lake<br/>cliff<br/>beach<br/>vegetation
+                            </td>
+                            <td className="p-2">
+                                entrance<br/>corridor<br/>roof<br/>stairway
+                            </td>
+                            <td className="p-2">
+                                shed<br/>hut<br/>block of flats
+                            </td>
+                            <td className="p-2">
+                                garden<br/>driveway<br/>footpath<br/>car park
+                            </td>
+                            <td className="p-2">
+                                glass<br/>concrete<br/>stone<br/>wood
+                            </td>
+                            <td className="p-2">
+                                desk<br/>cupboard<br/>chair<br/>table
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         )
     }
@@ -613,7 +555,7 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
 
                  <div>
                      <h1 className="text-xs font-mono text-slate-500 uppercase tracking-[0.3em]">Nexus Masterclass</h1>
-                     <div className="text-white font-bold text-lg">DATA RESPONSE PROTOCOLS</div>
+                     <div className="text-white font-bold text-lg">PDF INTEGRATION PROTOCOLS</div>
                  </div>
 
                  {/* SECTOR MAP MENU OVERLAY */}
