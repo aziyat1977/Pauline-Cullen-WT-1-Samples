@@ -1,6 +1,188 @@
-
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity } from 'lucide-react';
+import ChartDualView from '../features/ChartDualView';
+import InteractiveMap from '../features/InteractiveMap';
+import ChartHousing from '../features/ChartHousing';
+import Chart3D from '../features/Chart3D';
+import ChartCoffee from '../features/ChartCoffee';
+
+// --- MICRO-COMPONENTS FOR INTERACTIVITY ---
+
+const GapFill = ({ parts, options, correct }: { parts: string[], options: string[], correct: string[] }) => {
+    const [slots, setSlots] = useState<string[]>(new Array(parts.length - 1).fill(null));
+    const [pool, setPool] = useState(options);
+    const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+    const fillSlot = (slotIdx: number, word: string) => {
+        const newSlots = [...slots];
+        if (newSlots[slotIdx]) {
+            setPool([...pool, newSlots[slotIdx]]); // Return old word
+        }
+        newSlots[slotIdx] = word;
+        setSlots(newSlots);
+        setPool(pool.filter(w => w !== word));
+    };
+
+    const check = () => {
+        const isCorrect = slots.every((s, i) => s === correct[i]);
+        setStatus(isCorrect ? 'success' : 'error');
+    };
+
+    return (
+        <div className="bg-slate-900/50 p-6 rounded-lg border border-slate-800">
+            <div className="flex flex-wrap gap-2 mb-6 p-4 bg-slate-950 rounded border border-slate-800 min-h-[60px]">
+                {pool.map((word, i) => (
+                    <button key={i} onClick={() => {
+                        const firstEmpty = slots.findIndex(s => s === null);
+                        if (firstEmpty !== -1) fillSlot(firstEmpty, word);
+                    }} className="px-3 py-1 bg-slate-800 text-teal-400 text-xs font-bold rounded hover:bg-slate-700 transition-colors border border-teal-900/30">
+                        {word}
+                    </button>
+                ))}
+            </div>
+            <div className="text-lg leading-loose text-slate-300 font-light">
+                {parts.map((part, i) => (
+                    <React.Fragment key={i}>
+                        {part}
+                        {i < parts.length - 1 && (
+                            <button 
+                                onClick={() => {
+                                    if(slots[i]) {
+                                        setPool([...pool, slots[i]]);
+                                        const newSlots = [...slots];
+                                        newSlots[i] = null as any;
+                                        setSlots(newSlots);
+                                        setStatus('idle');
+                                    }
+                                }}
+                                className={`mx-1 min-w-[80px] px-2 py-0 border-b-2 inline-block text-center transition-colors ${
+                                    slots[i] 
+                                    ? (status === 'success' ? 'border-emerald-500 text-emerald-400' : (status === 'error' ? 'border-red-500 text-red-400' : 'border-teal-500 text-white')) 
+                                    : 'border-slate-600 bg-slate-800/50 text-transparent'
+                                }`}
+                            >
+                                {slots[i] || "___"}
+                            </button>
+                        )}
+                    </React.Fragment>
+                ))}
+            </div>
+            <div className="mt-6 flex justify-end">
+                <button onClick={check} className={`px-6 py-2 rounded font-bold text-sm uppercase tracking-widest transition-all ${status === 'success' ? 'bg-emerald-500 text-black' : 'bg-white text-black hover:bg-slate-200'}`}>
+                    {status === 'success' ? 'Verified' : 'Check Protocol'}
+                </button>
+            </div>
+        </div>
+    );
+};
+
+const MatchingProtocol = ({ pairs }: { pairs: { label: string, icon: React.ReactNode }[] }) => {
+    const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
+    const [matches, setMatches] = useState<Record<number, number>>({});
+    
+    // Shuffle right side visually
+    const [rightIndices] = useState(() => [...Array(pairs.length).keys()].sort(() => Math.random() - 0.5));
+
+    const handleLeft = (i: number) => {
+        if (matches[i] !== undefined) {
+            const newMatches = {...matches};
+            delete newMatches[i];
+            setMatches(newMatches);
+        }
+        setSelectedLeft(i);
+    };
+
+    const handleRight = (originalIdx: number) => {
+        if (selectedLeft !== null) {
+            setMatches(prev => ({ ...prev, [selectedLeft]: originalIdx }));
+            setSelectedLeft(null);
+        }
+    };
+
+    const isComplete = Object.keys(matches).length === pairs.length;
+    const isCorrect = isComplete && Object.entries(matches).every(([k, v]) => parseInt(k) === v);
+
+    return (
+        <div className="flex gap-8 justify-between relative">
+            {isCorrect && (
+                <div className="absolute inset-0 bg-emerald-900/20 z-10 flex items-center justify-center backdrop-blur-[1px] animate-fade-in">
+                    <div className="bg-emerald-500 text-black px-6 py-3 rounded-full font-black text-xl shadow-[0_0_50px_rgba(16,185,129,0.5)]">
+                        SYSTEM SYNCHRONIZED
+                    </div>
+                </div>
+            )}
+            <div className="space-y-4 flex-1">
+                {pairs.map((p, i) => (
+                    <button 
+                        key={i}
+                        onClick={() => handleLeft(i)}
+                        className={`w-full p-4 rounded border text-left transition-all ${
+                            matches[i] !== undefined 
+                            ? (isCorrect ? 'border-emerald-500 bg-emerald-950/30 text-emerald-400' : 'border-indigo-500 bg-indigo-950/30 text-indigo-300')
+                            : (selectedLeft === i ? 'border-amber-400 bg-amber-950/30 text-amber-200' : 'border-slate-700 bg-slate-800/50 hover:border-slate-500')
+                        }`}
+                    >
+                        <span className="font-mono text-xs uppercase tracking-widest block mb-1 opacity-50">Signal {i+1}</span>
+                        {p.label}
+                    </button>
+                ))}
+            </div>
+            <div className="space-y-4 flex-1">
+                {rightIndices.map((originalIdx) => {
+                    const matchedKey = Object.keys(matches).find(k => matches[parseInt(k)] === originalIdx);
+                    return (
+                        <button
+                            key={originalIdx}
+                            onClick={() => handleRight(originalIdx)}
+                            className={`w-full h-[82px] rounded border flex items-center justify-center transition-all ${
+                                matchedKey 
+                                ? (isCorrect ? 'border-emerald-500 bg-emerald-950/30' : 'border-indigo-500 bg-indigo-950/30') 
+                                : 'border-slate-700 bg-slate-800/50 hover:border-slate-500'
+                            }`}
+                        >
+                            {pairs[originalIdx].icon}
+                        </button>
+                    )
+                })}
+            </div>
+        </div>
+    );
+};
+
+const ClauseAnalysis = ({ sentences, correctTypes }: { sentences: string[], correctTypes: number[] }) => {
+    const [answers, setAnswers] = useState<number[]>(new Array(sentences.length).fill(-1));
+    
+    const options = ["Essential (Cannot omit)", "Non-essential (Can omit)", "Reduced"];
+
+    return (
+        <div className="space-y-4">
+            {sentences.map((s, idx) => (
+                <div key={idx} className="bg-slate-900 p-4 rounded border border-slate-800">
+                    <p className="text-white mb-3 font-serif italic">"{s}"</p>
+                    <div className="flex gap-2">
+                        {options.map((opt, optIdx) => (
+                            <button
+                                key={optIdx}
+                                onClick={() => {
+                                    const newAns = [...answers];
+                                    newAns[idx] = optIdx;
+                                    setAnswers(newAns);
+                                }}
+                                className={`flex-1 py-2 px-2 text-[10px] uppercase font-bold rounded border transition-colors ${
+                                    answers[idx] === optIdx
+                                        ? (optIdx === correctTypes[idx] ? 'bg-emerald-500 border-emerald-500 text-black' : 'bg-red-500 border-red-500 text-white')
+                                        : 'bg-slate-800 border-slate-700 text-slate-400 hover:bg-slate-700'
+                                }`}
+                            >
+                                {opt}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
 
 interface NexusMasterclassProps {
   onBack: () => void;
@@ -599,6 +781,344 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                         </div>
                     </div>
                 </div>
+            </div>
+        )
+    },
+    // --- PDF INTEGRATION START ---
+    {
+        title: "SECTOR 17: INTRODUCTORY SENTENCE",
+        headline: "THE OPENING MOVE",
+        icon: <PenTool size={64} className="text-indigo-400" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-indigo-950/30 border-l-4 border-indigo-500 p-8">
+                    <h3 className="text-2xl font-black text-indigo-400 mb-4">PURPOSE: SPEED & PRECISION</h3>
+                    <p className="text-xl text-slate-300 leading-relaxed font-light">
+                        This is the sentence you spend the <span className="text-white font-bold">least</span> amount of time on. It answers 4 questions:
+                    </p>
+                    <div className="grid grid-cols-4 gap-4 mt-6 text-center">
+                        {['What', 'Who', 'Where', 'When'].map(q => (
+                            <div key={q} className="bg-indigo-900/50 p-2 rounded border border-indigo-500/50 text-indigo-300 font-bold uppercase">{q}</div>
+                        ))}
+                    </div>
+                </div>
+                
+                <div className="bg-slate-900 p-6 rounded border border-slate-800 relative">
+                    <Quote className="absolute top-4 right-4 text-slate-700" size={48} />
+                    <p className="text-lg text-slate-400 mb-4 italic">"The introductory sentence explains what we are looking at. However, this is <span className="text-red-500 font-bold">NOT</span> your overview."</p>
+                    
+                    <div className="space-y-2 mt-6">
+                        <div className="flex gap-2">
+                            <span className="bg-emerald-900/50 text-emerald-400 px-2 py-1 text-xs font-mono rounded">WHAT</span>
+                            <p className="text-white">The tables below give information about sales of Fairtrade-labelled coffee and bananas</p>
+                        </div>
+                        <div className="flex gap-2">
+                            <span className="bg-amber-900/50 text-amber-400 px-2 py-1 text-xs font-mono rounded">WHEN</span>
+                            <p className="text-white">in 1999 and 2004</p>
+                        </div>
+                        <div className="flex gap-2">
+                            <span className="bg-blue-900/50 text-blue-400 px-2 py-1 text-xs font-mono rounded">WHERE</span>
+                            <p className="text-white">in five European countries</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 18: INTRO PRACTICE A",
+        headline: "MIXED DATA ASSEMBLY",
+        icon: <Split size={64} className="text-emerald-500" />,
+        content: (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                    <ChartDualView />
+                    <p className="text-xs text-slate-500 text-center font-mono uppercase">TARGET: Pie + Table Integration</p>
+                </div>
+                <div className="flex flex-col justify-center">
+                    <h3 className="text-xl font-bold text-white mb-6">COMPLETE THE PROTOCOL</h3>
+                    <GapFill 
+                        parts={["Task A: The", "below", "information about", "worldwide", "and", "."]}
+                        options={["charts", "give", "the causes of land degradation", "in three regions of the world"]}
+                        correct={["charts", "give", "the causes of land degradation", "in three regions of the world"]}
+                    />
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 19: INTRO PRACTICE B",
+        headline: "PROCESS & MAP ASSEMBLY",
+        icon: <Map size={64} className="text-blue-500" />,
+        content: (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                    <InteractiveMap />
+                    <p className="text-xs text-slate-500 text-center font-mono uppercase">TARGET: Before & After Logic</p>
+                </div>
+                <div className="flex flex-col justify-center space-y-8">
+                    <div>
+                        <h3 className="text-sm font-bold text-blue-400 mb-2 uppercase tracking-widest">TASK B: MAPS</h3>
+                        <GapFill 
+                            parts={["The", "maps", "an", "island", "the", "."]}
+                            options={["two", "show", "before and after", "construction of some tourist facilities"]}
+                            correct={["two", "show", "before and after", "construction of some tourist facilities"]}
+                        />
+                    </div>
+                    <div>
+                        <h3 className="text-sm font-bold text-indigo-400 mb-2 uppercase tracking-widest">TASK C: BAR CHART</h3>
+                        <GapFill 
+                            parts={["The chart below shows the", "of", "travelling", "by", "in", "city in 1980 1990 and 2000."]}
+                            options={["percentage", "people", "to work", "four means of transport", "one European"]}
+                            correct={["percentage", "people", "to work", "four means of transport", "one European"]}
+                        />
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 20: PARAPHRASING THEORY",
+        headline: "SYNONYM PROTOCOLS",
+        icon: <RefreshCcw size={64} className="text-purple-500" />,
+        content: (
+            <div className="space-y-8">
+                <p className="text-xl text-slate-300 font-light">
+                    Do not copy large chunks from the question paper. However, do not over-paraphrase to the point of error.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-slate-900 border border-slate-800 p-6 rounded">
+                        <h4 className="text-purple-400 font-bold mb-4 uppercase text-xs tracking-widest">SAFE TRANSFORMATIONS</h4>
+                        <ul className="space-y-3 text-sm text-slate-300">
+                            <li><span className="text-white font-bold">Chart type:</span> Keep it specific (Pie chart, Line graph).</li>
+                            <li><span className="text-white font-bold">Show:</span> 'Illustrate' or 'Compare'. Avoid 'Display'.</li>
+                            <li><span className="text-white font-bold">Time:</span> 'From 1990 to 2000' → 'Between 1990 and 2000'.</li>
+                        </ul>
+                    </div>
+                    
+                    <div className="bg-red-950/20 border border-red-900/50 p-6 rounded">
+                        <h4 className="text-red-400 font-bold mb-4 uppercase text-xs tracking-widest">DANGEROUS SYNONYMS</h4>
+                        <ul className="space-y-3 text-sm text-slate-400">
+                            <li><X size={12} className="inline text-red-500 mr-2"/> "Display" (Visual, not data)</li>
+                            <li><X size={12} className="inline text-red-500 mr-2"/> "Tell" (Needs indirect object)</li>
+                            <li><X size={12} className="inline text-red-500 mr-2"/> "Present" (Often misused)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div className="bg-slate-900 p-4 text-center border-t border-slate-800">
+                    <p className="italic text-slate-500">"Don't make your task harder by trying to change every word. Accuracy > Variety."</p>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 21: DETAIL RESTRUCTURING",
+        headline: "GRAMMATICAL FLIPS",
+        icon: <Move size={64} className="text-orange-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-slate-900 p-8 rounded border border-slate-800">
+                    <h3 className="text-2xl font-black text-white mb-6">THE "AMOUNT" FLIP</h3>
+                    <div className="flex flex-col gap-4">
+                        <div className="flex items-center gap-4 text-slate-500 line-through">
+                            <span>The chart shows the amount of...</span>
+                        </div>
+                        <div className="flex justify-center text-orange-500">
+                            <ArrowLeft className="rotate-90 md:rotate-0" />
+                        </div>
+                        <div className="flex items-center gap-4 text-emerald-400 font-bold bg-emerald-950/30 p-3 rounded">
+                            <span>The chart shows how much...</span>
+                        </div>
+                    </div>
+                    
+                    <div className="mt-8 grid grid-cols-2 gap-4 text-sm">
+                        <div className="p-3 bg-black/20 rounded">
+                            <span className="block text-slate-500 text-xs uppercase mb-1">Noun Phrase</span>
+                            The number of...
+                        </div>
+                        <div className="p-3 bg-emerald-900/20 border border-emerald-500/30 rounded text-emerald-300">
+                            <span className="block text-emerald-600 text-xs uppercase mb-1">Clause</span>
+                            How many...
+                        </div>
+                        
+                        <div className="p-3 bg-black/20 rounded">
+                            <span className="block text-slate-500 text-xs uppercase mb-1">Noun Phrase</span>
+                            The percentage of...
+                        </div>
+                        <div className="p-3 bg-emerald-900/20 border border-emerald-500/30 rounded text-emerald-300">
+                            <span className="block text-emerald-600 text-xs uppercase mb-1">Clause</span>
+                            The proportion of...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 22: RELATIVE CLAUSES",
+        headline: "COMPLEX SENTENCE STRUCTURE",
+        icon: <GitMerge size={64} className="text-pink-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-pink-950/20 border-l-4 border-pink-500 p-8">
+                    <h3 className="text-2xl font-black text-pink-500 mb-4">THE DEFINING RULE</h3>
+                    <p className="text-xl text-slate-300 leading-relaxed">
+                        Introductory sentences often require combining clauses.
+                    </p>
+                    <ul className="mt-4 space-y-2 text-sm text-pink-200/70 list-disc pl-4">
+                        <li>Relative pronoun comes immediately after the noun.</li>
+                        <li>No commas for defining clauses.</li>
+                        <li>Omit pronoun if it is the object.</li>
+                        <li><span className="text-white font-bold border-b border-pink-500">Can be reduced to a participle (-ing / -ed).</span></li>
+                    </ul>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-slate-900 p-4 border border-slate-800">
+                        <span className="text-xs text-slate-500 uppercase block mb-2">Original</span>
+                        <p className="text-slate-300">"The chart shows the number of men who attended college."</p>
+                    </div>
+                    <div className="bg-slate-900 p-4 border border-pink-500/50">
+                        <span className="text-xs text-pink-500 uppercase block mb-2">Reduced (Band 8+)</span>
+                        <p className="text-white">"The chart shows the number of men <span className="text-pink-400 font-bold">attending</span> college."</p>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 23: PREPOSITIONS & 'NAMELY'",
+        headline: "PRECISION TOOLS",
+        icon: <MousePointer2 size={64} className="text-teal-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 className="text-xl font-bold text-white mb-4">USING 'NAMELY'</h3>
+                        <p className="text-slate-400 mb-4">Use to list specific details after a general category.</p>
+                        <div className="bg-slate-900 p-4 rounded border border-slate-800 italic text-slate-300">
+                            "...in five countries, <span className="text-teal-400 font-bold">namely</span> the UK, Switzerland, Denmark, Belgium and Sweden."
+                        </div>
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-bold text-white mb-4">TIME PREPOSITIONS</h3>
+                        <div className="space-y-2 text-sm">
+                            <div className="flex justify-between border-b border-slate-800 pb-1">
+                                <span className="text-slate-500">Duration</span>
+                                <span className="text-teal-400">Over / During / For</span>
+                            </div>
+                            <div className="flex justify-between border-b border-slate-800 pb-1">
+                                <span className="text-slate-500">Start/End</span>
+                                <span className="text-teal-400">From... to / Between... and</span>
+                            </div>
+                            <div className="flex justify-between border-b border-slate-800 pb-1">
+                                <span className="text-slate-500">Specific Point</span>
+                                <span className="text-teal-400">In / At</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 24: IDENTIFICATION PROTOCOL",
+        headline: "MATCH DATA TO VISUAL",
+        icon: <Scan size={64} className="text-blue-500" />,
+        content: (
+            <div className="w-full max-w-4xl mx-auto">
+                <MatchingProtocol 
+                    pairs={[
+                        { label: "A Pie Chart", icon: <PieChart size={32} className="text-emerald-400" /> },
+                        { label: "A Line Graph", icon: <Activity size={32} className="text-blue-400" /> },
+                        { label: "A Bar Chart", icon: <BarChart2 size={32} className="text-amber-400" /> },
+                        { label: "A Table", icon: <Table size={32} className="text-purple-400" /> },
+                        { label: "Stacked Bar", icon: <div className="flex flex-col gap-0.5 w-6"><div className="bg-red-500 h-3 w-full"/><div className="bg-blue-500 h-3 w-full"/></div> }
+                    ]}
+                />
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 25: CLAUSE DIAGNOSTICS",
+        headline: "GRAMMAR ANALYSIS",
+        icon: <GitMerge size={64} className="text-indigo-500" />,
+        content: (
+            <div className="space-y-6">
+                <div className="bg-indigo-950/20 p-4 text-center border border-indigo-500/30 rounded">
+                    <p className="text-indigo-300 font-mono text-xs uppercase tracking-widest">DIAGNOSTIC: IDENTIFY CLAUSE TYPE</p>
+                </div>
+                <ClauseAnalysis 
+                    sentences={[
+                        "The chart shows men and women who attended college.",
+                        "The graph shows tea and coffee drunk each month.",
+                        "The table shows people who bought or rented.",
+                        "The charts show how adults spend money they earn.",
+                        "The charts show tourists visiting an island.",
+                        "The bar chart shows men who did regular activity."
+                    ]}
+                    correctTypes={[0, 2, 0, 1, 2, 0]} // 0: Essential, 1: Non-essential/Omit, 2: Reduced
+                />
+                <div className="text-xs text-slate-500 mt-4 text-center">
+                    TIP: If it's a subject, you can't omit. If it's passive (-ed), it might be reduced.
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 26: CLAUSE REDUCTION DRILL",
+        headline: "OPTIMIZATION",
+        icon: <Hammer size={64} className="text-fuchsia-500" />,
+        content: (
+            <div className="grid grid-cols-1 gap-6">
+                <div className="space-y-2">
+                    <h3 className="text-sm font-bold text-fuchsia-400 uppercase">EXPAND: "Tea and coffee drunk..."</h3>
+                    <GapFill 
+                        parts={["The line graph shows the amount of tea and coffee", "each month."]}
+                        options={["that was drunk", "which drank", "drinking"]}
+                        correct={["that was drunk"]}
+                    />
+                </div>
+                <div className="space-y-2">
+                    <h3 className="text-sm font-bold text-fuchsia-400 uppercase">EXPAND: "Tourists visiting..."</h3>
+                    <GapFill 
+                        parts={["The charts show the number of tourists", "an island."]}
+                        options={["that visited", "visiting", "visited"]}
+                        correct={["that visited"]}
+                    />
+                </div>
+                <div className="space-y-2">
+                    <h3 className="text-sm font-bold text-fuchsia-400 uppercase">REDUCE: "People who bought..."</h3>
+                    <GapFill 
+                        parts={["The table shows the percentage of people", "accommodation."]}
+                        options={["buying or renting", "bought", "who buy"]}
+                        correct={["buying or renting"]}
+                    />
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 27: TEMPORAL LOGIC",
+        headline: "PREPOSITION INSERTION",
+        icon: <Timer size={64} className="text-amber-500" />,
+        content: (
+            <div className="space-y-6">
+                <div className="bg-amber-950/20 p-4 text-center border border-amber-500/30 rounded mb-4">
+                    <p className="text-amber-300 font-mono text-xs uppercase tracking-widest">FILL THE GAPS: TIME & PLACE</p>
+                </div>
+                <GapFill 
+                    parts={[
+                        "The level remained stable", "the first six years.",
+                        "The line graph shows changes", "a fifty-year period.",
+                        "There were no changes in Switzerland", "this time.",
+                        "Sales fell", "1990", "2000 then increased."
+                    ]}
+                    options={["For", "over", "during", "from", "to"]}
+                    correct={["For", "over", "during", "from", "to"]}
+                />
             </div>
         )
     }
