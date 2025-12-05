@@ -121,7 +121,27 @@ const LessonMaps: React.FC<LessonMapsProps> = ({ onAddXp }) => {
       )
     },
     {
-      title: "Model Para 1",
+      title: "Model Intro",
+      content: (
+        <div className="max-w-3xl mx-auto text-center space-y-6">
+           <h2 className="text-5xl font-black text-slate-900">The Report</h2>
+           <p className="text-2xl text-slate-500 font-light">Breaking down the narrative.</p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Intro",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3 ml-4">Introduction</div>
+           <p className="bg-white p-8 rounded-[2rem] shadow-xl text-xl text-slate-700 leading-relaxed font-light border-l-4 border-gray-300">
+             The maps compare the layout of a small island before and after its redevelopment into a tourist resort.
+           </p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Overview",
       content: (
         <div className="max-w-2xl mx-auto">
            <div className="text-[10px] font-bold uppercase tracking-widest text-blue-700 mb-3 ml-4">Overview</div>
@@ -132,12 +152,34 @@ const LessonMaps: React.FC<LessonMapsProps> = ({ onAddXp }) => {
       )
     },
     {
+      title: "Model: Details 1",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-blue-500 mb-3 ml-4">Details: Center & South</div>
+           <p className="bg-blue-50 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-blue-400">
+             Before development, the island was uninhabited with only trees. In the post-construction phase, a central reception block and restaurant have been built, connected by a vehicle track to a new pier on the south coast.
+           </p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Details 2",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-blue-600 mb-3 ml-4">Details: West & East</div>
+           <p className="bg-blue-100 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-blue-600">
+             Accommodation has been constructed in two clusters: one to the west and one to the east of the central hub. Footpaths connect these huts to the main facilities, and a swimming area has been designated off the western beach.
+           </p>
+        </div>
+      )
+    },
+    {
       title: "Quiz B",
       content: <div className="max-w-2xl mx-auto w-full"><GamifiedQuiz questions={MAP_QUIZ_B} title="Analysis" onComplete={() => onAddXp(50, 'quizL')} /></div>
     }
   ];
 
-  return <LessonStepper steps={steps} colorTheme="blue" />;
+  return <LessonStepper steps={steps} colorTheme="blue" chartComponent={<InteractiveMap />} />;
 };
 
 export default LessonMaps;

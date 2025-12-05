@@ -121,7 +121,27 @@ const LessonDegradation: React.FC<LessonDegradationProps> = ({ onAddXp }) => {
       )
     },
     {
-      title: "Model Para 1",
+      title: "Model Intro",
+      content: (
+        <div className="max-w-3xl mx-auto text-center space-y-6">
+           <h2 className="text-5xl font-black text-slate-900">The Report</h2>
+           <p className="text-2xl text-slate-500 font-light">Breaking down the narrative.</p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Intro",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3 ml-4">Introduction</div>
+           <p className="bg-white p-8 rounded-[2rem] shadow-xl text-xl text-slate-700 leading-relaxed font-light border-l-4 border-gray-300">
+             The pie chart illustrates the primary causes of land degradation globally, while the table presents the impact of these causes in three specific regions.
+           </p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Overview",
       content: (
         <div className="max-w-2xl mx-auto">
            <div className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 mb-3 ml-4">Overview</div>
@@ -132,12 +152,34 @@ const LessonDegradation: React.FC<LessonDegradationProps> = ({ onAddXp }) => {
       )
     },
     {
+      title: "Model: Details 1",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 mb-3 ml-4">Details: Global</div>
+           <p className="bg-emerald-100 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-emerald-600">
+             Globally, deforestation and over-grazing are the leading causes, accounting for 35% and 30% of degraded land respectively. Over-cultivation contributes a further 28%.
+           </p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Details 2",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-3 ml-4">Details: Regional</div>
+           <p className="bg-amber-50 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-amber-600">
+             Regionally, Europe (Region 2) is the most affected, with 23% of land degraded, largely due to deforestation (9.8%). In contrast, North America (Region 1) sees only 5% degradation, primarily caused by over-cultivation.
+           </p>
+        </div>
+      )
+    },
+    {
       title: "Quiz B",
       content: <div className="max-w-2xl mx-auto w-full"><GamifiedQuiz questions={DEGRADATION_QUIZ_B} title="Analysis" onComplete={() => onAddXp(50, 'quizJ')} /></div>
     }
   ];
 
-  return <LessonStepper steps={steps} colorTheme="emerald" />;
+  return <LessonStepper steps={steps} colorTheme="emerald" chartComponent={<ChartDualView />} />;
 };
 
 export default LessonDegradation;

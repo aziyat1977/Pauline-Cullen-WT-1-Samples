@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle, Eye, X } from 'lucide-react';
 
 interface Step {
   title: string;
@@ -10,11 +10,13 @@ interface LessonStepperProps {
   steps: Step[];
   onComplete?: () => void;
   colorTheme?: string;
+  chartComponent?: React.ReactNode;
 }
 
-const LessonStepper: React.FC<LessonStepperProps> = ({ steps, onComplete, colorTheme = 'indigo' }) => {
+const LessonStepper: React.FC<LessonStepperProps> = ({ steps, onComplete, colorTheme = 'indigo', chartComponent }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [animating, setAnimating] = useState(false);
+  const [isChartOpen, setIsChartOpen] = useState(false);
 
   useEffect(() => {
     // Reset any internal scroll
@@ -70,15 +72,45 @@ const LessonStepper: React.FC<LessonStepperProps> = ({ steps, onComplete, colorT
         </div>
       </div>
 
-      {/* Step Indicator Header */}
-      <div className="shrink-0 flex justify-center py-4 z-20">
+      {/* Step Indicator Header & Chart Toggle */}
+      <div className="shrink-0 flex justify-center py-4 z-20 relative">
          <div className="flex items-center gap-2 bg-white/50 dark:bg-black/20 px-3 py-1 rounded-full backdrop-blur-md border border-white/20 shadow-sm animate-fade-in-up">
             <div className={`w-1.5 h-1.5 rounded-full ${getColorClass('bg')} animate-pulse`}></div>
             <span className="text-gray-500 dark:text-gray-400 font-bold text-[10px] uppercase tracking-[0.2em] font-heading">
                 Step {currentStep + 1} of {steps.length}
             </span>
          </div>
+         
+         {chartComponent && (
+            <button 
+                onClick={() => setIsChartOpen(true)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 px-3 py-1.5 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md rounded-full shadow-sm border border-gray-200 dark:border-slate-700 text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hover:scale-105 z-30 font-bold text-[10px] uppercase tracking-wide group"
+            >
+                <Eye size={14} className="group-hover:scale-110 transition-transform"/> <span className="hidden sm:inline">Reference</span>
+            </button>
+         )}
       </div>
+
+      {/* Reference Chart Modal */}
+      {isChartOpen && chartComponent && (
+        <div 
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-sm animate-fade-in"
+            onClick={(e) => { if (e.target === e.currentTarget) setIsChartOpen(false); }}
+        >
+            <div className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto animate-pop-in no-scrollbar">
+                <button 
+                    onClick={() => setIsChartOpen(false)}
+                    className="absolute top-4 right-4 z-50 bg-black/50 text-white rounded-full p-2 hover:bg-red-600 transition-colors backdrop-blur-md"
+                >
+                    <X size={20} />
+                </button>
+                <div className="p-1">
+                    {chartComponent}
+                </div>
+                <p className="text-center text-white/50 text-xs mt-4">Tap outside to close</p>
+            </div>
+        </div>
+      )}
 
       {/* Content Area - Filling available space */}
       <div 

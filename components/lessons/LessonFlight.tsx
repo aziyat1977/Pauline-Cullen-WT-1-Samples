@@ -148,7 +148,7 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
       )
     },
     {
-      title: "Model Para 1",
+      title: "Model: Intro",
       content: (
         <div className="max-w-2xl mx-auto">
            <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3 ml-4">Introduction</div>
@@ -159,7 +159,7 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
       )
     },
     {
-      title: "Model Para 2",
+      title: "Model: Overview",
       content: (
         <div className="max-w-2xl mx-auto">
            <div className="text-[10px] font-bold uppercase tracking-widest text-indigo-400 mb-3 ml-4">Overview</div>
@@ -170,12 +170,34 @@ const LessonFlight: React.FC<LessonFlightProps> = ({ onAddXp }) => {
       )
     },
     {
+      title: "Model: Details 1",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-purple-400 mb-3 ml-4">Details: Highs</div>
+           <p className="bg-purple-50 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-purple-500">
+             Regarding the specific durations, the longest flights were recorded with a single candle, averaging 14.7 seconds. Individual trials ranged from 14.1 to 15.2 seconds.
+           </p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Details 2",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-3 ml-4">Details: Lows</div>
+           <p className="bg-blue-50 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-blue-500">
+             In contrast, adding a second candle reduced the average to 12.9 seconds. This trend continued with three candles, where the pulse plummeted to an average of 10.5 seconds.
+           </p>
+        </div>
+      )
+    },
+    {
       title: "Quiz B",
       content: <div className="max-w-2xl mx-auto w-full"><GamifiedQuiz questions={QUIZ_B} title="Analysis" onComplete={() => onAddXp(50, 'quizB')} /></div>
     }
   ];
 
-  return <LessonStepper steps={steps} colorTheme="indigo" />;
+  return <LessonStepper steps={steps} colorTheme="indigo" chartComponent={<Chart3D />} />;
 };
 
 export default LessonFlight;

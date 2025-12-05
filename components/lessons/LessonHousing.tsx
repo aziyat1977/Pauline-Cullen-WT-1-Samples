@@ -130,7 +130,18 @@ const LessonHousing: React.FC<LessonHousingProps> = ({ onAddXp }) => {
       )
     },
     {
-      title: "Model Para 1",
+      title: "Model: Intro",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3 ml-4">Introduction</div>
+           <p className="bg-white p-8 rounded-[2rem] shadow-xl text-xl text-slate-700 leading-relaxed font-light border-l-4 border-gray-300">
+             The bar chart compares the percentage of households in owned versus rented accommodation in England and Wales between 1918 and 2011.
+           </p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Overview",
       content: (
         <div className="max-w-2xl mx-auto">
            <div className="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-3 ml-4">Overview</div>
@@ -141,12 +152,34 @@ const LessonHousing: React.FC<LessonHousingProps> = ({ onAddXp }) => {
       )
     },
     {
+      title: "Model: Details 1",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-green-600 mb-3 ml-4">Details: Renting</div>
+           <p className="bg-green-50 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-green-500">
+             In 1918, rented accommodation was the dominant tenure, accounting for roughly 77% of households. However, this figure experienced a steady decline, dropping to 50% by 1971 and reaching a low of 31% in 2001.
+           </p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Details 2",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 mb-3 ml-4">Details: Owning</div>
+           <p className="bg-indigo-50 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-indigo-500">
+             Conversely, home ownership began at a low of 23% but saw a consistent rise. It overtook renting in 1971 and peaked at 69% in 2001, before dipping slightly to 64% in 2011.
+           </p>
+        </div>
+      )
+    },
+    {
       title: "Quiz B",
       content: <div className="max-w-2xl mx-auto w-full"><GamifiedQuiz questions={HOUSING_QUIZ_B} title="Analysis" onComplete={() => onAddXp(50, 'quizD')} /></div>
     }
   ];
 
-  return <LessonStepper steps={steps} colorTheme="blue" />;
+  return <LessonStepper steps={steps} colorTheme="blue" chartComponent={<ChartHousing />} />;
 };
 
 export default LessonHousing;

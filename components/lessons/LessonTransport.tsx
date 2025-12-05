@@ -111,7 +111,27 @@ const LessonTransport: React.FC<LessonTransportProps> = ({ onAddXp }) => {
       )
     },
     {
-      title: "Model Para 1",
+      title: "Model Intro",
+      content: (
+        <div className="max-w-3xl mx-auto text-center space-y-6">
+           <h2 className="text-5xl font-black text-slate-900">The Report</h2>
+           <p className="text-2xl text-slate-500 font-light">Breaking down the narrative.</p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Intro",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3 ml-4">Introduction</div>
+           <p className="bg-white p-8 rounded-[2rem] shadow-xl text-xl text-slate-700 leading-relaxed font-light border-l-4 border-gray-300">
+             The bar chart compares the carbon emissions per passenger-kilometre for various modes of transport, alongside their average occupancy rates.
+           </p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Overview",
       content: (
         <div className="max-w-2xl mx-auto">
            <div className="text-[10px] font-bold uppercase tracking-widest text-purple-400 mb-3 ml-4">Overview</div>
@@ -122,12 +142,34 @@ const LessonTransport: React.FC<LessonTransportProps> = ({ onAddXp }) => {
       )
     },
     {
+      title: "Model: Details 1",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-blue-500 mb-3 ml-4">Details: High Emitters</div>
+           <p className="bg-blue-50 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-blue-500">
+             Air travel is by far the most polluting mode, emitting 244g of CO2 per passenger-kilometre, despite a relatively high occupancy of 88 passengers. Cars and scooters follow, emitting 107g and 81g respectively.
+           </p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Details 2",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-green-600 mb-3 ml-4">Details: Low Emitters</div>
+           <p className="bg-green-50 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-green-500">
+             At the other end of the scale, buses and trams are significantly greener, emitting 56g and 28g respectively. Notably, walking and cycling are carbon-neutral, producing zero emissions.
+           </p>
+        </div>
+      )
+    },
+    {
       title: "Quiz B",
       content: <div className="max-w-2xl mx-auto w-full"><GamifiedQuiz questions={TRANSPORT_QUIZ_B} title="Analysis" onComplete={() => onAddXp(50, 'quizF')} /></div>
     }
   ];
 
-  return <LessonStepper steps={steps} colorTheme="purple" />;
+  return <LessonStepper steps={steps} colorTheme="purple" chartComponent={<ChartTransport />} />;
 };
 
 export default LessonTransport;

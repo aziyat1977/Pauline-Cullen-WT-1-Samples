@@ -111,7 +111,27 @@ const LessonCoffee: React.FC<LessonCoffeeProps> = ({ onAddXp }) => {
       )
     },
     {
-      title: "Model Para 1",
+      title: "Model Intro",
+      content: (
+        <div className="max-w-3xl mx-auto text-center space-y-6">
+           <h2 className="text-5xl font-black text-slate-900">The Report</h2>
+           <p className="text-2xl text-slate-500 font-light">Breaking down the narrative.</p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Intro",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3 ml-4">Introduction</div>
+           <p className="bg-white p-8 rounded-[2rem] shadow-xl text-xl text-slate-700 leading-relaxed font-light border-l-4 border-gray-300">
+             The tables provide data on the sales of Fairtrade-labelled coffee and bananas in five European countries in 1999 and 2004.
+           </p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Overview",
       content: (
         <div className="max-w-2xl mx-auto">
            <div className="text-[10px] font-bold uppercase tracking-widest text-amber-600 mb-3 ml-4">Overview</div>
@@ -122,12 +142,34 @@ const LessonCoffee: React.FC<LessonCoffeeProps> = ({ onAddXp }) => {
       )
     },
     {
+      title: "Model: Details 1",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-3 ml-4">Details: Coffee</div>
+           <p className="bg-amber-100 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-amber-600">
+             Sales of coffee rose in every nation. The UK saw the most dramatic growth, surging from 1.5 million euros to 20 million. Switzerland also saw sales double to 6 million euros.
+           </p>
+        </div>
+      )
+    },
+    {
+      title: "Model: Details 2",
+      content: (
+        <div className="max-w-2xl mx-auto">
+           <div className="text-[10px] font-bold uppercase tracking-widest text-yellow-600 mb-3 ml-4">Details: Bananas</div>
+           <p className="bg-yellow-50 p-8 rounded-[2rem] shadow-xl text-xl text-slate-800 leading-relaxed font-light border-l-4 border-yellow-500">
+             Banana sales showed a mixed picture. Switzerland remained the largest market, with sales rocketing to 47 million euros. However, Sweden and Denmark experienced a decline in revenue, falling to roughly 1 million euros each.
+           </p>
+        </div>
+      )
+    },
+    {
       title: "Quiz B",
       content: <div className="max-w-2xl mx-auto w-full"><GamifiedQuiz questions={COFFEE_QUIZ_B} title="Analysis" onComplete={() => onAddXp(50, 'quizH')} /></div>
     }
   ];
 
-  return <LessonStepper steps={steps} colorTheme="amber" />;
+  return <LessonStepper steps={steps} colorTheme="amber" chartComponent={<ChartCoffee />} />;
 };
 
 export default LessonCoffee;
