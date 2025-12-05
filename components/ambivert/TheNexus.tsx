@@ -1,13 +1,10 @@
-
-
-
-
 import React, { useState } from 'react';
-import { ArrowLeft, Menu, Activity, Moon, Sun, Layers, Network, Zap, Brain, Cpu, Radio, X, Swords, Trophy, Play, Fish, Coffee, Factory, RefreshCcw, Map } from 'lucide-react';
+import { ArrowLeft, Menu, Activity, Moon, Sun, Layers, Network, Zap, Brain, Cpu, Radio, X, Swords, Trophy, Play, Fish, Coffee, Factory, RefreshCcw, Map, BookOpenCheck } from 'lucide-react';
 import FluxLesson from './FluxLesson';
 import NexusCanvas from '../features/NexusCanvas';
 import CoreInterface from './CoreInterface';
 import NexusAvatar from '../features/NexusAvatar';
+import NexusMasterclass from './NexusMasterclass';
 import { useSuperAI } from '../../hooks/useSuperAI';
 import GamifiedQuiz from '../features/GamifiedQuiz';
 import { KAHOOT_QUIZ_1, KAHOOT_QUIZ_2, KAHOOT_QUIZ_3, KAHOOT_QUIZ_4, KAHOOT_QUIZ_5, KAHOOT_QUIZ_6, KAHOOT_QUIZ_7, KAHOOT_QUIZ_8, KAHOOT_QUIZ_9, KAHOOT_QUIZ_10 } from '../../constants';
@@ -31,6 +28,13 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
 
   const modules = [
     { 
+        id: 'class', 
+        title: 'MASTER CLASS', 
+        solarDesc: 'Tactical theory & error elimination.',
+        lunarDesc: 'Deep protocol analysis.',
+        icon: <BookOpenCheck size={20} />
+    },
+    { 
         id: 'flight', 
         title: 'Flight Data', 
         solarDesc: 'Fast-paced data identification training.',
@@ -51,7 +55,6 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
         lunarDesc: 'Environmental impact logic mapping.',
         icon: <Network size={20} />
     },
-    // NEW MODULES
     { 
         id: 'fish', 
         title: 'Fish Consumption', 
@@ -120,6 +123,14 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
         setActiveModuleId(null); // Return to Hub if at start
     }
   };
+
+  if (activeModuleId === 'class') {
+      return (
+          <NexusMasterclass 
+             onBack={() => setActiveModuleId(null)}
+          />
+      );
+  }
 
   if (activeModuleId) {
       return (
@@ -267,16 +278,16 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
                     {modules.map((mod, idx) => (
                         <div 
                             key={mod.id} 
-                            className="group relative bg-slate-900/40 border border-slate-800 rounded-sm overflow-hidden hover:border-teal-500/30 transition-all duration-500 flex flex-col backdrop-blur-sm"
+                            className={`group relative bg-slate-900/40 border rounded-sm overflow-hidden transition-all duration-500 flex flex-col backdrop-blur-sm ${mod.id === 'class' ? 'border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.1)]' : 'border-slate-800 hover:border-teal-500/30'}`}
                         >
-                            <div className="p-6 border-b border-slate-800 group-hover:bg-slate-800/30 transition-colors">
+                            <div className={`p-6 border-b transition-colors ${mod.id === 'class' ? 'bg-amber-900/10 border-amber-900/30' : 'border-slate-800 group-hover:bg-slate-800/30'}`}>
                                 <div className="flex justify-between items-start mb-4">
-                                    <div className="w-10 h-10 bg-slate-950 rounded flex items-center justify-center text-teal-500 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] border border-slate-800">
+                                    <div className={`w-10 h-10 rounded flex items-center justify-center shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] border ${mod.id === 'class' ? 'bg-amber-950 text-amber-400 border-amber-800' : 'bg-slate-950 text-teal-500 border-slate-800'}`}>
                                         {mod.icon}
                                     </div>
-                                    <span className="font-mono text-[9px] text-slate-600 bg-slate-950 px-2 py-1 rounded border border-slate-800">SEC_0{idx+1}</span>
+                                    <span className={`font-mono text-[9px] px-2 py-1 rounded border ${mod.id === 'class' ? 'bg-amber-950 text-amber-500 border-amber-800' : 'bg-slate-950 text-slate-600 border-slate-800'}`}>{mod.id === 'class' ? 'PRIORITY' : `SEC_0${idx+1}`}</span>
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-200 mb-1 group-hover:text-white transition-colors">{mod.title}</h3>
+                                <h3 className={`text-xl font-bold mb-1 transition-colors ${mod.id === 'class' ? 'text-amber-100' : 'text-slate-200 group-hover:text-white'}`}>{mod.title}</h3>
                             </div>
 
                             <div className="flex-1 flex flex-col divide-y divide-slate-800">
