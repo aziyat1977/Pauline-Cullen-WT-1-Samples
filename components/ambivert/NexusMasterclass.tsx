@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid, RotateCcw, ChevronRight, Hash, TrendingUp, Search, Umbrella } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid, RotateCcw, ChevronRight, Hash, TrendingUp, Search, Umbrella, Edit3, Check } from 'lucide-react';
 import ChartDualView from '../features/ChartDualView';
 import InteractiveMap from '../features/InteractiveMap';
 import ChartHousing from '../features/ChartHousing';
 import Chart3D from '../features/Chart3D';
 import ChartCoffee from '../features/ChartCoffee';
+import ChartFish from '../features/ChartFish';
 
 // --- MICRO-COMPONENTS FOR INTERACTIVITY ---
 
@@ -684,6 +685,225 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                         <li>Must NOT contain specific figures (No €20m).</li>
                         <li>Must use clear referencing.</li>
                     </ul>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 42: PRESENTING & HIGHLIGHTING",
+        headline: "KEY FEATURE SELECTION",
+        icon: <Highlighter size={64} className="text-yellow-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                    <ChartCoffee />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                        <div className="bg-red-950/20 border-l-4 border-red-500 p-4">
+                            <h4 className="font-bold text-red-400 mb-2 flex items-center gap-2"><X size={16}/> Listing (Band 5/6)</h4>
+                            <p className="text-sm text-slate-400 italic">"With Fairtrade coffee, the UK had sales worth €1.5 million in 1999 and €20 million in 2004."</p>
+                            <p className="text-xs text-red-500 mt-2">CRITIQUE: Factually correct, but minor detail. "Why are you telling me this?"</p>
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="bg-emerald-950/20 border-l-4 border-emerald-500 p-4">
+                            <h4 className="font-bold text-emerald-400 mb-2 flex items-center gap-2"><Check size={16}/> Presenting (Band 7+)</h4>
+                            <p className="text-sm text-slate-400 italic">"The UK had by far the biggest increase in sales, rising from 1.5 million euros in 1999 to 20 million in 2004."</p>
+                            <p className="text-xs text-emerald-500 mt-2">ANALYSIS: Points out significance ("by far the biggest").</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="bg-sky-900/30 border border-sky-500/50 p-4 rounded text-center">
+                    <p className="text-sky-300 font-bold text-sm">KEY IDEA</p>
+                    <p className="text-white text-sm mt-1">Don't just list figures. Show the examiner WHY they are important.</p>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 43: COMPARISON LOGIC",
+        headline: "BODY PARAGRAPH STRUCTURE",
+        icon: <Split size={64} className="text-orange-500" />,
+        content: (
+            <div className="space-y-8">
+                <p className="text-lg text-slate-300">Making comparisons helps highlight key features. Organize by category.</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-amber-950/20 p-6 rounded border border-amber-500/30">
+                        <h4 className="font-bold text-amber-500 mb-4 flex items-center gap-2"><div className="w-3 h-3 bg-amber-500 rounded-full"></div> COFFEE (BP1)</h4>
+                        <ul className="space-y-3 text-sm text-slate-300 list-disc pl-4">
+                            <li><strong className="text-white">Switzerland:</strong> Biggest consumer in 1999 (€3m).</li>
+                            <li><strong className="text-white">Trend:</strong> Swiss sales doubled, BUT UK rose from €1.5m to €20m (New Leader).</li>
+                            <li><strong className="text-white">Comparison:</strong> UK sales "much higher than in any other country".</li>
+                            <li><strong className="text-white">Others:</strong> Small increases (0.2 - 0.7m).</li>
+                        </ul>
+                    </div>
+
+                    <div className="bg-yellow-950/20 p-6 rounded border border-yellow-500/30">
+                        <h4 className="font-bold text-yellow-500 mb-4 flex items-center gap-2"><div className="w-3 h-3 bg-yellow-500 rounded-full"></div> BANANAS (BP2)</h4>
+                        <ul className="space-y-3 text-sm text-slate-300 list-disc pl-4">
+                            <li><strong className="text-white">Switzerland:</strong> Leader in BOTH years (€15m -> €47m).</li>
+                            <li><strong className="text-white">Followers:</strong> UK/Belgium much lower, but increased 5x.</li>
+                            <li><strong className="text-white">Contrast:</strong> Sweden/Denmark FELL (figures almost halved).</li>
+                            <li><strong className="text-white">Note:</strong> "This is different to other figures."</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 44: DATA RULES",
+        headline: "SUPPORTING EVIDENCE",
+        icon: <Quote size={64} className="text-teal-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-slate-900 p-6 border border-slate-800 rounded">
+                    <h4 className="text-teal-400 font-bold mb-2">Q: Do I need data for every point?</h4>
+                    <p className="text-slate-300 text-sm leading-relaxed">
+                        Strictly speaking, Band 5 says "no data". However, Band 8 requires you to <span className="text-white font-bold">"illustrate"</span> key features. To be safe, support every main point with specific evidence (numbers/years) in brackets.
+                    </p>
+                </div>
+
+                <div className="bg-purple-900/20 p-6 border-l-4 border-purple-500">
+                    <h4 className="text-purple-400 font-bold mb-2 uppercase">Vocabulary Note: "Respectively"</h4>
+                    <p className="text-slate-300 text-sm mb-4">Used to list items in the same order as previously mentioned to avoid repetition.</p>
+                    
+                    <div className="bg-slate-950 p-4 rounded font-mono text-xs text-slate-400">
+                        <p className="mb-2 text-red-400 line-through">"Sales in UK reached €5.5m and sales in Belgium reached €4m."</p>
+                        <p className="text-emerald-400">"Sales in the UK and Belgium reached €5.5 and €4 million <span className="underline">respectively</span>."</p>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 text-xs text-slate-500 font-mono">
+                    <div className="p-2 border border-slate-800 rounded">Checklist: Clear Overview?</div>
+                    <div className="p-2 border border-slate-800 rounded">Checklist: Main Trends?</div>
+                    <div className="p-2 border border-slate-800 rounded">Checklist: Specific Details?</div>
+                    <div className="p-2 border border-slate-800 rounded">Checklist: Contrasts Clear?</div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 45: HOMEWORK PROTOCOL",
+        headline: "FISH & MEAT CONSUMPTION",
+        icon: <Activity size={64} className="text-pink-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                    <ChartFish />
+                </div>
+                <div className="text-center space-y-4">
+                    <h3 className="text-xl font-bold text-white">TASK INSTRUCTION</h3>
+                    <p className="text-slate-400 max-w-lg mx-auto">
+                        "The graph shows the consumption of fish and different kinds of meat in a European country between 1979 and 2004. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+                    </p>
+                    <div className="flex justify-center gap-4 text-xs font-mono text-pink-500">
+                        <span>DATA: GRAMS/PERSON/WEEK</span>
+                        <span>PERIOD: 25 YEARS</span>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 46: LISTENING PROTOCOL",
+        headline: "GAP FILL CHALLENGE 1",
+        icon: <Zap size={64} className="text-yellow-400" />,
+        content: (
+            <div className="space-y-6">
+                <div className="flex items-center gap-3 bg-yellow-950/20 p-4 rounded border border-yellow-500/30">
+                    <div className="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center text-black font-bold">
+                        <Zap size={20} />
+                    </div>
+                    <div>
+                        <h4 className="text-yellow-500 font-bold">MODEL ANSWER RECONSTRUCTION</h4>
+                        <p className="text-xs text-slate-400">Select the correct phrases to complete the overview.</p>
+                    </div>
+                </div>
+
+                <GapFill 
+                    parts={[
+                        "The tables compare the sales figures for two Fairtrade products in the UK, Switzerland, Denmark, Belgium, and Sweden in two separate years. Overall, sales of Fairtrade coffee ",
+                        ", while ",
+                        " for similarly labelled bananas, and ",
+                        " in each table had ",
+                        "."
+                    ]}
+                    options={[
+                        "significantly higher sales than the rest",
+                        "increased in all five countries",
+                        "the leading country",
+                        "there was mixed success"
+                    ]}
+                    correct={[
+                        "increased in all five countries",
+                        "there was mixed success",
+                        "the leading country",
+                        "significantly higher sales than the rest"
+                    ]}
+                />
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 47: LEXICAL PRECISION",
+        headline: "GAP FILL CHALLENGE 2",
+        icon: <Edit3 size={64} className="text-blue-400" />,
+        content: (
+            <div className="space-y-6">
+                <p className="text-slate-400 text-sm mb-4">Complete the specific details paragraph. Choose the precise vocabulary used in Band 9 models.</p>
+                <GapFill 
+                    parts={[
+                        "Sales of Fairtrade coffee were relatively modest in 1999, and Switzerland was ",
+                        " consumer with €3 million in sales. Despite this figure doubling in 2004, the UK ",
+                        " third place to lead the table with €20 million worth of sales. A figure that was ",
+                        " higher than in any other country. Although the three remaining countries also ",
+                        " increases, these were marginal."
+                    ]}
+                    options={[
+                        "saw",
+                        "rose from",
+                        "considerably",
+                        "the largest"
+                    ]}
+                    correct={[
+                        "the largest",
+                        "rose from",
+                        "considerably",
+                        "saw"
+                    ]}
+                />
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 48: MODEL ANALYSIS",
+        headline: "FULL TEXT REVIEW",
+        icon: <BookOpen size={64} className="text-emerald-500" />,
+        content: (
+            <div className="space-y-6">
+                <div className="bg-slate-900 p-6 rounded border border-slate-800 text-sm leading-relaxed text-slate-300 font-serif">
+                    <p className="mb-4">
+                        The tables compare the sales figures for two Fairtrade products in the UK, Switzerland, Denmark, Belgium, and Sweden in two separate years. 
+                        <span className="text-emerald-400 font-bold"> Overall, sales of Fairtrade coffee increased in all five countries</span>, while there was mixed success for similarly labelled bananas, and the leading country in each table had significantly higher sales than the rest.
+                    </p>
+                    <p className="mb-4">
+                        Sales of Fairtrade coffee were relatively modest in 1999, and Switzerland was the largest consumer with €3 million in sales. 
+                        Despite this figure <span className="text-yellow-400">doubling in 2004</span>, the UK <span className="text-yellow-400">rose from third place</span> (with €1.5 million) to lead the table with €20 million worth of sales in the same year. 
+                        A figure that was <span className="text-yellow-400">considerably higher</span> than in any other country. Although the three remaining countries also saw increases, these were <span className="text-yellow-400">marginal</span> with gains of between 0.2 and 0.7 million euros.
+                    </p>
+                    <p>
+                        With Fairtrade bananas, Switzerland was again the leader in 1999 and dominated this table in both years with sales increasing from €15 million to a <span className="text-pink-400">striking €47 million</span>. 
+                        Although considerably lower, the UK and Belgium saw similar growths in this category, increasing by <span className="text-pink-400">just over 5 times</span> their 1999 figures to reach €5.5 and €4 million respectively. 
+                        In contrast, Sweden and Denmark experienced a <span className="text-pink-400">drop in sales</span>, with the 2004 figures (€1 million and € 0.9 million) almost half of those of 5 years earlier.
+                    </p>
+                </div>
+                <div className="flex gap-4 text-xs font-mono font-bold uppercase justify-center">
+                    <span className="text-emerald-400">● Overview</span>
+                    <span className="text-yellow-400">● Coffee Details</span>
+                    <span className="text-pink-400">● Banana Details</span>
                 </div>
             </div>
         )
