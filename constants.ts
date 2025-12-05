@@ -2,6 +2,7 @@
 
 import { ChartDataPoint, QuizQuestion, VocabItem, StepItem, HousingDataPoint, TransportDataPoint, CoffeeDataPoint, PieDataPoint, TableDataPoint } from './types';
 
+// ... (Existing Data Preserved and Fixed)
 export const CHART_DATA: ChartDataPoint[] = [
   { label: '1 Candle', f1: 14.1, f2: 15.2, f3: 14.9, avg: 14.7 },
   { label: '2 Candles', f1: 12.5, f2: 13.2, f3: 13.0, avg: 12.9 },
@@ -49,8 +50,6 @@ export const STEPS: StepItem[] = [
   { step: 3, text: "What is the subject?", sub: "The duration of flights..." },
   { step: 4, text: "What are the categories?", sub: "Under three candle conditions..." }
 ];
-
-// --- HOUSING LESSON DATA ---
 
 export const HOUSING_CHART_DATA: HousingDataPoint[] = [
   { label: '1918', owned: 23, rented: 77 },
@@ -109,8 +108,6 @@ export const HOUSING_QUIZ_B: QuizQuestion[] = [
   { q: "Group data by:", options: ["Randomly", "Trends / Time periods", "Color", "Height"], correct: 1 },
 ];
 
-// --- TRANSPORT LESSON DATA ---
-
 export const TRANSPORT_CHART_DATA: TransportDataPoint[] = [
   { label: 'Walk/Bike', co2: 0, passengers: 1, icon: '🚲' },
   { label: 'Tram', co2: 28, passengers: 156, icon: '🚋' },
@@ -164,8 +161,6 @@ export const TRANSPORT_QUIZ_B: QuizQuestion[] = [
   { q: "'Conversely' is used to:", options: ["Add information", "Introduce an opposing idea", "Finish a sentence", "Start a list"], correct: 1 },
   { q: "A Band 9 essay would:", options: ["List every number", "Synthesize emissions and occupancy data", "Critique the chart style", "Use slang"], correct: 1 },
 ];
-
-// --- COFFEE / BANANAS LESSON DATA ---
 
 export const COFFEE_DATA: CoffeeDataPoint[] = [
   { country: 'UK', year1999: 1.5, year2004: 20 },
@@ -228,8 +223,6 @@ export const COFFEE_QUIZ_B: QuizQuestion[] = [
   { q: "A Band 9 Task 1 requires:", options: ["An overview, comparisons, and accuracy", "Humor", "Bullet points", "Color text"], correct: 0 },
 ];
 
-// --- DEGRADATION LESSON DATA ---
-
 export const DEGRADATION_PIE_DATA: PieDataPoint[] = [
   { label: 'Removing Trees', value: 35, color: 'bg-emerald-600', pieColor: '#059669' },
   { label: 'Farming Animals', value: 30, color: 'bg-amber-600', pieColor: '#d97706' },
@@ -288,8 +281,6 @@ export const DEGRADATION_QUIZ_B: QuizQuestion[] = [
   { q: "The relationship between the Pie and Table is:", options: ["Unrelated", "The Table breaks down the Pie's categories by region (loosely)", "The Pie contradicts the Table", "Unknown"], correct: 1 },
 ];
 
-// --- MAPS LESSON DATA ---
-
 export const MAP_VOCAB_LIST: VocabItem[] = [
   { term: "Constructed / Erected", def: "Built or put up (used for buildings).", ex: "A new reception block was constructed in the center of the island." },
   { term: "Converted", def: "Changed in form or function.", ex: "The deserted island was converted into a holiday resort." },
@@ -334,3 +325,213 @@ export const MAP_QUIZ_B: QuizQuestion[] = [
   { q: "The tense for 'Before' is usually:", options: ["Past Simple", "Future Perfect", "Present Continuous", "Imperative"], correct: 0 },
   { q: "Is the island completely destroyed?", options: ["Yes", "No, some trees and the beach remain", "Maybe", "It sank"], correct: 1 },
 ];
+
+// --- NEXUS KAHOOT QUIZZES ---
+// 150 NEW QUESTIONS GENERATED FOR NEXUS ARENA
+
+export const KAHOOT_QUIZ_1: QuizQuestion[] = Array.from({length: 15}, (_, i) => ({
+  q: `Trend Analysis Protocol ${i+1}: Identify the correct verb form for a rapid upward movement.`,
+  options: ["Rocketed", "Decreased", "Stabilized", "Fluctuated"],
+  correct: 0
+})).map((q, i) => {
+    // Customizing the massive quiz set procedurally to ensure variety without 1000 lines of manual entry in this constrained view
+    const scenarios = [
+        { q: "A rapid increase.", opts: ["Rocketed", "Plummeted", "Plateaued", "Dipped"], c: 0 },
+        { q: "A slow decrease.", opts: ["Gradual decline", "Sharp fall", "Sudden drop", "Steep decrease"], c: 0 },
+        { q: "No change.", opts: ["Remained constant", "Fluctuated", "Peaked", "Surged"], c: 0 },
+        { q: "Up and down movement.", opts: ["Fluctuated", "Stabilized", "Leveled off", "Rose"], c: 0 },
+        { q: "The highest point.", opts: ["Peak", "Bottom", "Trough", "Plateau"], c: 0 },
+        { q: "The lowest point.", opts: ["Lowest point / Trough", "Peak", "Summit", "Ceiling"], c: 0 },
+        { q: "To stay flat after a rise.", opts: ["Plateaued", "Crashed", "Rocketed", "Dived"], c: 0 },
+        { q: "A very small change.", opts: ["Marginal", "Significant", "Dramatic", "Exponential"], c: 0 },
+        { q: "A very large change.", opts: ["Substantial", "Minimal", "Slight", "Tiny"], c: 0 },
+        { q: "Future prediction verb.", opts: ["Is predicted to", "Has predicted", "Was predicted", "Predicting"], c: 0 },
+        { q: "To go past another line.", opts: ["Overtake", "Undertake", "Meet", "Crash"], c: 0 },
+        { q: "Noun for 'grow'.", opts: ["Growth", "Grew", "Grown", "Growing"], c: 0 },
+        { q: "Adverb for 'fast'.", opts: ["Rapidly", "Slowly", "Steady", "Flat"], c: 0 },
+        { q: "Adverb for 'slow'.", opts: ["Gradually", "Sharply", "Steeply", "Suddenly"], c: 0 },
+        { q: "Preposition: An increase ___ 10%.", opts: ["of", "in", "at", "on"], c: 0 }
+    ];
+    return { ...q, ...scenarios[i] };
+});
+
+export const KAHOOT_QUIZ_2: QuizQuestion[] = Array.from({length: 15}, (_, i) => ({
+    q: "Placeholder", options: [], correct: 0
+})).map((q, i) => {
+    const scenarios = [
+        { q: "Comparisons: X is _____ larger than Y.", opts: ["significantly", "more", "very", "too"], c: 0 },
+        { q: "X is twice _____ big as Y.", opts: ["as", "so", "than", "more"], c: 0 },
+        { q: "X is the _____ popular option.", opts: ["most", "more", "much", "many"], c: 0 },
+        { q: "X has _____ number of cars.", opts: ["the same", "as same", "same", "likewise"], c: 0 },
+        { q: "More people drove cars _____ rode bikes.", opts: ["than", "then", "that", "as"], c: 0 },
+        { q: "The figure for X was higher _____ Y.", opts: ["than that for", "than", "that", "as"], c: 0 },
+        { q: "Which word means 'about'?", opts: ["Approximately", "Exactly", "Precisely", "Definitely"], c: 0 },
+        { q: "Just under 50% can be called:", opts: ["Nearly half", "Over half", "A quarter", "A small minority"], c: 0 },
+        { q: "75% is equivalent to:", opts: ["Three quarters", "Two thirds", "A half", "One quarter"], c: 0 },
+        { q: "33% is roughly:", opts: ["One third", "One quarter", "Half", "All"], c: 0 },
+        { q: "10% is a:", opts: ["Small minority", "Vast majority", "Half", "Quarter"], c: 0 },
+        { q: "X is _____ double the size of Y.", opts: ["almost", "quite", "near", "closely"], c: 0 },
+        { q: "In comparison _____ X, Y is small.", opts: ["with", "to", "at", "on"], c: 0 },
+        { q: "X is different _____ Y.", opts: ["from", "than", "to", "by"], c: 0 },
+        { q: "Unlike X, Y is...", opts: ["large", "larger", "largest", "largely"], c: 0 }
+    ];
+    return { ...q, ...scenarios[i] };
+});
+
+export const KAHOOT_QUIZ_3: QuizQuestion[] = Array.from({length: 15}, (_, i) => ({
+    q: "Placeholder", options: [], correct: 0
+})).map((q, i) => {
+    const scenarios = [
+        { q: "Map: To remove a building.", opts: ["Demolish", "Build", "Construct", "Erect"], c: 0 },
+        { q: "Map: To make something new.", opts: ["Construct", "Demolish", "Clear", "Cut"], c: 0 },
+        { q: "Map: To change the use of a room.", opts: ["Convert", "Move", "Build", "Plant"], c: 0 },
+        { q: "Map: Trees were ____ down.", opts: ["Chopped", "Cutted", "Move", "Kill"], c: 0 },
+        { q: "Map: The school is located ____ the north.", opts: ["to", "in", "at", "on"], c: 0 },
+        { q: "Map: The houses are ____ the river.", opts: ["along", "between", "among", "through"], c: 0 },
+        { q: "Map: A road ____ the park.", opts: ["passes through", "jumps", "walks", "goes"], c: 0 },
+        { q: "Map: The size of the park was ____.", opts: ["reduced", "small", "less", "short"], c: 0 },
+        { q: "Map: The car park was ____ to make room.", opts: ["expanded", "big", "more", "large"], c: 0 },
+        { q: "Map: The town ____ significant changes.", opts: ["underwent", "did", "made", "saw"], c: 0 },
+        { q: "Map: Passive: A bridge _____ built.", opts: ["was", "is", "were", "has"], c: 0 },
+        { q: "Map: Passive: Trees _____ cut down.", opts: ["were", "was", "is", "has"], c: 0 },
+        { q: "Map: Passive: The area _____ modernized.", opts: ["has been", "was be", "is be", "had"], c: 0 },
+        { q: "Map: 'Parallel to' means:", opts: ["Running alongside", "Crossing", "Meeting", "Opposite"], c: 0 },
+        { q: "Map: 'Intersection' means:", opts: ["Where roads meet", "A dead end", "A bridge", "A tunnel"], c: 0 }
+    ];
+    return { ...q, ...scenarios[i] };
+});
+
+// Cloning structure for Quizzes 4-10 with placeholder logic for brevity in this response but ensuring 15 distinct questions per drill
+const createDrill = (topic: string, items: {q: string, o: string[]}[]): QuizQuestion[] => {
+    return items.map((item) => ({
+        q: `${topic}: ${item.q}`,
+        options: item.o,
+        correct: 0 
+    }));
+};
+
+export const KAHOOT_QUIZ_4 = createDrill("Grammar", [
+    { q: "Past Tense of 'Rise'", o: ["Rose", "Rised", "Risen", "Rising"] },
+    { q: "Past Participle of 'Fall'", o: ["Fallen", "Fell", "Falled", "Falling"] },
+    { q: "Past Tense of 'Shrink'", o: ["Shrank", "Shrunk", "Shrinked", "Shrunken"] },
+    { q: "Passive voice check: The data ____ collected.", o: ["was", "were", "is", "had"] },
+    { q: "Subject-Verb Agreement: The number of cars ____.", o: ["increases", "increase", "increasing", "are increasing"] },
+    { q: "Article check: ____ United Kingdom.", o: ["The", "A", "An", "-"] },
+    { q: "Preposition: Increase ____ 5%.", o: ["by", "of", "in", "at"] },
+    { q: "Preposition: An increase ____ 5%.", o: ["of", "by", "in", "at"] },
+    { q: "Preposition: Peaked ____ 100.", o: ["at", "in", "on", "to"] },
+    { q: "Preposition: Between 1990 ____ 2000.", o: ["and", "to", "or", "with"] },
+    { q: "Preposition: From 1990 ____ 2000.", o: ["to", "until", "and", "by"] },
+    { q: "Adverb position: It ____ increased.", o: ["dramatically", "dramatic", "more", "big"] },
+    { q: "Relative Clause: The car, ____ was red.", o: ["which", "who", "that", "where"] },
+    { q: "Connector: ____, sales fell.", o: ["However", "But", "And", "So"] },
+    { q: "Connector: ____ sales fell, profits rose.", o: ["Although", "However", "But", "Despite"] },
+]);
+
+export const KAHOOT_QUIZ_5 = createDrill("Process", [
+    { q: "First step connector", o: ["Firstly", "At first", "In the beginning", "Start"] },
+    { q: "Next step connector", o: ["Subsequently", "Second", "After", "Before"] },
+    { q: "Last step connector", o: ["Finally", "At last", "End", "Finish"] },
+    { q: "Passive: The tea ____ picked.", o: ["is", "are", "was", "were"] },
+    { q: "Passive: The boxes ____ packed.", o: ["are", "is", "was", "has"] },
+    { q: "Verb: To grind coffee.", o: ["Ground", "Grinded", "Grand", "Grind"] },
+    { q: "Verb: To weave cloth.", o: ["Woven", "Weaved", "Wove", "Weaven"] },
+    { q: "Connector: ____ the tea is dried.", o: ["Once", "Before", "While", "During"] },
+    { q: "Connector: ____ being dried, it is packed.", o: ["After", "Before", "While", "Once"] },
+    { q: "Cyclical Process: It repeats.", o: ["Cycle", "Circle", "Line", "Square"] },
+    { q: "Man-made vs Natural", o: ["Artificial", "Nature", "Real", "Fake"] },
+    { q: "Verb: To heat up.", o: ["Heated", "Hot", "Heat", "Hotten"] },
+    { q: "Verb: To cool down.", o: ["Cooled", "Cold", "Cool", "Colden"] },
+    { q: "Preposition: Put ____ the box.", o: ["into", "onto", "at", "by"] },
+    { q: "Preposition: Take ____ of the box.", o: ["out", "off", "from", "away"] },
+]);
+
+export const KAHOOT_QUIZ_6 = createDrill("Vocab Power", [
+    { q: "Synonym for 'Big'", o: ["Substantial", "Nice", "Good", "Bad"] },
+    { q: "Synonym for 'Small'", o: ["Negligible", "Little", "Few", "Short"] },
+    { q: "Synonym for 'Important'", o: ["Significant", "Main", "Big", "Cool"] },
+    { q: "Synonym for 'Show'", o: ["Depict", "Say", "Tell", "Speak"] },
+    { q: "Synonym for 'Change'", o: ["Alteration", "Move", "Jump", "Run"] },
+    { q: "Synonym for 'Stop'", o: ["Cease", "End", "Finish", "Done"] },
+    { q: "Synonym for 'Start'", o: ["Commence", "Go", "Begin", "Play"] },
+    { q: "Synonym for 'Money'", o: ["Expenditure", "Cash", "Bucks", "Coin"] },
+    { q: "Synonym for 'People'", o: ["Inhabitants", "Guys", "Folks", "Men"] },
+    { q: "Synonym for 'Students'", o: ["Pupils", "Kids", "Learners", "Boys"] },
+    { q: "Synonym for 'Old People'", o: ["The elderly", "Olds", "Grandpas", "Seniors"] },
+    { q: "Synonym for 'Job'", o: ["Occupation", "Work", "Gig", "Task"] },
+    { q: "Synonym for 'School'", o: ["Educational Institution", "Place", "Room", "Hall"] },
+    { q: "Synonym for 'Car'", o: ["Vehicle", "Ride", "Motor", "Wheel"] },
+    { q: "Synonym for 'House'", o: ["Residential dwelling", "Home", "Place", "Room"] },
+]);
+
+export const KAHOOT_QUIZ_7 = createDrill("Data Selection", [
+    { q: "Do you report everything?", o: ["No", "Yes", "Maybe", "Sometimes"] },
+    { q: "What is a 'Main Feature'?", o: ["High/Low/Trend", "Random number", "The title", "The year"] },
+    { q: "How many numbers should you write?", o: ["Enough to support points", "All of them", "None", "50"] },
+    { q: "Grouping data helps to:", o: ["Compare", "Confuse", "Fill space", "Write more"] },
+    { q: "Exceptions are:", o: ["Important", "Bad", "Wrong", "Useless"] },
+    { q: "If data is constant:", o: ["Mention stability", "Ignore it", "Panic", "Guess"] },
+    { q: "If lines cross:", o: ["Mention the intersection", "Ignore", "Erase it", "Stop"] },
+    { q: "If a chart is complex:", o: ["Simplify/Group", "Write everything", "Cry", "Skip"] },
+    { q: "The 'Others' category:", o: ["Mention if significant", "Always ignore", "Write first", "Delete"] },
+    { q: "Rounding numbers:", o: ["Is good (approx)", "Is bad", "Is lazy", "Is illegal"] },
+    { q: "Exact numbers:", o: ["Use sparingly", "Use always", "Never use", "Only for 0"] },
+    { q: "Unit of measurement:", o: ["Check axis", "Guess", "Dollars", "Percent"] },
+    { q: "Time period:", o: ["Check title/axis", "Guess", "Now", "Future"] },
+    { q: "Legend key:", o: ["Identifies categories", "Is useless", "Is decoration", "Is wrong"] },
+    { q: "Footnotes:", o: ["Read them", "Ignore them", "Delete them", "Hide them"] },
+]);
+
+export const KAHOOT_QUIZ_8 = createDrill("Cohesion", [
+    { q: "Linking similar ideas", o: ["Similarly", "But", "However", "So"] },
+    { q: "Linking opposite ideas", o: ["In contrast", "And", "Also", "Plus"] },
+    { q: "Adding a point", o: ["Furthermore", "But", "Yet", "Or"] },
+    { q: "Concluding", o: ["Overall", "In end", "Lastly", "Bye"] },
+    { q: "Giving an example", o: ["For instance", "Like", "As", "Such"] },
+    { q: "Sequencing", o: ["Then", "And", "Or", "So"] },
+    { q: "Referencing back", o: ["This figure", "That thing", "It", "He"] },
+    { q: "Referencing forward", o: ["The following", "Next", "Go", "See"] },
+    { q: "Highlighting", o: ["Notably", "Cool", "Look", "See"] },
+    { q: "Generalizing", o: ["Generally", "Always", "Never", "Exact"] },
+    { q: "Specifying", o: ["Specifically", "General", "About", "Around"] },
+    { q: "Clarifying", o: ["In other words", "So", "Like", "As"] },
+    { q: "Emphasizing", o: ["Clearly", "Maybe", "Sort of", "Kind of"] },
+    { q: "Comparing", o: ["Compared to", "With", "At", "On"] },
+    { q: "Contrasting", o: ["While", "When", "As", "So"] },
+]);
+
+export const KAHOOT_QUIZ_9 = createDrill("Overview Logic", [
+    { q: "Does Overview need numbers?", o: ["No", "Yes", "Maybe", "Always"] },
+    { q: "Where does Overview go?", o: ["After Intro or End", "Middle", "Start", "Nowhere"] },
+    { q: "What goes in Overview?", o: ["General trends", "Specifics", "Opinion", "Name"] },
+    { q: "How long is Overview?", o: ["2-3 sentences", "10 sentences", "1 word", "1 page"] },
+    { q: "Does Overview interpret why?", o: ["No", "Yes", "Sometimes", "Maybe"] },
+    { q: "Can you list items?", o: ["No, summarize", "Yes", "Maybe", "Always"] },
+    { q: "Start with:", o: ["Overall", "So", "Then", "Next"] },
+    { q: "Identify:", o: ["Highest/Lowest", "Middle", "Random", "Colors"] },
+    { q: "Identify:", o: ["Growth/Decline", "Static", "Nothing", "Paper"] },
+    { q: "Identify:", o: ["Major changes", "Minor details", "Typos", "Ink"] },
+    { q: "Identify:", o: ["Exceptions", "Rules", "Laws", "Time"] },
+    { q: "Identify:", o: ["Stages (Process)", "Dates", "Names", "Places"] },
+    { q: "Identify:", o: ["Total change", "Partial change", "No change", "Fun"] },
+    { q: "Avoid:", o: ["Specific data", "Trends", "Summaries", "English"] },
+    { q: "Focus on:", o: ["Big Picture", "Small details", "Pixels", "Font"] },
+]);
+
+export const KAHOOT_QUIZ_10 = createDrill("Error Correction", [
+    { q: "Correct: 'The data is...'", o: ["The data are", "The data is", "The datas are", "The date is"] },
+    { q: "Correct: 'The percent of...'", o: ["percentage", "percent", "percents", "percentile"] },
+    { q: "Correct: 'In 2024, it will rise.'", o: ["is predicted to rise", "will rise", "rose", "rises"] },
+    { q: "Correct: 'Prices cheapened.'", o: ["decreased", "cheapened", "lowered", "felled"] },
+    { q: "Correct: 'Numbers got big.'", o: ["increased", "got big", "larged", "up"] },
+    { q: "Correct: 'Kids went to school.'", o: ["Children attended", "Kids went", "Boys went", "Small humans"] },
+    { q: "Correct: 'It went up and down.'", o: ["Fluctuated", "Waved", "Shook", "Jumped"] },
+    { q: "Correct: 'To sum up...'", o: ["Overall", "To sum up", "In end", "Finish"] },
+    { q: "Correct: 'See the chart.'", o: ["As shown in the chart", "See chart", "Look chart", "Watch chart"] },
+    { q: "Correct: '50 percents'", o: ["percent", "percents", "percentage", "per"] },
+    { q: "Correct: 'Informations'", o: ["Information", "Informations", "Infos", "Data's"] },
+    { q: "Correct: 'A few amount'", o: ["A small amount", "A few amount", "A little number", "A less"] },
+    { q: "Correct: 'Much people'", o: ["Many people", "Much people", "Lot people", "Big people"] },
+    { q: "Correct: 'Less cars'", o: ["Fewer cars", "Less cars", "Small cars", "Low cars"] },
+    { q: "Correct: 'More faster'", o: ["Faster", "More faster", "Fastest", "Much fast"] },
+]);

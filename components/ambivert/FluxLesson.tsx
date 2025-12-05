@@ -1,6 +1,7 @@
 
+
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, ArrowLeft, Zap, Gamepad2, Terminal, ChevronRight } from 'lucide-react';
+import { Sun, Moon, ArrowLeft, Zap, Gamepad2, Terminal, ChevronRight, X, ArrowRight, CheckCircle, RefreshCw } from 'lucide-react';
 import Chart3D from '../features/Chart3D';
 import ChartHousing from '../features/ChartHousing';
 import ChartTransport from '../features/ChartTransport';
@@ -8,7 +9,7 @@ import { ZenBarChart, ZenHousingChart, ConceptNode, ReflectionPrompt } from '../
 import DataSlayer from '../features/DataSlayer';
 import WriterConsole from '../features/WriterConsole';
 import LogicGate from '../features/LogicGate';
-import { VOCAB_LIST, HOUSING_VOCAB_LIST, TRANSPORT_VOCAB_LIST, QUIZ_A, HOUSING_QUIZ_A, TRANSPORT_QUIZ_A } from '../../constants';
+import { VOCAB_LIST, HOUSING_VOCAB_LIST, TRANSPORT_VOCAB_LIST, QUIZ_A, HOUSING_QUIZ_A, TRANSPORT_QUIZ_A, CHART_DATA, HOUSING_CHART_DATA, TRANSPORT_CHART_DATA } from '../../constants';
 import SentenceBuilder from '../features/SentenceBuilder';
 import { useSuperAI } from '../../hooks/useSuperAI';
 import NexusAvatar from '../features/NexusAvatar';
@@ -16,19 +17,43 @@ import NexusAvatar from '../features/NexusAvatar';
 interface FluxLessonProps {
   moduleId: string;
   onBack: () => void;
+  onExit: () => void;
+  onNext: () => void;
+  onPrev: () => void;
+  isLast: boolean;
+  isFirst: boolean;
 }
 
 type Mode = 'solar' | 'lunar';
 
-const FluxLesson: React.FC<FluxLessonProps> = ({ moduleId, onBack }) => {
+const FluxLesson: React.FC<FluxLessonProps> = ({ moduleId, onBack, onExit, onNext, onPrev, isLast, isFirst }) => {
   const [mode, setMode] = useState<Mode>('solar');
   const [loading, setLoading] = useState(false);
+  
+  // Speed Quiz State
+  const [miniQuizIndex, setMiniQuizIndex] = useState(0);
+  const [miniQuizFeedback, setMiniQuizFeedback] = useState<'correct' | 'incorrect' | null>(null);
+  const [miniQuizComplete, setMiniQuizComplete] = useState(false);
+
   const { track } = useSuperAI();
 
   // Track lesson entry - 'neutral' outcome for navigation events
   useEffect(() => {
       track(`ENTER_MODULE_${moduleId.toUpperCase()}`, { type: 'general', result: 'neutral' });
-  }, []);
+      // Reset quiz on module change
+      setMiniQuizIndex(0);
+      setMiniQuizFeedback(null);
+      setMiniQuizComplete(false);
+  }, [moduleId, track]);
+
+  // Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onBack();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onBack]);
 
   const toggleMode = () => {
     setLoading(true);
@@ -47,7 +72,8 @@ const FluxLesson: React.FC<FluxLessonProps> = ({ moduleId, onBack }) => {
             chartZen: <ZenBarChart />,
             vocab: VOCAB_LIST,
             quiz: QUIZ_A,
-            sentence: ["The", "chart", "shows", "the", "duration", "of", "three", "separate", "flight", "trials."]
+            sentence: ["The", "chart", "shows", "the", "duration", "of", "three", "separate", "flight", "trials."],
+            rawData: CHART_DATA
         };
         case 'housing': return { 
             title: 'Housing Tenure', 
@@ -55,7 +81,8 @@ const FluxLesson: React.FC<FluxLessonProps> = ({ moduleId, onBack }) => {
             chartZen: <ZenHousingChart />,
             vocab: HOUSING_VOCAB_LIST,
             quiz: HOUSING_QUIZ_A,
-            sentence: ["The", "bar", "chart", "compares", "housing", "tenure", "in", "England", "and", "Wales."]
+            sentence: ["The", "bar", "chart", "compares", "housing", "tenure", "in", "England", "and", "Wales."],
+            rawData: HOUSING_CHART_DATA
         };
         default: return { 
             title: 'Transport Emissions', 
@@ -63,28 +90,40 @@ const FluxLesson: React.FC<FluxLessonProps> = ({ moduleId, onBack }) => {
             chartZen: <div className="p-8 border border-dashed border-stone-700 text-stone-500 font-mono text-center">DATA SET TOO COMPLEX FOR REDUCTION</div>,
             vocab: TRANSPORT_VOCAB_LIST,
             quiz: TRANSPORT_QUIZ_A,
-            sentence: ["The", "chart", "compares", "average", "CO2", "emissions", "for", "different", "modes", "of", "transport."]
+            sentence: ["The", "chart", "compares", "average", "CO2", "emissions", "for", "different", "modes", "of", "transport."],
+            rawData: TRANSPORT_CHART_DATA
         };
     }
   };
 
   const content = getContent();
 
-  // Surgical Tracking Wrappers
-  const handleQuizAnswer = (questionId: number, isCorrect: boolean) => {
-      // Determine what concept this question tests (mock logic for demo)
-      // indices 0-3: Vocab, 4-6: Trends, 7-9: Comparison
-      let type: 'vocabulary' | 'trends' | 'comparisons' = 'vocabulary';
-      if (questionId > 3) type = 'trends';
-      if (questionId > 6) type = 'comparisons';
+  // Mini Quiz Logic
+  const miniQuizQuestions = content.quiz.slice(0, 3);
+  const currentMiniQ = miniQuizQuestions[miniQuizIndex];
 
-      track(`QUIZ_ANSWER_${questionId}`, { 
-          type: type, 
+  const handleMiniQuizAnswer = (optIndex: number) => {
+      if (miniQuizFeedback) return; // Prevent double taps
+      
+      const isCorrect = optIndex === currentMiniQ.correct;
+      setMiniQuizFeedback(isCorrect ? 'correct' : 'incorrect');
+
+      track(`SPEED_QUIZ_${moduleId}_${miniQuizIndex}`, { 
+          type: 'vocabulary', 
           result: isCorrect ? 'success' : 'failure' 
       });
+
+      setTimeout(() => {
+          setMiniQuizFeedback(null);
+          if (miniQuizIndex < miniQuizQuestions.length - 1) {
+              setMiniQuizIndex(prev => prev + 1);
+          } else {
+              setMiniQuizComplete(true);
+              track(`SPEED_QUIZ_${moduleId}_COMPLETE`, { type: 'general', result: 'success' });
+          }
+      }, 1000);
   };
 
-  // Track hover/focus on Chart
   const handleChartInteraction = () => {
       track('CHART_ANALYSIS', { type: 'visualization', result: 'success' });
   };
@@ -93,13 +132,20 @@ const FluxLesson: React.FC<FluxLessonProps> = ({ moduleId, onBack }) => {
     <div className={`min-h-screen transition-colors duration-1000 ${mode === 'solar' ? 'bg-slate-50 text-slate-900' : 'bg-[#0c0c0e] text-slate-400'}`}>
         
         {/* 3D AVATAR COMPANION */}
-        <NexusAvatar />
+        <NexusAvatar contextData={content.rawData} contextTitle={content.title} />
 
         {/* Navigation Bar */}
         <nav className={`fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 backdrop-blur-md border-b transition-colors duration-700 ${mode === 'solar' ? 'bg-white/80 border-slate-200' : 'bg-[#0f0f11]/80 border-slate-800'}`}>
-            <button onClick={onBack} className={`p-2 rounded-full transition-colors flex items-center gap-2 ${mode === 'solar' ? 'hover:bg-slate-200' : 'hover:bg-slate-800'}`}>
-                <ArrowLeft size={20} /> <span className="text-xs font-bold uppercase hidden sm:inline">Return to Nexus</span>
-            </button>
+            
+            <div className="flex items-center gap-2">
+                <button onClick={onBack} className={`p-2 rounded-full transition-colors flex items-center gap-2 ${mode === 'solar' ? 'hover:bg-slate-200 text-slate-600' : 'hover:bg-slate-800 text-slate-400'}`} title="Back to Nexus Hub">
+                    <ArrowLeft size={20} /> <span className="text-xs font-bold uppercase hidden sm:inline">Back</span>
+                </button>
+                <div className={`h-4 w-px mx-2 ${mode === 'solar' ? 'bg-slate-300' : 'bg-slate-700'}`}></div>
+                <button onClick={onExit} className={`p-2 rounded-full transition-colors flex items-center gap-2 group ${mode === 'solar' ? 'hover:bg-red-50 text-slate-500 hover:text-red-500' : 'hover:bg-red-900/20 text-slate-500 hover:text-red-400'}`} title="Exit Simulation">
+                    <X size={20} className="group-hover:scale-110 transition-transform"/> <span className="text-xs font-bold uppercase hidden sm:inline">Exit</span>
+                </button>
+            </div>
             
             <div className="flex items-center gap-4">
                 <span className={`font-mono text-[10px] uppercase tracking-widest hidden sm:inline ${mode === 'solar' ? 'text-amber-600' : 'text-indigo-400'}`}>
@@ -129,7 +175,7 @@ const FluxLesson: React.FC<FluxLessonProps> = ({ moduleId, onBack }) => {
              </div>
         </div>
 
-        <div className="pt-28 px-6 pb-32 max-w-6xl mx-auto">
+        <div className="pt-28 px-6 pb-40 max-w-6xl mx-auto min-h-[calc(100vh-100px)] flex flex-col">
             <header className="mb-16 text-center animate-fade-in-up">
                 <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-6 border ${mode === 'solar' ? 'bg-amber-50 text-amber-600 border-amber-200 shadow-amber-100 shadow-lg' : 'bg-indigo-900/10 text-indigo-400 border-indigo-500/20'}`}>
                     {mode === 'solar' ? <><Gamepad2 size={14} /> Active Learning</> : <><Terminal size={14} /> Analytical Mode</>}
@@ -170,28 +216,69 @@ const FluxLesson: React.FC<FluxLessonProps> = ({ moduleId, onBack }) => {
                             </div>
                          </div>
 
-                         <div className="bg-white rounded-[2rem] p-6 shadow-xl border border-slate-100">
+                         {/* SIDEBAR SPEED QUIZ - REPAIRED */}
+                         <div className="bg-white rounded-[2rem] p-6 shadow-xl border border-slate-100 relative overflow-hidden">
                              <h3 className="font-black text-slate-800 text-lg mb-4 flex items-center justify-between">
-                                 Speed Quiz <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">Timed</span>
+                                 Speed Quiz <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full flex items-center gap-1"><Zap size={10} className="fill-current"/>Timed</span>
                              </h3>
-                             <div className="space-y-3">
-                                {content.quiz.slice(0, 3).map((q, i) => (
+                             
+                             {!miniQuizComplete ? (
+                                <div className="animate-fade-in">
+                                    <div className="flex justify-between items-center mb-4">
+                                        <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                                            Question {miniQuizIndex + 1} / {miniQuizQuestions.length}
+                                        </span>
+                                    </div>
+                                    
+                                    <p className="font-bold text-slate-800 text-sm mb-6 min-h-[3rem] leading-relaxed">
+                                        {currentMiniQ.q}
+                                    </p>
+                                    
+                                    <div className="space-y-2">
+                                        {currentMiniQ.options.map((opt, i) => {
+                                            let btnClass = "w-full text-left p-3 rounded-xl border-2 text-xs font-bold transition-all ";
+                                            
+                                            if (miniQuizFeedback) {
+                                                if (i === currentMiniQ.correct) {
+                                                    btnClass += "bg-green-500 border-green-600 text-white shadow-md";
+                                                } else {
+                                                    btnClass += "bg-slate-50 border-slate-100 text-slate-300 opacity-40";
+                                                }
+                                            } else {
+                                                btnClass += "bg-white border-slate-100 hover:border-indigo-500 hover:text-indigo-600 text-slate-600 hover:shadow-md";
+                                            }
+
+                                            return (
+                                                <button 
+                                                    key={i} 
+                                                    onClick={() => handleMiniQuizAnswer(i)}
+                                                    disabled={!!miniQuizFeedback}
+                                                    className={btnClass}
+                                                >
+                                                    <div className="flex justify-between items-center">
+                                                        <span>{opt}</span>
+                                                        {miniQuizFeedback && i === currentMiniQ.correct && <CheckCircle size={14} />}
+                                                    </div>
+                                                </button>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                             ) : (
+                                <div className="text-center py-8 animate-pop-in">
+                                    <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-100">
+                                        <CheckCircle size={32} />
+                                    </div>
+                                    <h4 className="font-black text-slate-800 text-xl mb-2">Protocol Complete!</h4>
+                                    <p className="text-slate-400 text-xs mb-6">Neural pathway strengthened.</p>
                                     <button 
-                                        key={i} 
-                                        className="group w-full text-left p-4 rounded-xl border-2 border-slate-100 hover:border-indigo-500 cursor-pointer transition-all hover:shadow-md"
-                                        onClick={() => {
-                                            const isCorrect = i === q.correct; // Mock logic
-                                            handleQuizAnswer(i, isCorrect);
-                                            alert(isCorrect ? "Correct" : "Incorrect");
-                                        }}
+                                        onClick={() => { setMiniQuizIndex(0); setMiniQuizComplete(false); }}
+                                        className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-600 rounded-full text-xs font-bold hover:bg-indigo-100 transition-colors"
                                     >
-                                        <p className="font-bold text-slate-700 text-sm mb-2 group-hover:text-indigo-600 transition-colors">{q.q}</p>
-                                        <div className="flex justify-end">
-                                            <ChevronRight size={16} className="text-slate-300 group-hover:text-indigo-500 transform group-hover:translate-x-1 transition-all" />
-                                        </div>
+                                        <RefreshCw size={12} /> Restart Drill
                                     </button>
-                                ))}
-                             </div>
+                                </div>
+                             )}
                          </div>
                     </div>
                 </div>
@@ -245,6 +332,37 @@ const FluxLesson: React.FC<FluxLessonProps> = ({ moduleId, onBack }) => {
                     </div>
                 </div>
             )}
+            
+            {/* Footer Navigation */}
+            <div className={`mt-auto pt-12 border-t flex justify-between items-center transition-colors duration-700 ${mode === 'solar' ? 'border-slate-200 text-slate-600' : 'border-slate-800 text-slate-400'}`}>
+                <button 
+                    onClick={onPrev}
+                    className={`flex items-center gap-3 group px-4 py-2 rounded-lg transition-all ${mode === 'solar' ? 'hover:bg-slate-100' : 'hover:bg-slate-900'}`}
+                >
+                    <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                    <div className="text-left">
+                        <div className="text-[10px] uppercase font-bold tracking-widest opacity-60">Previous</div>
+                        <div className="font-bold text-sm group-hover:underline">Back / Hub</div>
+                    </div>
+                </button>
+
+                <div className="hidden md:flex gap-1">
+                    <div className={`w-2 h-2 rounded-full ${mode === 'solar' ? 'bg-slate-300' : 'bg-slate-700'}`}></div>
+                    <div className={`w-2 h-2 rounded-full ${mode === 'solar' ? 'bg-slate-300' : 'bg-slate-700'}`}></div>
+                    <div className={`w-2 h-2 rounded-full ${mode === 'solar' ? 'bg-slate-900' : 'bg-slate-400'}`}></div>
+                </div>
+
+                <button 
+                    onClick={onNext}
+                    className={`flex items-center gap-3 group px-4 py-2 rounded-lg transition-all ${mode === 'solar' ? 'hover:bg-slate-100' : 'hover:bg-slate-900'}`}
+                >
+                    <div className="text-right">
+                        <div className="text-[10px] uppercase font-bold tracking-widest opacity-60">Next</div>
+                        <div className="font-bold text-sm group-hover:underline">{isLast ? 'Complete' : 'Next Module'}</div>
+                    </div>
+                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+            </div>
         </div>
     </div>
   );

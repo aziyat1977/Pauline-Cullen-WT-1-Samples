@@ -1,11 +1,14 @@
 
+
 import React, { useState } from 'react';
-import { ArrowLeft, Menu, Activity, Moon, Sun, Layers, Network, Zap, Brain, Cpu, Radio, X } from 'lucide-react';
+import { ArrowLeft, Menu, Activity, Moon, Sun, Layers, Network, Zap, Brain, Cpu, Radio, X, Swords, Trophy, Play } from 'lucide-react';
 import FluxLesson from './FluxLesson';
 import NexusCanvas from '../features/NexusCanvas';
 import CoreInterface from './CoreInterface';
 import NexusAvatar from '../features/NexusAvatar';
 import { useSuperAI } from '../../hooks/useSuperAI';
+import GamifiedQuiz from '../features/GamifiedQuiz';
+import { KAHOOT_QUIZ_1, KAHOOT_QUIZ_2, KAHOOT_QUIZ_3, KAHOOT_QUIZ_4, KAHOOT_QUIZ_5, KAHOOT_QUIZ_6, KAHOOT_QUIZ_7, KAHOOT_QUIZ_8, KAHOOT_QUIZ_9, KAHOOT_QUIZ_10 } from '../../constants';
 
 interface TheNexusProps {
   onExit: () => void;
@@ -15,6 +18,7 @@ interface TheNexusProps {
 const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
   const [surgicalDrill, setSurgicalDrill] = useState<any | null>(null);
+  const [activeArenaQuiz, setActiveArenaQuiz] = useState<number | null>(null);
   
   // Connect to C.O.R.E.
   const { track } = useSuperAI();
@@ -47,8 +51,50 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
     }
   ];
 
+  const arenaQuizzes = [
+      { id: 1, title: 'Trend Velocity', data: KAHOOT_QUIZ_1 },
+      { id: 2, title: 'Comparatives', data: KAHOOT_QUIZ_2 },
+      { id: 3, title: 'Spatial Logic', data: KAHOOT_QUIZ_3 },
+      { id: 4, title: 'Grammar Core', data: KAHOOT_QUIZ_4 },
+      { id: 5, title: 'Process Flow', data: KAHOOT_QUIZ_5 },
+      { id: 6, title: 'Lexical Power', data: KAHOOT_QUIZ_6 },
+      { id: 7, title: 'Data Select', data: KAHOOT_QUIZ_7 },
+      { id: 8, title: 'Cohesion', data: KAHOOT_QUIZ_8 },
+      { id: 9, title: 'Overview Logic', data: KAHOOT_QUIZ_9 },
+      { id: 10, title: 'Error Correction', data: KAHOOT_QUIZ_10 },
+  ];
+
+  // Advanced Navigation Logic
+  const handleNextModule = () => {
+    const currentIndex = modules.findIndex(m => m.id === activeModuleId);
+    if (currentIndex >= 0 && currentIndex < modules.length - 1) {
+        setActiveModuleId(modules[currentIndex + 1].id);
+    } else {
+        setActiveModuleId(null); // Loop back to Hub if at end
+    }
+  };
+
+  const handlePrevModule = () => {
+    const currentIndex = modules.findIndex(m => m.id === activeModuleId);
+    if (currentIndex > 0) {
+        setActiveModuleId(modules[currentIndex - 1].id);
+    } else {
+        setActiveModuleId(null); // Return to Hub if at start
+    }
+  };
+
   if (activeModuleId) {
-      return <FluxLesson moduleId={activeModuleId} onBack={() => setActiveModuleId(null)} />;
+      return (
+        <FluxLesson 
+            moduleId={activeModuleId} 
+            onBack={() => setActiveModuleId(null)} 
+            onExit={onExit}
+            onNext={handleNextModule}
+            onPrev={handlePrevModule}
+            isFirst={modules.findIndex(m => m.id === activeModuleId) === 0}
+            isLast={modules.findIndex(m => m.id === activeModuleId) === modules.length - 1}
+        />
+      );
   }
 
   return (
@@ -112,6 +158,27 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
             </div>
         )}
 
+        {/* ARENA QUIZ MODAL */}
+        {activeArenaQuiz && (
+            <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-4 animate-fade-in overflow-y-auto">
+                <div className="w-full max-w-4xl relative">
+                     <button 
+                        onClick={() => setActiveArenaQuiz(null)}
+                        className="absolute -top-12 right-0 text-white hover:text-red-400 transition-colors flex items-center gap-2"
+                     >
+                         <span className="text-xs font-mono uppercase tracking-widest">Abort Protocol</span> <X size={24} />
+                     </button>
+                     <GamifiedQuiz 
+                        questions={arenaQuizzes.find(q => q.id === activeArenaQuiz)?.data || []} 
+                        title={`ARENA PROTOCOL ${activeArenaQuiz}`}
+                        onComplete={(score) => {
+                             track('ARENA_COMPLETE', { type: 'general', result: score > 10 ? 'success' : 'failure' });
+                        }} 
+                     />
+                </div>
+            </div>
+        )}
+
         <div className="max-w-7xl mx-auto px-6 py-8 relative z-10 flex flex-col min-h-screen">
             {/* Header */}
             <header className="flex justify-between items-start mb-12 border-b border-slate-800/50 pb-6">
@@ -156,60 +223,99 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
                 <CoreInterface onStartChallenge={setSurgicalDrill} />
             </div>
 
-            {/* Modules Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 content-start animate-fade-in-up stagger-1 mb-12">
-                {modules.map((mod, idx) => (
-                    <div 
-                        key={mod.id} 
-                        className="group relative bg-slate-900/40 border border-slate-800 rounded-sm overflow-hidden hover:border-teal-500/30 transition-all duration-500 flex flex-col backdrop-blur-sm"
-                    >
-                        <div className="p-6 border-b border-slate-800 group-hover:bg-slate-800/30 transition-colors">
-                            <div className="flex justify-between items-start mb-4">
-                                <div className="w-10 h-10 bg-slate-950 rounded flex items-center justify-center text-teal-500 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] border border-slate-800">
-                                    {mod.icon}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+                {/* Modules Grid */}
+                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 content-start animate-fade-in-up stagger-1">
+                    {modules.map((mod, idx) => (
+                        <div 
+                            key={mod.id} 
+                            className="group relative bg-slate-900/40 border border-slate-800 rounded-sm overflow-hidden hover:border-teal-500/30 transition-all duration-500 flex flex-col backdrop-blur-sm"
+                        >
+                            <div className="p-6 border-b border-slate-800 group-hover:bg-slate-800/30 transition-colors">
+                                <div className="flex justify-between items-start mb-4">
+                                    <div className="w-10 h-10 bg-slate-950 rounded flex items-center justify-center text-teal-500 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] border border-slate-800">
+                                        {mod.icon}
+                                    </div>
+                                    <span className="font-mono text-[9px] text-slate-600 bg-slate-950 px-2 py-1 rounded border border-slate-800">SEC_0{idx+1}</span>
                                 </div>
-                                <span className="font-mono text-[9px] text-slate-600 bg-slate-950 px-2 py-1 rounded border border-slate-800">SEC_0{idx+1}</span>
+                                <h3 className="text-xl font-bold text-slate-200 mb-1 group-hover:text-white transition-colors">{mod.title}</h3>
                             </div>
-                            <h3 className="text-xl font-bold text-slate-200 mb-1 group-hover:text-white transition-colors">{mod.title}</h3>
+
+                            <div className="flex-1 flex flex-col divide-y divide-slate-800">
+                                <button 
+                                    onClick={() => setActiveModuleId(mod.id)}
+                                    className="flex-1 p-6 hover:bg-amber-500/5 transition-all text-left flex flex-col justify-center group/solar relative overflow-hidden"
+                                >
+                                    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-amber-500 opacity-0 group-hover/solar:opacity-100 transition-all"></div>
+                                    <div className="flex items-center justify-between mb-1">
+                                        <div className="flex items-center gap-2 text-amber-500 font-bold text-[10px] uppercase tracking-wider">
+                                            <Sun size={12} /> Solar / Active
+                                        </div>
+                                        <Zap size={14} className="text-amber-500 opacity-0 group-hover/solar:opacity-100 transform translate-x-2 group-hover/solar:translate-x-0 transition-all" />
+                                    </div>
+                                    <p className="text-xs text-slate-500 group-hover/solar:text-slate-300 transition-colors">{mod.solarDesc}</p>
+                                </button>
+
+                                <button 
+                                    onClick={() => setActiveModuleId(mod.id)}
+                                    className="flex-1 p-6 hover:bg-indigo-500/5 transition-all text-left flex flex-col justify-center group/lunar relative overflow-hidden"
+                                >
+                                    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-indigo-500 opacity-0 group-hover/lunar:opacity-100 transition-all"></div>
+                                    <div className="flex items-center justify-between mb-1">
+                                        <div className="flex items-center gap-2 text-indigo-400 font-bold text-[10px] uppercase tracking-wider">
+                                            <Moon size={12} /> Lunar / Deep
+                                        </div>
+                                        <Brain size={14} className="text-indigo-400 opacity-0 group-hover/lunar:opacity-100 transform translate-x-2 group-hover/lunar:translate-x-0 transition-all" />
+                                    </div>
+                                    <p className="text-xs text-slate-500 group-hover/lunar:text-slate-300 transition-colors">{mod.lunarDesc}</p>
+                                </button>
+                            </div>
                         </div>
+                    ))}
+                </div>
 
-                        <div className="flex-1 flex flex-col divide-y divide-slate-800">
-                            <button 
-                                onClick={() => setActiveModuleId(mod.id)}
-                                className="flex-1 p-6 hover:bg-amber-500/5 transition-all text-left flex flex-col justify-center group/solar relative overflow-hidden"
-                            >
-                                <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-amber-500 opacity-0 group-hover/solar:opacity-100 transition-all"></div>
-                                <div className="flex items-center justify-between mb-1">
-                                    <div className="flex items-center gap-2 text-amber-500 font-bold text-[10px] uppercase tracking-wider">
-                                        <Sun size={12} /> Solar / Active
-                                    </div>
-                                    <Zap size={14} className="text-amber-500 opacity-0 group-hover/solar:opacity-100 transform translate-x-2 group-hover/solar:translate-x-0 transition-all" />
-                                </div>
-                                <p className="text-xs text-slate-500 group-hover/solar:text-slate-300 transition-colors">{mod.solarDesc}</p>
-                            </button>
-
-                            <button 
-                                onClick={() => setActiveModuleId(mod.id)}
-                                className="flex-1 p-6 hover:bg-indigo-500/5 transition-all text-left flex flex-col justify-center group/lunar relative overflow-hidden"
-                            >
-                                <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-indigo-500 opacity-0 group-hover/lunar:opacity-100 transition-all"></div>
-                                <div className="flex items-center justify-between mb-1">
-                                    <div className="flex items-center gap-2 text-indigo-400 font-bold text-[10px] uppercase tracking-wider">
-                                        <Moon size={12} /> Lunar / Deep
-                                    </div>
-                                    <Brain size={14} className="text-indigo-400 opacity-0 group-hover/lunar:opacity-100 transform translate-x-2 group-hover/lunar:translate-x-0 transition-all" />
-                                </div>
-                                <p className="text-xs text-slate-500 group-hover/lunar:text-slate-300 transition-colors">{mod.lunarDesc}</p>
-                            </button>
+                {/* ARENA: Kahoot Quizzes */}
+                <div className="lg:col-span-4 bg-slate-900/40 border border-slate-800 rounded-sm p-6 backdrop-blur-sm animate-fade-in-up stagger-2 flex flex-col">
+                    <div className="flex items-center gap-3 mb-6 border-b border-slate-800 pb-4">
+                        <Swords className="text-red-500" size={20} />
+                        <div>
+                            <h3 className="font-bold text-white text-lg">NEXUS ARENA</h3>
+                            <div className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">Rapid Fire Drills</div>
                         </div>
                     </div>
-                ))}
+                    
+                    <div className="flex-1 overflow-y-auto pr-2 space-y-2 max-h-[400px] no-scrollbar">
+                        {arenaQuizzes.map((quiz) => (
+                             <button 
+                                key={quiz.id}
+                                onClick={() => setActiveArenaQuiz(quiz.id)}
+                                className="w-full flex items-center justify-between p-3 bg-slate-950 border border-slate-800 hover:border-red-500/50 hover:bg-red-900/10 rounded transition-all group"
+                             >
+                                 <div className="flex items-center gap-3">
+                                     <div className="w-6 h-6 rounded bg-slate-900 border border-slate-800 flex items-center justify-center text-[10px] font-mono text-slate-500 group-hover:text-red-400 transition-colors">
+                                         {quiz.id}
+                                     </div>
+                                     <div className="text-left">
+                                         <div className="text-sm font-bold text-slate-300 group-hover:text-white">{quiz.title}</div>
+                                         <div className="text-[10px] text-slate-600">15 Questions • Speed</div>
+                                     </div>
+                                 </div>
+                                 <Play size={14} className="text-slate-600 group-hover:text-red-500 transition-colors" />
+                             </button>
+                        ))}
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-slate-800 text-[10px] text-slate-500 text-center font-mono">
+                        <Trophy size={12} className="inline mr-2 text-yellow-600" />
+                        COMPLETE ALL PROTOCOLS FOR RANK UP
+                    </div>
+                </div>
             </div>
 
             <div className="mt-8 pt-6 border-t border-slate-800/50 flex justify-between items-center text-[10px] font-mono text-slate-600">
                  <div>SERVER: NEXUS-PRIME // LATENCY: 12ms</div>
                  <div className="flex gap-4">
-                     <span>BUILD: v2.4.0</span>
+                     <span>BUILD: v2.5.0</span>
                      <span className="text-teal-500/50">SECURE CONNECTION</span>
                  </div>
             </div>
