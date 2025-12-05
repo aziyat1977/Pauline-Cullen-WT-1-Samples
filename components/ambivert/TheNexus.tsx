@@ -6,6 +6,7 @@ import NexusCanvas from '../features/NexusCanvas';
 import CoreInterface from './CoreInterface';
 import NexusAvatar from '../features/NexusAvatar';
 import NexusMasterclass from './NexusMasterclass';
+import NexusTask2Masterclass from './NexusTask2Masterclass';
 import { useSuperAI } from '../../hooks/useSuperAI';
 import GamifiedQuiz from '../features/GamifiedQuiz';
 import { KAHOOT_QUIZ_1, KAHOOT_QUIZ_2, KAHOOT_QUIZ_3, KAHOOT_QUIZ_4, KAHOOT_QUIZ_5, KAHOOT_QUIZ_6, KAHOOT_QUIZ_7, KAHOOT_QUIZ_8, KAHOOT_QUIZ_9, KAHOOT_QUIZ_10 } from '../../constants';
@@ -42,6 +43,14 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
   }
 
   const modules = [
+    { 
+        id: 'task2', 
+        title: 'LOGIC PROTOCOL', 
+        solarDesc: 'Task 2 Argumentation.',
+        lunarDesc: 'Deep coherence structures.',
+        icon: <Brain size={20} />,
+        locked: false
+    },
     { 
         id: 'class', 
         title: 'MASTER CLASS', 
@@ -147,6 +156,14 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
         setActiveModuleId(null);
     }
   };
+
+  if (activeModuleId === 'task2') {
+      return (
+          <NexusTask2Masterclass 
+             onBack={() => setActiveModuleId(null)}
+          />
+      );
+  }
 
   if (activeModuleId === 'class') {
       return (
@@ -313,19 +330,19 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
                                     transform: `perspective(1000px) rotateX(${tX}deg) rotateY(${tY}deg) scale(${isHovered ? 1.02 : 1})`,
                                     transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.5s ease-out'
                                 }}
-                                className={`group relative bg-slate-900/40 border rounded-xl overflow-hidden flex flex-col backdrop-blur-sm transform-style-3d shadow-2xl ${mod.locked ? 'opacity-50 grayscale' : ''} ${mod.id === 'class' ? 'border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.1)]' : 'border-slate-800 hover:border-teal-500/30'}`}
+                                className={`group relative bg-slate-900/40 border rounded-xl overflow-hidden flex flex-col backdrop-blur-sm transform-style-3d shadow-2xl ${mod.locked ? 'opacity-50 grayscale' : ''} ${mod.id === 'class' ? 'border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.1)]' : (mod.id === 'task2' ? 'border-indigo-500/50 shadow-[0_0_20px_rgba(99,102,241,0.2)]' : 'border-slate-800 hover:border-teal-500/30')}`}
                             >
                                 {/* Holographic Sheen */}
                                 <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10" style={{ transform: 'translateZ(20px)' }}></div>
 
-                                <div className={`p-6 border-b transition-colors relative z-0 ${mod.id === 'class' ? 'bg-amber-900/10 border-amber-900/30' : 'border-slate-800 group-hover:bg-slate-800/30'}`}>
+                                <div className={`p-6 border-b transition-colors relative z-0 ${mod.id === 'class' ? 'bg-amber-900/10 border-amber-900/30' : (mod.id === 'task2' ? 'bg-indigo-900/10 border-indigo-900/30' : 'border-slate-800 group-hover:bg-slate-800/30')}`}>
                                     <div className="flex justify-between items-start mb-4">
-                                        <div className={`w-10 h-10 rounded flex items-center justify-center shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] border ${mod.id === 'class' ? 'bg-amber-950 text-amber-400 border-amber-800' : 'bg-slate-950 text-teal-500 border-slate-800'}`}>
+                                        <div className={`w-10 h-10 rounded flex items-center justify-center shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] border ${mod.id === 'class' ? 'bg-amber-950 text-amber-400 border-amber-800' : (mod.id === 'task2' ? 'bg-indigo-950 text-indigo-400 border-indigo-800' : 'bg-slate-950 text-teal-500 border-slate-800')}`}>
                                             {mod.locked ? <Lock size={16} /> : mod.icon}
                                         </div>
-                                        <span className={`font-mono text-[9px] px-2 py-1 rounded border ${mod.id === 'class' ? 'bg-amber-950 text-amber-500 border-amber-800' : 'bg-slate-950 text-slate-600 border-slate-800'}`}>{mod.id === 'class' ? 'PRIORITY' : `SEC_0${idx+1}`}</span>
+                                        <span className={`font-mono text-[9px] px-2 py-1 rounded border ${mod.id === 'class' ? 'bg-amber-950 text-amber-500 border-amber-800' : (mod.id === 'task2' ? 'bg-indigo-950 text-indigo-500 border-indigo-800' : 'bg-slate-950 text-slate-600 border-slate-800')}`}>{mod.id === 'class' ? 'PRIORITY' : (mod.id === 'task2' ? 'NEW' : `SEC_0${idx+1}`)}</span>
                                     </div>
-                                    <h3 className={`text-xl font-bold mb-1 transition-colors ${mod.id === 'class' ? 'text-amber-100' : 'text-slate-200 group-hover:text-white'}`}>{mod.title}</h3>
+                                    <h3 className={`text-xl font-bold mb-1 transition-colors ${mod.id === 'class' ? 'text-amber-100' : (mod.id === 'task2' ? 'text-indigo-100' : 'text-slate-200 group-hover:text-white')}`}>{mod.title}</h3>
                                 </div>
 
                                 <div className="flex-1 flex flex-col divide-y divide-slate-800 relative z-0">
