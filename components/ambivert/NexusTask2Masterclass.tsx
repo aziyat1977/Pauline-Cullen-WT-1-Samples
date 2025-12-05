@@ -6,7 +6,9 @@ import {
   RefreshCcw, Grid, ChevronRight, TrendingUp, Search, 
   Clock, Trophy, ArrowUp, Factory, 
   Keyboard, Layers, Hash, Check,
-  Database, FileText, Edit3, FastForward, Scale, Brain, Lightbulb, Link, Activity
+  Database, FileText, Edit3, FastForward, Scale, Brain, Lightbulb, Link, Activity,
+  CloudRain, GraduationCap, Dumbbell, Smartphone, Bot, Mic, Construction, Anchor, AlertOctagon, HelpCircle, ArrowDown,
+  Footprints, Glasses, Wind, FileX, Repeat, ZoomIn, Shuffle
 } from 'lucide-react';
 import Confetti from '../ui/Confetti';
 
@@ -235,34 +237,11 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
       )
     },
     {
-      id: "1.2", title: "Diagnostic", icon: <AlertTriangle size={48} className="text-red-500" />,
-      content: (
-        <div className="space-y-8">
-            <h3 className="text-2xl font-bold text-white">The Band 6 Trap</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-6 rounded-xl border border-red-500/30 bg-red-950/20">
-                    <h4 className="text-red-400 font-bold mb-2 uppercase text-xs tracking-widest flex items-center gap-2"><X size={14}/> Band 6 Descriptor</h4>
-                    <p className="text-slate-300 italic text-sm">"Addresses all parts of the task although some parts may be more fully covered than others."</p>
-                    <p className="text-slate-400 mt-4 text-xs font-mono">// RESULT: UNEVEN ARGUMENT</p>
-                </div>
-                <div className="p-6 rounded-xl border border-emerald-500/30 bg-emerald-950/20">
-                    <h4 className="text-emerald-400 font-bold mb-2 uppercase text-xs tracking-widest flex items-center gap-2"><Check size={14}/> Band 7 Descriptor</h4>
-                    <p className="text-slate-300 italic text-sm">"Presents a clear position throughout the response."</p>
-                    <p className="text-slate-400 mt-4 text-xs font-mono">// RESULT: CONSISTENT STANCE</p>
-                </div>
-            </div>
-            <div className="p-4 bg-slate-900 rounded border border-slate-800 text-center text-slate-400 text-sm">
-                <strong className="text-white">Insight:</strong> You cannot get Band 7 if you figure out your opinion halfway through the essay.
-            </div>
-        </div>
-      )
-    },
-    {
-      id: "1.3", title: "Planning Myth", icon: <Clock size={48} className="text-indigo-500" />,
+      id: "1.2", title: "The 'No Time' Fallacy", icon: <Clock size={48} className="text-indigo-500" />,
       content: (
         <div className="space-y-8">
             <div className="flex items-center gap-4 border-b border-slate-800 pb-4">
-                <h3 className="text-2xl font-bold text-white">The "No Time" Fallacy</h3>
+                <h3 className="text-2xl font-bold text-white">Critical Error: Zero Planning</h3>
             </div>
             <div className="bg-slate-900 p-8 rounded-xl border border-slate-800 relative overflow-hidden group hover:border-indigo-500/30 transition-colors">
                 <div className="absolute top-0 right-0 p-4 opacity-10"><Brain size={100}/></div>
@@ -272,46 +251,8 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
                 <div className="mt-4 text-xs font-mono text-indigo-400 uppercase tracking-widest">— Pauline Cullen</div>
             </div>
             <p className="text-slate-400 text-sm max-w-lg">
-                Writing without planning is simply <span className="text-white font-bold">transcribing a disorganized thought process</span>. The examiner grades the text, not your thoughts.
+                Writing without planning is simply <span className="text-white font-bold">transcribing a disorganized thought process</span>. The examiner grades the text, not your mind.
             </p>
-        </div>
-      )
-    },
-    {
-      id: "1.4", title: "The Builder", icon: <Factory size={48} className="text-orange-500" />,
-      content: (
-        <div className="flex flex-col h-full space-y-6">
-            <h3 className="text-2xl font-bold text-orange-400">The Master Builder</h3>
-            <div className="flex-1 bg-slate-900 p-6 rounded-xl border border-slate-800 flex flex-col justify-center gap-6">
-                <div className="flex items-start gap-4">
-                    <div className="p-2 bg-red-900/20 text-red-400 rounded">Student</div>
-                    <p className="text-slate-300 text-sm italic">"Aren't words like 'Firstly' and 'In addition' clichés? Shouldn't I avoid them?"</p>
-                </div>
-                <div className="flex items-start gap-4 flex-row-reverse text-right">
-                    <div className="p-2 bg-emerald-900/20 text-emerald-400 rounded">Master</div>
-                    <p className="text-slate-300 text-sm italic">"A builder never says: 'I won't use a hammer, everyone uses hammers, it's such a cliché.'"</p>
-                </div>
-            </div>
-            <div className="text-center text-xs font-mono text-orange-500">
-                PROTOCOL: USE THE TOOLS. DON'T REINVENT THEM.
-            </div>
-        </div>
-      )
-    },
-    {
-      id: "1.5", title: "Sector Mastery", icon: <Trophy size={48} className="text-yellow-500" />,
-      content: (
-        <div className="flex flex-col items-center justify-center h-full space-y-8 text-center">
-            <h2 className="text-4xl font-black text-white">FOUNDATION SECURED</h2>
-            <div className="w-32 h-32 bg-yellow-500/10 rounded-full flex items-center justify-center border-4 border-yellow-500 shadow-[0_0_50px_rgba(234,179,8,0.4)] animate-pulse">
-                <ShieldCheck size={64} className="text-yellow-500" />
-            </div>
-            <p className="text-slate-400 max-w-md">
-                Diagnostic complete. You have accepted the necessity of planning and the validity of standard linking tools.
-            </p>
-            <button onClick={triggerReward} className="px-8 py-3 bg-yellow-600 hover:bg-yellow-500 text-black font-black uppercase tracking-widest rounded-full transition-all hover:scale-105 shadow-lg shadow-yellow-600/20">
-                Claim Reward
-            </button>
         </div>
       )
     },
@@ -338,28 +279,7 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
         )
     },
     {
-        id: "2.2", title: "Workforce Gap", icon: <Link size={48} className="text-pink-500" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-pink-400">The Broken Chain</h3>
-                <div className="bg-slate-900 p-6 rounded-xl border border-pink-500/30 font-serif text-lg leading-loose text-slate-300">
-                    <span className="bg-slate-800 px-1 rounded">People work longer hours.</span>
-                    <span className="mx-2 text-red-500 font-bold text-xs">...</span>
-                    <span className="bg-slate-800 px-1 rounded">They have job security fears.</span>
-                </div>
-                <div className="p-4 bg-red-900/10 border border-red-500/20 rounded text-sm text-red-300">
-                    <strong>Problem:</strong> Is this a result? A cause? An addition? The reader shouldn't have to guess.
-                </div>
-                <div className="flex gap-2 justify-center">
-                    {["Because", "Therefore", "In addition"].map((word, i) => (
-                        <button key={i} className="px-3 py-1 bg-indigo-600 text-white rounded text-xs hover:bg-indigo-500 transition-colors">{word}</button>
-                    ))}
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "2.3", title: "Referencing", icon: <Zap size={48} className="text-yellow-400" />,
+        id: "2.2", title: "Referencing", icon: <Zap size={48} className="text-yellow-400" />,
         content: (
             <div className="space-y-8">
                 <h3 className="text-2xl font-bold text-yellow-400">The "This" Fix</h3>
@@ -386,101 +306,92 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
             </div>
         )
     },
-    {
-        id: "2.4", title: "Linking Drill", icon: <Edit3 size={48} className="text-teal-500" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-xl font-bold text-teal-400">Cohesion Injection</h3>
-                <p className="text-sm text-slate-400">Insert the correct cohesive device or reference.</p>
-                <GapFill 
-                    textWithGaps="Pollution is rising. [gap], the government is introducing a carbon tax. [gap] policy has been controversial."
-                    answers={["consequently", "this"]}
-                    hints={["result linker", "reference word"]}
-                />
-            </div>
-        )
-    },
-    {
-        id: "2.5", title: "Sector Mastery", icon: <CheckCircle2 size={48} className="text-white" />,
-        content: (
-            <div className="flex flex-col items-center justify-center h-full space-y-8 text-center">
-                <h2 className="text-4xl font-black text-white">COHERENCE SECURED</h2>
-                <div className="w-32 h-32 bg-teal-500/10 rounded-full flex items-center justify-center border-4 border-teal-500 shadow-[0_0_50px_rgba(20,184,166,0.4)] animate-spin-slow">
-                    <Link size={64} className="text-teal-500" />
-                </div>
-                <p className="text-slate-400 max-w-md">
-                    You have mastered the dual tools of explicit linking words and subtle referencing.
-                </p>
-                <button onClick={triggerReward} className="px-8 py-3 bg-teal-600 hover:bg-teal-500 text-black font-black uppercase tracking-widest rounded-full transition-all hover:scale-105 shadow-lg shadow-teal-600/20">
-                    Sync Progress
-                </button>
-            </div>
-        )
-    },
 
-    // === SECTOR 3: ARGUMENTATION ===
+    // === SECTOR 3: REASONING CORE ===
     {
-        id: "3.1", title: "Argument Anatomy", icon: <Scale size={48} className="text-purple-500" />,
+        id: "3.1", title: "The 'Why' Gap", icon: <HelpCircle size={48} className="text-pink-500" />,
         content: (
             <div className="space-y-8">
-                <h3 className="text-2xl font-bold text-white">The Formula</h3>
-                <div className="p-6 bg-slate-900 border border-slate-700 rounded-xl text-center shadow-2xl">
-                    <div className="text-3xl font-mono text-purple-400 tracking-wider">C + P = A</div>
-                    <div className="mt-4 text-sm text-slate-400">
-                        <span className="text-white font-bold">Conclusion</span> + <span className="text-white font-bold">Premises</span> (Reasons) = <span className="text-purple-400 font-bold">Argument</span>
+                <h3 className="text-2xl font-bold text-white">The "Why" Vacuum</h3>
+                <div className="p-6 bg-slate-900 border-l-4 border-pink-500 shadow-xl">
+                    <p className="text-lg italic text-slate-300 font-serif mb-4">
+                        "The government should encourage everyone to eat more fruit."
+                    </p>
+                    <div className="text-sm text-pink-400 font-bold bg-pink-900/20 p-2 rounded inline-block">
+                        DIAGNOSIS: UNFOUNDED CLAIM
                     </div>
                 </div>
-                <div className="space-y-2">
-                    <div className="p-3 bg-purple-900/10 border border-purple-500/20 rounded flex justify-between items-center">
-                        <span className="text-xs uppercase text-purple-400">Conclusion</span>
-                        <span className="text-sm text-slate-300">"We should eat fruit."</span>
-                    </div>
-                    <div className="p-3 bg-blue-900/10 border border-blue-500/20 rounded flex justify-between items-center">
-                        <span className="text-xs uppercase text-blue-400">Premise 1</span>
-                        <span className="text-sm text-slate-300">"Fruit has Vitamin C."</span>
-                    </div>
-                    <div className="p-3 bg-blue-900/10 border border-blue-500/20 rounded flex justify-between items-center">
-                        <span className="text-xs uppercase text-blue-400">Premise 2</span>
-                        <span className="text-sm text-slate-300">"Vitamin C is healthy."</span>
-                    </div>
+                <p className="text-slate-400 text-sm">
+                    Making a point is not enough. You must provide a reason for believing it. 
+                    The reader needs to know <span className="text-white font-bold">how you know this</span> or <span className="text-white font-bold">why you believe it</span>.
+                </p>
+                <div className="flex gap-2 items-center text-xs text-slate-500 font-mono">
+                    <AlertTriangle size={12} /> BAND 6: Confusing arguments vs Clear reasoning
                 </div>
             </div>
         )
     },
     {
-        id: "3.2", title: "Validity Lab", icon: <AlertTriangle size={48} className="text-red-500" />,
+        id: "3.2", title: "Evidence Trap", icon: <Mic size={48} className="text-red-500" />,
         content: (
             <div className="space-y-6">
                 <h3 className="text-2xl font-bold text-red-400">The "BBC" Trap</h3>
-                <div className="p-6 bg-slate-900 border-l-4 border-red-500 shadow-xl">
-                    <p className="text-lg italic text-slate-300 font-serif">
-                        "We should eat fruit. For example, a recent BBC documentary showed that 85% of people love apples."
+                <div className="p-6 bg-slate-900 border border-slate-700 rounded-xl">
+                    <p className="text-md text-slate-300 font-serif mb-4">
+                        "The government should encourage everyone to eat more fruit. <span className="text-red-400">For example, a BBC documentary showed that 85% of people eat fruit.</span>"
                     </p>
                 </div>
                 <div className="grid grid-cols-1 gap-4 text-sm text-slate-400">
-                    <div className="flex items-center gap-3"><X size={16} className="text-red-500"/> Does NOT explain <em>why</em> we should eat fruit.</div>
-                    <div className="flex items-center gap-3"><X size={16} className="text-red-500"/> "Invented facts" lower your score.</div>
-                    <div className="flex items-center gap-3"><CheckCircle2 size={16} className="text-emerald-500"/> Use logical reasons, not fake statistics.</div>
+                    <div className="flex items-start gap-3 p-3 bg-red-900/10 border border-red-500/20 rounded">
+                        <X size={16} className="text-red-500 mt-1 shrink-0"/> 
+                        <span>It presents a clearly invented fact.</span>
+                    </div>
+                    <div className="flex items-start gap-3 p-3 bg-red-900/10 border border-red-500/20 rounded">
+                        <X size={16} className="text-red-500 mt-1 shrink-0"/> 
+                        <span>It does NOT explain the previous point or help us believe it.</span>
+                    </div>
+                    <div className="flex items-center justify-center p-3 text-emerald-400 font-bold bg-emerald-900/10 border border-emerald-500/20 rounded">
+                        Valid arguments are logically connected.
+                    </div>
                 </div>
             </div>
         )
     },
     {
-        id: "3.3", title: "Logic Quiz", icon: <Brain size={48} className="text-cyan-500" />,
+        id: "3.3", title: "Validity Audit", icon: <CheckCircle2 size={48} className="text-emerald-500" />,
         content: (
-            <div className="space-y-6">
-                <h3 className="text-xl font-bold text-cyan-400">Valid or Invalid?</h3>
-                <div className="space-y-4">
+            <div className="space-y-4 h-full flex flex-col">
+                <h3 className="text-xl font-bold text-emerald-400 mb-2">Audit The Logic</h3>
+                <p className="text-xs text-slate-400">Identify valid arguments (logical connection) vs invalid (missing link).</p>
+                <div className="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
                     {[
-                        { q: "It is cloudy, so it might rain.", a: true },
-                        { q: "Many people hate sports because there are no gyms.", a: false },
-                        { q: "Phones distract drivers, so they should be banned while driving.", a: true }
+                        { q: "It is very cloudy, so there could be a storm soon.", a: true, reason: "Cloudy -> Storm is logical." },
+                        { q: "Student's results will increase when they have a peaceful place to study.", a: false, reason: "What about teachers/books? Too big a leap." },
+                        { q: "Mountain gorillas are an endangered species, so they could be extinct soon.", a: true, reason: "Endangered -> Extinction is logical." },
+                        { q: "Many people dislike sport because there are not many sports facilities.", a: false, reason: "Is that the only reason? Unlikely." },
+                        { q: "Phones distract drivers, so they should be illegal when driving.", a: true, reason: "Distraction -> Danger -> Illegal is logical." },
+                        { q: "Robots will replace humans in most jobs because there are jobs robots can't do.", a: false, reason: "Contradiction." }
                     ].map((item, i) => (
-                        <div key={i} className="p-4 bg-slate-900 border border-slate-700 rounded flex justify-between items-center group hover:bg-slate-800 transition-colors">
-                            <span className="text-xs text-slate-300 w-2/3">{item.q}</span>
-                            <div className="flex gap-2">
-                                <button className={`px-3 py-1 rounded text-[10px] font-bold ${item.a ? 'bg-emerald-600 text-white' : 'bg-slate-700 text-slate-500'}`}>VALID</button>
-                                <button className={`px-3 py-1 rounded text-[10px] font-bold ${!item.a ? 'bg-red-600 text-white' : 'bg-slate-700 text-slate-500'}`}>INVALID</button>
+                        <div key={i} className="p-3 bg-slate-900 border border-slate-700 rounded group hover:border-indigo-500 transition-all">
+                            <p className="text-xs text-slate-300 mb-3 font-serif">"{item.q}"</p>
+                            <div className="flex justify-between items-center">
+                                <div className="flex gap-2">
+                                    <button 
+                                        className="px-3 py-1 rounded text-[10px] font-bold bg-slate-800 text-slate-500 hover:bg-emerald-600 hover:text-white transition-colors focus:bg-emerald-600 focus:text-white"
+                                        title="Click if valid"
+                                    >
+                                        VALID
+                                    </button>
+                                    <button 
+                                        className="px-3 py-1 rounded text-[10px] font-bold bg-slate-800 text-slate-500 hover:bg-red-600 hover:text-white transition-colors focus:bg-red-600 focus:text-white"
+                                        title="Click if invalid"
+                                    >
+                                        INVALID
+                                    </button>
+                                </div>
+                                <span className="text-[10px] text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity text-right w-1/2">
+                                    {item.reason}
+                                </span>
                             </div>
                         </div>
                     ))}
@@ -489,92 +400,425 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
         )
     },
     {
-        id: "3.4", title: "Hedging", icon: <ShieldCheck size={48} className="text-emerald-500" />,
+        id: "3.4", title: "The Contradiction", icon: <Bot size={48} className="text-cyan-500" />,
         content: (
             <div className="space-y-6">
-                <h3 className="text-xl font-bold text-emerald-400">The Art of Hedging</h3>
-                <p className="text-sm text-slate-400">Avoid absolute statements. Band 9 writers use caution.</p>
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-red-900/10 border border-red-500/20 rounded">
-                        <div className="text-xs text-red-400 uppercase mb-2">Absolute (Dangerous)</div>
-                        <p className="text-sm text-slate-300">"Playing video games <strong>causes</strong> violence."</p>
-                    </div>
-                    <div className="p-4 bg-emerald-900/10 border border-emerald-500/20 rounded">
-                        <div className="text-xs text-emerald-400 uppercase mb-2">Hedged (Safe)</div>
-                        <p className="text-sm text-slate-300">"Playing video games <strong>can lead to</strong> aggressive behavior."</p>
-                    </div>
+                <h3 className="text-2xl font-bold text-cyan-400">Logic Crash</h3>
+                <div className="bg-slate-900 p-6 rounded-xl border border-red-500/30">
+                    <p className="text-sm text-slate-300 leading-relaxed font-serif">
+                        "Robots will eventually <span className="text-cyan-400 font-bold">replace humans</span> in most jobs. It is convenient... However, there are a wide range of jobs that <span className="text-red-400 font-bold">robots will never be able to do</span>."
+                    </p>
                 </div>
-                <div className="mt-4">
-                    <div className="text-xs text-slate-500 mb-2 font-mono">REWRITE THE SENTENCE:</div>
-                    <WordScramble 
-                        words={["tend", "Children", "copy", "to", "parents", "their"]}
-                        solution="Children tend to copy their parents"
-                    />
+                <div className="flex items-center gap-4 text-sm text-red-300 bg-red-950/30 p-4 rounded border border-red-500/20">
+                    <AlertTriangle size={20} />
+                    <span>Fatal Error: You cannot argue X will happen if you also argue X is impossible.</span>
+                </div>
+                <div className="bg-emerald-950/20 p-4 rounded border border-emerald-500/20">
+                    <div className="text-xs text-emerald-500 font-bold mb-2">THE FIX: CRITICAL THINKING</div>
+                    <p className="text-xs text-slate-400">
+                        "<span className="text-white font-bold">Some people believe</span> robots will replace humans... <span className="text-white font-bold">Nevertheless</span>, there are jobs robots will never do."
+                    </p>
                 </div>
             </div>
         )
     },
     {
-        id: "3.5", title: "Sector Mastery", icon: <Lightbulb size={48} className="text-white" />,
+        id: "3.5", title: "Bridging the Gap", icon: <Link size={48} className="text-indigo-400" />,
         content: (
-            <div className="flex flex-col items-center justify-center h-full space-y-8 text-center">
-                <h2 className="text-4xl font-black text-white">LOGIC SECURED</h2>
-                <div className="w-32 h-32 bg-purple-500/10 rounded-full flex items-center justify-center border-4 border-purple-500 shadow-[0_0_50px_rgba(168,85,247,0.4)] animate-pulse">
-                    <Brain size={64} className="text-purple-500" />
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-indigo-400">The Logical Leap</h3>
+                <div className="p-4 bg-slate-900 border-l-4 border-red-500">
+                    <p className="text-sm text-slate-400">
+                        "Students' results can increase if they have a peaceful place to study."
+                    </p>
+                    <span className="text-[10px] text-red-500 font-bold mt-1 block">TOO BIG A LEAP. EXPLAIN WHY.</span>
                 </div>
-                <p className="text-slate-400 max-w-md">
-                    Argumentation protocols updated. You can now build valid, hedged claims without resorting to invented evidence.
-                </p>
-                <button onClick={triggerReward} className="px-8 py-3 bg-purple-600 hover:bg-purple-500 text-white font-black uppercase tracking-widest rounded-full transition-all hover:scale-105 shadow-lg shadow-purple-600/20">
-                    Finalize Module
-                </button>
+                <div className="flex justify-center">
+                    <ArrowDown size={24} className="text-slate-600 animate-bounce" />
+                </div>
+                <div className="p-4 bg-slate-900 border-l-4 border-emerald-500">
+                    <p className="text-sm text-slate-300">
+                        "The environment we study in is important. If there is too much noise, it can be very difficult to concentrate. <span className="text-emerald-400 font-bold">In fact, even making sure that students have a peaceful place to study can improve their results.</span>"
+                    </p>
+                </div>
             </div>
         )
     },
 
-    // === SECTOR 4: EXECUTION ===
+    // === SECTOR 4: LANGUAGE PRECISION ===
     {
-        id: "4.1", title: "Circle Drill", icon: <RefreshCcw size={48} className="text-slate-300" />,
+        id: "4.1", title: "Precision Check", icon: <Activity size={48} className="text-orange-500" />,
         content: (
-            <div className="space-y-8">
-                <h3 className="text-2xl font-bold text-white">Homework Protocol</h3>
-                <div className="bg-slate-900 p-8 rounded-xl border border-slate-700 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-5"><Activity size={100}/></div>
-                    <ol className="list-decimal space-y-4 text-slate-300 pl-4 relative z-10">
-                        <li>Take a previous essay.</li>
-                        <li>Circle every connecting word (<em>However, Furthermore</em>).</li>
-                        <li><strong>Check:</strong> Are there >2 sentences without a circle?</li>
-                        <li>If <strong className="text-emerald-400">YES</strong>, did you use Referencing?</li>
-                        <li>If <strong className="text-red-400">NO</strong>, you are practicing Band 6 Coherence. <span className="bg-red-900/50 text-red-200 px-2 py-1 rounded text-xs font-bold">FIX IT.</span></li>
-                    </ol>
+            <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-orange-400">Grammar vs. Clarity</h3>
+                <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                    <p className="text-lg text-slate-300 font-serif italic">
+                        "Primary level children are more sharp and their grasping power to learn something new is fast."
+                    </p>
+                </div>
+                <div className="text-sm text-slate-400">
+                    <span className="text-emerald-400 font-bold">Verdict:</span> Clear idea, but poor grammar.
+                    <br/>
+                    <span className="text-red-400 font-bold">Verdict:</span> "Hence, it is convenient for them to influence people for any service." -> <span className="text-white">Unintelligible.</span>
+                </div>
+                <div className="p-4 bg-orange-950/20 border border-orange-500/20 rounded text-center">
+                    <p className="text-xs text-orange-300 font-mono">
+                        PROTOCOL: IF GRAMMAR OBSCURES MEANING, BAND SCORE DROPS BELOW 6.
+                    </p>
                 </div>
             </div>
         )
     },
     {
-        id: "4.2", title: "Analysis", icon: <Search size={48} className="text-indigo-400" />,
+        id: "4.2", title: "Extreme Hazard", icon: <AlertOctagon size={48} className="text-red-500" />,
         content: (
-            <div className="h-full flex flex-col">
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="font-bold text-white">Band 9 Paragraph Scan</h3>
-                    <div className="text-xs font-mono text-emerald-400 bg-emerald-900/20 px-2 py-1 rounded border border-emerald-500/30">SCANNING...</div>
+            <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-red-400">Catastrophic Language</h3>
+                <p className="text-sm text-slate-400">Band 6.5 essays often feature "extreme" adjectives that don't fit.</p>
+                
+                <div className="bg-slate-900 p-4 border-l-4 border-red-500">
+                    <p className="text-sm text-slate-300">"On the societal level, the results may be <span className="text-red-400 font-bold underline">catastrophic</span> if this is the case."</p>
                 </div>
-                <div className="flex-1 bg-slate-900 rounded-xl p-1 border border-slate-800 overflow-hidden">
-                    <div className="h-full overflow-y-auto p-4 custom-scrollbar">
-                         <p className="text-sm text-slate-400 mb-4 font-mono">FIND: [connectors] [referencing] [hedging]</p>
-                         <div className="font-serif text-lg leading-loose text-slate-300">
-                             "Ideally, everyone would have access to free healthcare. <span className="bg-indigo-900/50 text-indigo-300 px-1 rounded border border-indigo-500/30">However</span>, <span className="bg-yellow-900/50 text-yellow-300 px-1 rounded border border-yellow-500/30">this ideal</span> is often difficult to achieve due to funding constraints. <span className="bg-indigo-900/50 text-indigo-300 px-1 rounded border border-indigo-500/30">Consequently</span>, governments <span className="bg-emerald-900/50 text-emerald-300 px-1 rounded border border-emerald-500/30">tend to</span> prioritize emergency services."
-                         </div>
+
+                <div className="p-4 bg-slate-800 rounded text-xs text-slate-400">
+                    <strong className="text-white">Context:</strong> Buying the same things in different countries.
+                    <br/><br/>
+                    Is this a sudden event causing great destruction? <span className="text-red-400 font-bold">NO.</span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center p-2 bg-red-900/10 rounded text-red-400 text-xs line-through decoration-red-500">Disastrous</div>
+                    <div className="text-center p-2 bg-emerald-900/10 rounded text-emerald-400 text-xs font-bold">Problematic / Concerning</div>
+                </div>
+            </div>
+        )
+    },
+
+    // === SECTOR 5: ARGUMENT PATTERNS ===
+    {
+        id: "5.1", title: "Pattern A: Add", icon: <Layers size={48} className="text-blue-400" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-blue-400">Arguing by Addition</h3>
+                <p className="text-xs text-slate-400">Building a wall of reasons. Use specific signposts.</p>
+                
+                <div className="space-y-2">
+                    <div className="flex items-center gap-3 p-3 bg-slate-900 rounded border border-slate-700">
+                        <span className="text-blue-500 font-black font-mono">01</span>
+                        <div className="text-sm text-slate-300"><span className="text-blue-400 font-bold">Firstly</span>, the money can be used for roads...</div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-slate-900 rounded border border-slate-700">
+                        <span className="text-blue-500 font-black font-mono">02</span>
+                        <div className="text-sm text-slate-300"><span className="text-blue-400 font-bold">Secondly</span>, existing infrastructure can be repaired.</div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-slate-900 rounded border border-slate-700">
+                        <span className="text-blue-500 font-black font-mono">03</span>
+                        <div className="text-sm text-slate-300"><span className="text-blue-400 font-bold">Finally</span>, funds are needed for public salaries.</div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-blue-900/20 rounded border border-blue-500/30">
+                        <span className="text-blue-400 font-black font-mono">>></span>
+                        <div className="text-sm text-white"><span className="text-blue-400 font-bold">Thus</span>, taxes help make the community safer.</div>
                     </div>
                 </div>
             </div>
         )
     },
     {
-        id: "4.3", title: "Synthesis", icon: <CheckCircle2 size={48} className="text-white" />,
+        id: "5.2", title: "Pattern B: Emphasis", icon: <Zap size={48} className="text-yellow-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-yellow-400">Arguing by Emphasis</h3>
+                <p className="text-xs text-slate-400">When one reason is more important than others.</p>
+                
+                <div className="bg-slate-900 p-6 rounded-xl border border-yellow-500/30 relative">
+                    <div className="absolute top-2 right-2 text-yellow-500/20 font-black text-6xl">!</div>
+                    <p className="text-sm text-slate-300 leading-loose">
+                        "Money can be used for roads or hospitals. <span className="text-yellow-400 font-bold">More importantly</span>, these funds are needed to pay salaries. Thus, taxes <span className="text-yellow-400 font-bold">not only</span> help improve the community <span className="text-yellow-400 font-bold">but also</span> make it safer."
+                    </p>
+                </div>
+
+                <div className="flex gap-2 justify-center text-xs font-mono text-slate-500">
+                    <span>Moreover</span> • <span>Furthermore</span> • <span>Even more importantly</span>
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "5.3", title: "Tone Analysis", icon: <Mic size={48} className="text-purple-400" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-purple-400">Tone: Essay vs News</h3>
+                <div className="grid grid-cols-1 gap-4">
+                    <div className="p-4 bg-slate-900 border-l-4 border-slate-500 opacity-60">
+                        <h4 className="text-xs uppercase text-slate-500 mb-1">Version 1 (Robotic)</h4>
+                        <p className="text-xs text-slate-400">"Taxes are collected. Roads are built. Infrastructure is repaired. Salaries are paid."</p>
+                        <div className="text-[9px] mt-2 text-slate-600">SOUNDS LIKE A LIST. HARD TO READ.</div>
+                    </div>
+                    <div className="p-4 bg-purple-900/10 border-l-4 border-purple-500">
+                        <h4 className="text-xs uppercase text-purple-400 mb-1">Version 2 (Cohesive)</h4>
+                        <p className="text-xs text-slate-300">"Taxes are collected <span className="text-purple-400">so that</span> roads can be built... <span className="text-purple-400">Furthermore</span>, funds are needed..."</p>
+                        <div className="text-[9px] mt-2 text-purple-300">SOUNDS LIKE A BAND 9 ARGUMENT.</div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // === SECTOR 6: CHAIN REACTIONS ===
+    {
+        id: "6.1", title: "Domino Effect", icon: <Layers size={48} className="text-cyan-500" />,
+        content: (
+            <div className="flex flex-col h-full space-y-6">
+                <div className="flex items-center gap-4">
+                    <div className="p-3 bg-cyan-900/20 rounded-lg text-cyan-400"><Database size={24}/></div>
+                    <div>
+                        <h3 className="text-xl font-bold text-white">Cause & Effect Chains</h3>
+                        <p className="text-xs text-slate-400 font-mono">LOGICAL PROGRESSION</p>
+                    </div>
+                </div>
+
+                <div className="flex-1 flex flex-col justify-center gap-2">
+                    {[
+                        { txt: "Lack of houses", col: "border-slate-600" },
+                        { txt: "Increased homelessness", col: "border-cyan-700" },
+                        { txt: "Problem for charities", col: "border-cyan-500" },
+                        { txt: "Pressure on food/shelter", col: "border-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.3)]" }
+                    ].map((item, i) => (
+                        <div key={i} className="flex flex-col items-center">
+                            <div className={`w-full max-w-sm p-3 bg-slate-900 border-2 ${item.col} rounded-lg text-center text-slate-300 text-sm font-bold transition-transform hover:scale-105`}>
+                                {item.txt}
+                            </div>
+                            {i < 3 && <div className="h-4 w-0.5 bg-slate-700 my-1"></div>}
+                        </div>
+                    ))}
+                </div>
+                
+                <div className="text-center text-[10px] text-slate-500 font-mono">
+                    USE: "This means that..." / "This causes..." / "As a result..." / "In turn..."
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "6.2", title: "Speculation", icon: <Lightbulb size={48} className="text-yellow-300" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-yellow-300">Speculation Protocol</h3>
+                <p className="text-sm text-slate-400">Do not state predictions as facts unless certain. Use modals.</p>
+                
+                <div className="grid grid-cols-1 gap-3">
+                    <div className="p-4 bg-slate-900 rounded border border-slate-700 flex justify-between items-center">
+                        <span className="text-sm text-slate-300">"The action <strong>already</strong> happens regularly."</span>
+                        <span className="text-xs font-bold text-emerald-500 bg-emerald-900/20 px-2 py-1 rounded">Present Tense</span>
+                    </div>
+                    <div className="p-4 bg-slate-900 rounded border border-slate-700 flex justify-between items-center">
+                        <span className="text-sm text-slate-300">"The action is <strong>possible</strong> in future."</span>
+                        <span className="text-xs font-bold text-yellow-500 bg-yellow-900/20 px-2 py-1 rounded">Could / May / Might</span>
+                    </div>
+                    <div className="p-4 bg-slate-900 rounded border border-slate-700 flex justify-between items-center">
+                        <span className="text-sm text-slate-300">"The action is <strong>definite</strong>."</span>
+                        <span className="text-xs font-bold text-red-500 bg-red-900/20 px-2 py-1 rounded">Will</span>
+                    </div>
+                </div>
+                <div className="bg-yellow-900/10 p-4 rounded text-center border border-yellow-500/20">
+                    <p className="text-xs text-yellow-200">
+                        "If the government built more housing, this <span className="font-bold underline">could</span> improve the situation." (Conditional)
+                    </p>
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "6.3", title: "Prediction Drill", icon: <FastForward size={48} className="text-indigo-400" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-indigo-400">Tense Check</h3>
+                <p className="text-sm text-slate-400">Match the sentence to the meaning.</p>
+                <GapFill 
+                    textWithGaps="1. If the government helps, this [gap] solve the problem. (Definite) / 2. Homeless people [gap] free accommodation. (Regularly) / 3. Very few people [gap] be upset if taxes increased. (Possible)"
+                    answers={["will", "are given", "would"]}
+                    hints={["definite result", "present passive", "conditional"]}
+                />
+            </div>
+        )
+    },
+
+    // === SECTOR 8: LOGIC TRAPS (NEW) ===
+    {
+        id: "8.1", title: "Assumption Jump", icon: <Footprints size={48} className="text-pink-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-pink-400">The "John" Fallacy</h3>
+                <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                    <p className="text-lg text-slate-300 font-serif mb-4">
+                        "John has arrived late for work every day this week. <span className="text-pink-400 font-bold bg-pink-900/20 px-1">Clearly, he is not committed to his job.</span>"
+                    </p>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 bg-slate-900 border border-slate-700 rounded text-center">
+                        <div className="text-xs text-slate-500 uppercase mb-2">Fact</div>
+                        <div className="text-emerald-400 font-mono">LATE ARRIVAL</div>
+                    </div>
+                    <div className="p-4 bg-slate-900 border border-slate-700 rounded text-center">
+                        <div className="text-xs text-slate-500 uppercase mb-2">Conclusion</div>
+                        <div className="text-red-400 font-mono">LAZY / UNCOMMITTED</div>
+                    </div>
+                </div>
+                <div className="p-4 bg-pink-900/20 border border-pink-500/20 rounded text-center text-sm text-pink-200">
+                    <AlertTriangle size={16} className="inline mr-2" />
+                    ERROR: JUMPING TO CONCLUSION. (Could be traffic, illness, family).
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "8.2", title: "Perspective Drift", icon: <Glasses size={48} className="text-cyan-400" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-cyan-400">The "Driving" Error</h3>
+                <p className="text-sm text-slate-400">Essay Topic: "People spend too much time travelling to work."</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="p-4 bg-red-900/10 border border-red-500/30 rounded opacity-70">
+                        <h4 className="text-xs uppercase text-red-400 mb-2 font-bold">Candidate's Draft</h4>
+                        <p className="text-xs text-slate-300 leading-relaxed">
+                            "Fossil fuels are being depleted. By 2050 resources will be used up. Driving more means more carbon emissions."
+                        </p>
+                        <div className="mt-2 text-[10px] text-red-400 font-mono">PROBLEM: TOPIC WAS 'TRAVELLING', NOT 'DRIVING'.</div>
+                    </div>
+                    <div className="p-4 bg-emerald-900/10 border border-emerald-500/30 rounded">
+                        <h4 className="text-xs uppercase text-emerald-400 mb-2 font-bold">Corrected Version</h4>
+                        <p className="text-xs text-slate-300 leading-relaxed">
+                            "<span className="text-emerald-400 font-bold">In my country, the vast majority of people drive.</span> Therefore, spending more time travelling means they are driving more."
+                        </p>
+                        <div className="mt-2 text-[10px] text-emerald-400 font-mono">FIX: CLARIFY PERSPECTIVE ("In my country...").</div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "8.3", title: "Butterfly Fallacy", icon: <Wind size={48} className="text-orange-400" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-orange-400">Trivial to Extreme</h3>
+                <div className="flex flex-col items-center gap-4">
+                    <div className="p-4 bg-slate-900 border border-slate-700 rounded-xl w-full text-center">
+                        <p className="text-sm text-slate-300">"Buying a Zara handbag"</p>
+                        <div className="text-[10px] text-slate-500 uppercase mt-1">TRIVIAL ACTION</div>
+                    </div>
+                    <ArrowDown size={24} className="text-slate-600" />
+                    <div className="p-4 bg-slate-900 border border-slate-700 rounded-xl w-full text-center">
+                        <p className="text-sm text-slate-300">"Saves money -> No need to fly to US"</p>
+                        <div className="text-[10px] text-slate-500 uppercase mt-1">LOGICAL STEP?</div>
+                    </div>
+                    <ArrowDown size={24} className="text-slate-600" />
+                    <div className="p-4 bg-red-900/20 border border-red-500/50 rounded-xl w-full text-center shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+                        <p className="text-lg font-bold text-red-400">"GLOBAL TOURISM COLLAPSE"</p>
+                        <div className="text-[10px] text-red-300 uppercase mt-1">EXTREME CONCLUSION</div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // === SECTOR 9: EVIDENCE PROTOCOLS (NEW) ===
+    {
+        id: "9.1", title: "Template Stat", icon: <FileX size={48} className="text-red-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-red-400">The "Fake Stat" Trap</h3>
+                <div className="bg-slate-900 p-6 rounded-xl border-l-4 border-red-500">
+                    <p className="text-sm text-slate-300 leading-relaxed font-serif">
+                        "To tackle this problem... corporate tax incentive. <span className="text-red-400 font-bold bg-red-900/20">For example, a similar initiative was launched by the United States government in San Francisco, which has resulted in Tesla's yearly corporate taxes to reduce by 35%.</span>"
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 gap-2 text-sm text-slate-400">
+                    <div className="flex items-center gap-2 text-red-300"><X size={14}/> <span>Clearly invented statistic.</span></div>
+                    <div className="flex items-center gap-2 text-red-300"><X size={14}/> <span>"Template" style filling.</span></div>
+                    <div className="flex items-center gap-2 text-red-300"><X size={14}/> <span>Does not explain the main idea.</span></div>
+                </div>
+                <div className="text-center text-xs text-slate-500 font-mono mt-4">
+                    REAL EXAMPLES DO NOT NEED FAKE NUMBERS. THEY NEED LOGIC.
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "9.2", title: "Echo Loop", icon: <Repeat size={48} className="text-purple-400" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-purple-400">Circular Examples</h3>
+                <div className="flex flex-col gap-4">
+                    <div className="p-4 bg-slate-900 rounded border border-slate-700">
+                        <div className="text-xs text-slate-500 uppercase mb-1">Claim</div>
+                        <p className="text-sm text-white">"If good transport is provided, people will use public transport."</p>
+                    </div>
+                    <div className="p-4 bg-purple-900/10 rounded border border-purple-500/30">
+                        <div className="text-xs text-purple-400 uppercase mb-1">Bad Example</div>
+                        <p className="text-sm text-purple-100">"For example, if fast metro trains are provided, people will go to school by metro."</p>
+                    </div>
+                </div>
+                <div className="p-4 bg-emerald-900/10 rounded border border-emerald-500/30 mt-2">
+                    <div className="text-xs text-emerald-400 uppercase mb-1">Correction</div>
+                    <p className="text-sm text-emerald-100">"For example, cities like <span className="font-bold">London and Tokyo</span> see high usage because the network covers all major destinations."</p>
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "9.3", title: "Macro/Micro", icon: <ZoomIn size={48} className="text-teal-400" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-teal-400">General Idea vs Specific Evidence</h3>
+                <p className="text-sm text-slate-400">Sort the concepts.</p>
+                <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <div className="text-xs font-bold text-slate-500 text-center uppercase">General (Idea)</div>
+                        <div className="p-3 bg-slate-800 rounded text-center text-xs text-slate-300">Government collects taxes</div>
+                        <div className="p-3 bg-slate-800 rounded text-center text-xs text-slate-300">Population exceeds housing</div>
+                    </div>
+                    <div className="space-y-2">
+                        <div className="text-xs font-bold text-teal-500 text-center uppercase">Specific (Evidence)</div>
+                        <div className="p-3 bg-teal-900/20 border border-teal-500/30 rounded text-center text-xs text-teal-200">Pay police/firefighter salaries</div>
+                        <div className="p-3 bg-teal-900/20 border border-teal-500/30 rounded text-center text-xs text-teal-200">Increased homelessness</div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "9.4", title: "The Pivot", icon: <Shuffle size={48} className="text-indigo-400" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-indigo-400">Reversing the Flow</h3>
+                <p className="text-sm text-slate-400">You can structure arguments in two directions.</p>
+                
+                <div className="space-y-4">
+                    <div className="p-4 bg-slate-900 border-l-4 border-indigo-500">
+                        <div className="text-xs text-indigo-400 font-bold mb-1">Standard Flow</div>
+                        <p className="text-sm text-white">"Taxes help improve the community. <span className="text-indigo-400 font-bold">For example</span>, the funds are used to pay salaries..."</p>
+                        <div className="text-[10px] text-slate-500 mt-1 font-mono">IDEA -> EXAMPLE</div>
+                    </div>
+                    
+                    <div className="flex justify-center"><RefreshCcw size={16} className="text-slate-600"/></div>
+
+                    <div className="p-4 bg-slate-900 border-l-4 border-emerald-500">
+                        <div className="text-xs text-emerald-400 font-bold mb-1">Reverse Flow</div>
+                        <p className="text-sm text-white">"These funds are used to pay the salaries of government workers. <span className="text-emerald-400 font-bold">Thus</span>, taxes help improve the community..."</p>
+                        <div className="text-[10px] text-slate-500 mt-1 font-mono">EVIDENCE -> CONCLUSION (THUS)</div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // === SECTOR 10: COMPLETION ===
+    {
+        id: "10.1", title: "Mastery Synthesis", icon: <CheckCircle2 size={48} className="text-white" />,
         content: (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
-                <h2 className="text-5xl font-black text-white">SYSTEM COMPLETE</h2>
+                <h2 className="text-5xl font-black text-white">TASK 2 SECURED</h2>
                 <div className="w-40 h-40 bg-gradient-to-tr from-indigo-500 to-emerald-600 rounded-full flex items-center justify-center shadow-[0_0_80px_rgba(16,185,129,0.4)] animate-spin-slow">
                     <div className="w-36 h-36 bg-[#050505] rounded-full flex items-center justify-center">
                         <Trophy size={64} className="text-white" />
@@ -582,16 +826,24 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
                 </div>
                 <div className="grid grid-cols-2 gap-4 w-full max-w-lg">
                     <div className="p-4 bg-slate-900 border border-slate-800 rounded">
-                        <div className="text-xs text-slate-500 uppercase">Logic</div>
-                        <div className="text-emerald-500 font-bold">VERIFIED</div>
+                        <div className="text-xs text-slate-500 uppercase">Reasoning</div>
+                        <div className="text-emerald-500 font-bold">VALIDATED</div>
                     </div>
                     <div className="p-4 bg-slate-900 border border-slate-800 rounded">
-                        <div className="text-xs text-slate-500 uppercase">Coherence</div>
-                        <div className="text-emerald-500 font-bold">OPTIMIZED</div>
+                        <div className="text-xs text-slate-500 uppercase">Tone</div>
+                        <div className="text-emerald-500 font-bold">ACADEMIC</div>
+                    </div>
+                    <div className="p-4 bg-slate-900 border border-slate-800 rounded">
+                        <div className="text-xs text-slate-500 uppercase">Logic</div>
+                        <div className="text-emerald-500 font-bold">SURGICAL</div>
+                    </div>
+                    <div className="p-4 bg-slate-900 border border-slate-800 rounded">
+                        <div className="text-xs text-slate-500 uppercase">Evidence</div>
+                        <div className="text-emerald-500 font-bold">PROOFED</div>
                     </div>
                 </div>
                 <button onClick={triggerReward} className="mt-8 px-10 py-4 bg-white text-black font-black uppercase tracking-[0.2em] rounded-full hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.5)]">
-                    Finalize & Sync
+                    Sync to Core
                 </button>
             </div>
         )
@@ -599,7 +851,7 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
   ];
 
   const slide = slides[currentSlide];
-  const sectorColor = slide.id.startsWith("1") ? "amber" : slide.id.startsWith("2") ? "teal" : slide.id.startsWith("3") ? "purple" : "indigo";
+  const sectorColor = slide.id.startsWith("1") ? "amber" : slide.id.startsWith("2") ? "teal" : slide.id.startsWith("3") ? "purple" : slide.id.startsWith("4") ? "orange" : slide.id.startsWith("5") ? "blue" : slide.id.startsWith("6") ? "cyan" : slide.id.startsWith("8") ? "pink" : slide.id.startsWith("9") ? "red" : "emerald";
   const progress = ((currentSlide + 1) / slides.length) * 100;
 
   return (
@@ -630,7 +882,7 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
                  </button>
                  <div className="h-8 w-px bg-slate-800"></div>
                  <div>
-                     <h1 className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.2em] mb-1">Logic Protocol</h1>
+                     <h1 className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.2em] mb-1">Nexus Protocol</h1>
                      <div className="text-white font-bold text-sm flex items-center gap-2">
                          <span className={`w-2 h-2 rounded-full bg-${sectorColor}-500 animate-pulse`}></span>
                          {slide.id} // {slide.title}
@@ -672,7 +924,7 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
                     <div className="space-y-1">
                         {slides.map((s, i) => {
                              const isActive = currentSlide === i;
-                             const sCol = s.id.startsWith("1") ? "amber" : s.id.startsWith("2") ? "teal" : s.id.startsWith("3") ? "purple" : "indigo";
+                             const sCol = s.id.startsWith("1") ? "amber" : s.id.startsWith("2") ? "teal" : s.id.startsWith("3") ? "purple" : s.id.startsWith("4") ? "orange" : s.id.startsWith("5") ? "blue" : s.id.startsWith("6") ? "cyan" : s.id.startsWith("8") ? "pink" : s.id.startsWith("9") ? "red" : "emerald";
                              return (
                                 <button
                                     key={i}
