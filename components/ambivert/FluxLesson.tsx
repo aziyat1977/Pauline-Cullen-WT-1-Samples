@@ -1,7 +1,4 @@
 
-
-
-
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon, ArrowLeft, Zap, Gamepad2, Terminal, ChevronRight, X, ArrowRight, CheckCircle, RefreshCw } from 'lucide-react';
 import Chart3D from '../features/Chart3D';

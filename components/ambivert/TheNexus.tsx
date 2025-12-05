@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { ArrowLeft, Menu, Activity, Moon, Sun, Layers, Network, Zap, Brain, Cpu, Radio, X, Swords, Trophy, Play, Fish, Coffee, Factory, RefreshCcw, Map, BookOpenCheck } from 'lucide-react';
+import { ArrowLeft, Menu, Activity, Moon, Sun, Layers, Network, Zap, Brain, Cpu, Radio, X, Swords, Trophy, Play, Fish, Coffee, Factory, RefreshCcw, Map, BookOpenCheck, Lock } from 'lucide-react';
 import FluxLesson from './FluxLesson';
 import NexusCanvas from '../features/NexusCanvas';
 import CoreInterface from './CoreInterface';
@@ -19,6 +20,9 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
   const [surgicalDrill, setSurgicalDrill] = useState<any | null>(null);
   const [activeArenaQuiz, setActiveArenaQuiz] = useState<number | null>(null);
   
+  // 3D Tilt State
+  const [tilt, setTilt] = useState<{id: string, x: number, y: number} | null>(null);
+
   // Connect to C.O.R.E.
   const { track } = useSuperAI();
   
@@ -26,69 +30,89 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
       track('ENTER_NEXUS', { type: 'general', result: 'neutral' });
   }, []);
 
+  const handleMouseMove = (e: React.MouseEvent, id: string) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) - 0.5;
+      const y = ((e.clientY - rect.top) / rect.height) - 0.5;
+      setTilt({ id, x: x * 10, y: y * -10 }); // Multiplier for intensity
+  };
+
+  const handleMouseLeave = () => {
+      setTilt(null);
+  }
+
   const modules = [
     { 
         id: 'class', 
         title: 'MASTER CLASS', 
         solarDesc: 'Tactical theory & error elimination.',
         lunarDesc: 'Deep protocol analysis.',
-        icon: <BookOpenCheck size={20} />
+        icon: <BookOpenCheck size={20} />,
+        locked: false
     },
     { 
         id: 'flight', 
         title: 'Flight Data', 
-        solarDesc: 'Fast-paced data identification training.',
-        lunarDesc: 'Deep structural analysis and logic.',
-        icon: <Activity size={20} />
+        solarDesc: 'Data identification training.',
+        lunarDesc: 'Structural analysis logic.',
+        icon: <Activity size={20} />,
+        locked: false
     },
     { 
         id: 'housing', 
         title: 'Tenure Trends', 
-        solarDesc: 'Interactive demographic shifting.',
-        lunarDesc: 'Sociological trend deconstruction.',
-        icon: <Layers size={20} />
+        solarDesc: 'Demographic shifting.',
+        lunarDesc: 'Trend deconstruction.',
+        icon: <Layers size={20} />,
+        locked: false
     },
     { 
         id: 'transport', 
         title: 'Emission Stats', 
-        solarDesc: 'Rapid magnitude comparison.',
-        lunarDesc: 'Environmental impact logic mapping.',
-        icon: <Network size={20} />
+        solarDesc: 'Magnitude comparison.',
+        lunarDesc: 'Impact logic mapping.',
+        icon: <Network size={20} />,
+        locked: false
     },
     { 
         id: 'fish', 
         title: 'Fish Consumption', 
         solarDesc: 'Multi-line trend tracking.',
-        lunarDesc: 'Complex dietary shift analysis.',
-        icon: <Fish size={20} />
+        lunarDesc: 'Dietary shift analysis.',
+        icon: <Fish size={20} />,
+        locked: false
     },
     { 
         id: 'tea', 
         title: 'Tea Sales', 
-        solarDesc: '5-Country comparison drill.',
-        lunarDesc: 'Market fluctuation logic.',
-        icon: <Coffee size={20} />
+        solarDesc: '5-Country comparison.',
+        lunarDesc: 'Fluctuation logic.',
+        icon: <Coffee size={20} />,
+        locked: false
     },
     { 
         id: 'sugar', 
         title: 'Sugar Process', 
-        solarDesc: 'Sequential flow identification.',
-        lunarDesc: 'Manufacturing vocabulary matrix.',
-        icon: <Factory size={20} />
+        solarDesc: 'Sequential flow ID.',
+        lunarDesc: 'Manufacturing matrix.',
+        icon: <Factory size={20} />,
+        locked: false
     },
     { 
         id: 'salmon', 
         title: 'Salmon Life Cycle', 
-        solarDesc: 'Cyclical biological phases.',
-        lunarDesc: 'Natural process descriptive logic.',
-        icon: <RefreshCcw size={20} />
+        solarDesc: 'Cyclical biology.',
+        lunarDesc: 'Descriptive logic.',
+        icon: <RefreshCcw size={20} />,
+        locked: false
     },
     { 
         id: 'sports', 
         title: 'Sports Centre', 
-        solarDesc: 'Before/After map comparison.',
-        lunarDesc: 'Infrastructure redevelopment analysis.',
-        icon: <Map size={20} />
+        solarDesc: 'Map comparison.',
+        lunarDesc: 'Redevelopment analysis.',
+        icon: <Map size={20} />,
+        locked: false
     }
   ];
 
@@ -111,7 +135,7 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
     if (currentIndex >= 0 && currentIndex < modules.length - 1) {
         setActiveModuleId(modules[currentIndex + 1].id);
     } else {
-        setActiveModuleId(null); // Loop back to Hub if at end
+        setActiveModuleId(null); 
     }
   };
 
@@ -120,7 +144,7 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
     if (currentIndex > 0) {
         setActiveModuleId(modules[currentIndex - 1].id);
     } else {
-        setActiveModuleId(null); // Return to Hub if at start
+        setActiveModuleId(null);
     }
   };
 
@@ -147,7 +171,7 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-teal-500 selection:text-white relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-teal-500 selection:text-white relative overflow-hidden perspective-2000">
         {/* Animated Background */}
         <NexusCanvas />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#020617_90%)] pointer-events-none z-0"></div>
@@ -230,7 +254,7 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
 
         <div className="max-w-7xl mx-auto px-6 py-8 relative z-10 flex flex-col min-h-screen">
             {/* Header */}
-            <header className="flex justify-between items-start mb-12 border-b border-slate-800/50 pb-6">
+            <header className="flex justify-between items-start mb-12 border-b border-slate-800/50 pb-6 backdrop-blur-sm sticky top-0 z-40 bg-slate-950/80">
                 <div className="flex flex-col gap-4">
                      <div className="flex items-center gap-6">
                         {onOpenMenu && (
@@ -244,7 +268,7 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
                         </button>
                     </div>
                     <div className="animate-fade-in-up">
-                        <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter mb-1">
+                        <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter mb-1 drop-shadow-lg">
                             THE <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400 animate-pulse-glow">NEXUS</span>
                         </h1>
                         <p className="text-sm font-mono text-teal-500/60 uppercase tracking-widest flex items-center gap-2">
@@ -275,73 +299,93 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
                 {/* Modules Grid */}
                 <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 content-start animate-fade-in-up stagger-1">
-                    {modules.map((mod, idx) => (
-                        <div 
-                            key={mod.id} 
-                            className={`group relative bg-slate-900/40 border rounded-sm overflow-hidden transition-all duration-500 flex flex-col backdrop-blur-sm ${mod.id === 'class' ? 'border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.1)]' : 'border-slate-800 hover:border-teal-500/30'}`}
-                        >
-                            <div className={`p-6 border-b transition-colors ${mod.id === 'class' ? 'bg-amber-900/10 border-amber-900/30' : 'border-slate-800 group-hover:bg-slate-800/30'}`}>
-                                <div className="flex justify-between items-start mb-4">
-                                    <div className={`w-10 h-10 rounded flex items-center justify-center shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] border ${mod.id === 'class' ? 'bg-amber-950 text-amber-400 border-amber-800' : 'bg-slate-950 text-teal-500 border-slate-800'}`}>
-                                        {mod.icon}
+                    {modules.map((mod, idx) => {
+                        const isHovered = tilt?.id === mod.id;
+                        const tX = isHovered ? tilt.y : 0; // rotateX
+                        const tY = isHovered ? tilt.x : 0; // rotateY
+
+                        return (
+                            <div 
+                                key={mod.id}
+                                onMouseMove={(e) => handleMouseMove(e, mod.id)}
+                                onMouseLeave={handleMouseLeave}
+                                style={{
+                                    transform: `perspective(1000px) rotateX(${tX}deg) rotateY(${tY}deg) scale(${isHovered ? 1.02 : 1})`,
+                                    transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.5s ease-out'
+                                }}
+                                className={`group relative bg-slate-900/40 border rounded-xl overflow-hidden flex flex-col backdrop-blur-sm transform-style-3d shadow-2xl ${mod.locked ? 'opacity-50 grayscale' : ''} ${mod.id === 'class' ? 'border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.1)]' : 'border-slate-800 hover:border-teal-500/30'}`}
+                            >
+                                {/* Holographic Sheen */}
+                                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10" style={{ transform: 'translateZ(20px)' }}></div>
+
+                                <div className={`p-6 border-b transition-colors relative z-0 ${mod.id === 'class' ? 'bg-amber-900/10 border-amber-900/30' : 'border-slate-800 group-hover:bg-slate-800/30'}`}>
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className={`w-10 h-10 rounded flex items-center justify-center shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] border ${mod.id === 'class' ? 'bg-amber-950 text-amber-400 border-amber-800' : 'bg-slate-950 text-teal-500 border-slate-800'}`}>
+                                            {mod.locked ? <Lock size={16} /> : mod.icon}
+                                        </div>
+                                        <span className={`font-mono text-[9px] px-2 py-1 rounded border ${mod.id === 'class' ? 'bg-amber-950 text-amber-500 border-amber-800' : 'bg-slate-950 text-slate-600 border-slate-800'}`}>{mod.id === 'class' ? 'PRIORITY' : `SEC_0${idx+1}`}</span>
                                     </div>
-                                    <span className={`font-mono text-[9px] px-2 py-1 rounded border ${mod.id === 'class' ? 'bg-amber-950 text-amber-500 border-amber-800' : 'bg-slate-950 text-slate-600 border-slate-800'}`}>{mod.id === 'class' ? 'PRIORITY' : `SEC_0${idx+1}`}</span>
+                                    <h3 className={`text-xl font-bold mb-1 transition-colors ${mod.id === 'class' ? 'text-amber-100' : 'text-slate-200 group-hover:text-white'}`}>{mod.title}</h3>
                                 </div>
-                                <h3 className={`text-xl font-bold mb-1 transition-colors ${mod.id === 'class' ? 'text-amber-100' : 'text-slate-200 group-hover:text-white'}`}>{mod.title}</h3>
-                            </div>
 
-                            <div className="flex-1 flex flex-col divide-y divide-slate-800">
-                                <button 
-                                    onClick={() => setActiveModuleId(mod.id)}
-                                    className="flex-1 p-6 hover:bg-amber-500/5 transition-all text-left flex flex-col justify-center group/solar relative overflow-hidden"
-                                >
-                                    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-amber-500 opacity-0 group-hover/solar:opacity-100 transition-all"></div>
-                                    <div className="flex items-center justify-between mb-1">
-                                        <div className="flex items-center gap-2 text-amber-500 font-bold text-[10px] uppercase tracking-wider">
-                                            <Sun size={12} /> Solar / Active
+                                <div className="flex-1 flex flex-col divide-y divide-slate-800 relative z-0">
+                                    <button 
+                                        onClick={() => !mod.locked && setActiveModuleId(mod.id)}
+                                        className="flex-1 p-6 hover:bg-amber-500/5 transition-all text-left flex flex-col justify-center group/solar relative overflow-hidden"
+                                        disabled={mod.locked}
+                                    >
+                                        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-amber-500 opacity-0 group-hover/solar:opacity-100 transition-all"></div>
+                                        <div className="flex items-center justify-between mb-1">
+                                            <div className="flex items-center gap-2 text-amber-500 font-bold text-[10px] uppercase tracking-wider">
+                                                <Sun size={12} /> Solar / Active
+                                            </div>
+                                            <Zap size={14} className="text-amber-500 opacity-0 group-hover/solar:opacity-100 transform translate-x-2 group-hover/solar:translate-x-0 transition-all" />
                                         </div>
-                                        <Zap size={14} className="text-amber-500 opacity-0 group-hover/solar:opacity-100 transform translate-x-2 group-hover/solar:translate-x-0 transition-all" />
-                                    </div>
-                                    <p className="text-xs text-slate-500 group-hover/solar:text-slate-300 transition-colors">{mod.solarDesc}</p>
-                                </button>
+                                        <p className="text-xs text-slate-500 group-hover/solar:text-slate-300 transition-colors">{mod.solarDesc}</p>
+                                    </button>
 
-                                <button 
-                                    onClick={() => setActiveModuleId(mod.id)}
-                                    className="flex-1 p-6 hover:bg-indigo-500/5 transition-all text-left flex flex-col justify-center group/lunar relative overflow-hidden"
-                                >
-                                    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-indigo-500 opacity-0 group-hover/lunar:opacity-100 transition-all"></div>
-                                    <div className="flex items-center justify-between mb-1">
-                                        <div className="flex items-center gap-2 text-indigo-400 font-bold text-[10px] uppercase tracking-wider">
-                                            <Moon size={12} /> Lunar / Deep
+                                    <button 
+                                        onClick={() => !mod.locked && setActiveModuleId(mod.id)}
+                                        className="flex-1 p-6 hover:bg-indigo-500/5 transition-all text-left flex flex-col justify-center group/lunar relative overflow-hidden"
+                                        disabled={mod.locked}
+                                    >
+                                        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-indigo-500 opacity-0 group-hover/lunar:opacity-100 transition-all"></div>
+                                        <div className="flex items-center justify-between mb-1">
+                                            <div className="flex items-center gap-2 text-indigo-400 font-bold text-[10px] uppercase tracking-wider">
+                                                <Moon size={12} /> Lunar / Deep
+                                            </div>
+                                            <Brain size={14} className="text-indigo-400 opacity-0 group-hover/lunar:opacity-100 transform translate-x-2 group-hover/lunar:translate-x-0 transition-all" />
                                         </div>
-                                        <Brain size={14} className="text-indigo-400 opacity-0 group-hover/lunar:opacity-100 transform translate-x-2 group-hover/lunar:translate-x-0 transition-all" />
-                                    </div>
-                                    <p className="text-xs text-slate-500 group-hover/lunar:text-slate-300 transition-colors">{mod.lunarDesc}</p>
-                                </button>
+                                        <p className="text-xs text-slate-500 group-hover/lunar:text-slate-300 transition-colors">{mod.lunarDesc}</p>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* ARENA: Kahoot Quizzes */}
-                <div className="lg:col-span-4 bg-slate-900/40 border border-slate-800 rounded-sm p-6 backdrop-blur-sm animate-fade-in-up stagger-2 flex flex-col">
-                    <div className="flex items-center gap-3 mb-6 border-b border-slate-800 pb-4">
+                <div className="lg:col-span-4 bg-slate-900/40 border border-slate-800 rounded-sm p-6 backdrop-blur-sm animate-fade-in-up stagger-2 flex flex-col shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+                    
+                    <div className="flex items-center gap-3 mb-6 border-b border-slate-800 pb-4 relative z-10">
                         <Swords className="text-red-500" size={20} />
                         <div>
                             <h3 className="font-bold text-white text-lg">NEXUS ARENA</h3>
-                            <div className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">Rapid Fire Drills</div>
+                            <div className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">Ranked Drills</div>
                         </div>
                     </div>
                     
-                    <div className="flex-1 overflow-y-auto pr-2 space-y-2 max-h-[400px] no-scrollbar">
+                    <div className="flex-1 overflow-y-auto pr-2 space-y-2 max-h-[400px] no-scrollbar relative z-10">
                         {arenaQuizzes.map((quiz) => (
                              <button 
                                 key={quiz.id}
                                 onClick={() => setActiveArenaQuiz(quiz.id)}
-                                className="w-full flex items-center justify-between p-3 bg-slate-950 border border-slate-800 hover:border-red-500/50 hover:bg-red-900/10 rounded transition-all group"
+                                className="w-full flex items-center justify-between p-3 bg-slate-950 border border-slate-800 hover:border-red-500/50 hover:bg-red-900/10 rounded transition-all group relative overflow-hidden"
                              >
+                                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-500 transform -translate-x-full group-hover:translate-x-0 transition-transform"></div>
                                  <div className="flex items-center gap-3">
-                                     <div className="w-6 h-6 rounded bg-slate-900 border border-slate-800 flex items-center justify-center text-[10px] font-mono text-slate-500 group-hover:text-red-400 transition-colors">
+                                     <div className="w-6 h-6 rounded bg-slate-900 border border-slate-800 flex items-center justify-center text-[10px] font-mono text-slate-500 group-hover:text-red-400 transition-colors shadow-inner">
                                          {quiz.id}
                                      </div>
                                      <div className="text-left">
@@ -354,7 +398,7 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
                         ))}
                     </div>
 
-                    <div className="mt-6 pt-4 border-t border-slate-800 text-[10px] text-slate-500 text-center font-mono">
+                    <div className="mt-6 pt-4 border-t border-slate-800 text-[10px] text-slate-500 text-center font-mono relative z-10">
                         <Trophy size={12} className="inline mr-2 text-yellow-600" />
                         COMPLETE ALL PROTOCOLS FOR RANK UP
                     </div>

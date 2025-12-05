@@ -148,7 +148,7 @@ export const TRANSPORT_QUIZ_B: QuizQuestion[] = [
   { q: "What are the two variables being compared?", options: ["Speed vs Cost", "CO2 Emissions vs Number of Travellers", "Time vs Distance", "Car vs Plane"], correct: 1 },
   { q: "What is the standout feature (the 'main' thing)?", options: ["Scooters are fast", "Planes are the highest emitters by far", "Buses have 12.7 people", "Cars are popular"], correct: 1 },
   { q: "Does high occupancy always mean low emissions in this chart?", options: ["Yes, always", "No (Look at the plane)", "Maybe", "The chart doesn't say"], correct: 1 },
-  { q: "How should you group the data?", options: ["Alphabetically", "By emission levels (High vs Low)", "Randomly", "By color"], correct: 1 },
+  { q: "How should you group the data?", options: ["Alphabetically", "By emission levels (High vs Low)", "Randomly", "By colour"], correct: 1 },
   { q: "Is it necessary to mention the '0' for walking?", options: ["No, it's nothing", "Yes, it provides a baseline comparison", "Only if you walk", "No, focus on cars"], correct: 1 },
   { q: "The unit 'grams per passenger-kilometre' is:", options: ["A total sum", "A rate/ratio", "A distance", "A weight"], correct: 1 },
   { q: "Which is better for the overview?", options: ["The plane emits 244g", "Air travel is the least eco-friendly mode", "Walking is slow", "Cars have 1.5 people"], correct: 1 },
@@ -158,7 +158,7 @@ export const TRANSPORT_QUIZ_B: QuizQuestion[] = [
   { q: "Can we conclude that public transport (Bus/Tram) is generally cleaner than private?", options: ["Yes, based on the data", "No", "Maybe", "Only for trams"], correct: 0 },
   { q: "What data point is the Tram?", options: ["28g / 156 people", "56g / 12.7 people", "0g / 1 person", "244g / 88 people"], correct: 0 },
   { q: "The occupancy of the car (1.5) suggests:", options: ["It is usually full", "It is mostly single occupancy", "It carries 10 people", "It is a bus"], correct: 1 },
-  { q: "'Conversely' is used to:", options: ["Add information", "Introduce an opposing idea", "Finish a sentence", "Start a list"], correct: 1 },
+  { q: "Conversely' is used to:", options: ["Add information", "Introduce an opposing idea", "Finish a sentence", "Start a list"], correct: 1 },
   { q: "A Band 9 essay would:", options: ["List every number", "Synthesize emissions and occupancy data", "Critique the chart style", "Use slang"], correct: 1 },
 ];
 
@@ -282,7 +282,7 @@ export const DEGRADATION_QUIZ_B: QuizQuestion[] = [
 ];
 
 export const MAP_VOCAB_LIST: VocabItem[] = [
-  { term: "Constructed / Erected", def: "Built or put up (used for buildings).", ex: "A new reception block was constructed in the center of the island." },
+  { term: "Constructed / Erected", def: "Built or put up (used for buildings).", ex: "A new reception block was constructed in the centre of the island." },
   { term: "Converted", def: "Changed in form or function.", ex: "The deserted island was converted into a holiday resort." },
   { term: "Amenities", def: "Useful or desirable features of a place (e.g., pools, restaurants).", ex: "The island now boasts several tourist amenities including a restaurant." },
   { term: "Infrastructure", def: "Basic physical structures (roads, power, piers).", ex: "Infrastructure such as vehicle tracks and a pier was added." },
@@ -300,7 +300,7 @@ export const MAP_QUIZ_A: QuizQuestion[] = [
   { q: "Grammar: 'A pier ______ constructed.' (Passive Voice)", options: ["was", "were", "is", "has"], correct: 0 },
   { q: "Which word means 'next to'?", options: ["Opposite", "Behind", "Adjacent to", "Between"], correct: 2 },
   { q: "Tourist accommodation consists _____ huts.", options: ["in", "of", "for", "by"], correct: 1 },
-  { q: "To 'modernize' means to:", options: ["Make old", "Update / bring to modern standards", "Destroy", "Paint"], correct: 1 },
+  { q: "To 'modernise' means to:", options: ["Make old", "Update / bring to modern standards", "Destroy", "Paint"], correct: 1 },
   { q: "The beach is located on the ______ coast.", options: ["Western", "Eastern", "Northern", "Central"], correct: 0 },
   { q: "If a track connects two places, it:", options: ["Links them", "Separates them", "Blocks them", "Hides them"], correct: 0 },
   { q: "Which tense is used for the 'After' description if 2024 is in the past?", options: ["Future", "Past Simple / Passive", "Present Continuous", "Conditional"], correct: 1 },
@@ -312,7 +312,7 @@ export const MAP_QUIZ_B: QuizQuestion[] = [
   { q: "What is the main change?", options: ["The weather got better", "It changed from natural to a tourist resort", "The sea level rose", "Trees grew"], correct: 1 },
   { q: "Should you describe every single tree?", options: ["Yes, count them", "No, mention them generally (cleared/remained)", "Yes, describe the leaves", "No, ignore trees"], correct: 1 },
   { q: "Is 'Reception' a key feature?", options: ["Yes, it's the central hub", "No, it's small", "Only if you book a room", "No"], correct: 0 },
-  { q: "How do you organize the paragraphs?", options: ["By color", "Before vs After (or by Location)", "Randomly", "By size"], correct: 1 },
+  { q: "How do you organize the paragraphs?", options: ["By colour", "Before vs After (or by Location)", "Randomly", "By size"], correct: 1 },
   { q: "The 'Before' map is mostly:", options: ["Buildings", "Natural features", "Roads", "Shops"], correct: 1 },
   { q: "Do you need to give your opinion on the resort?", options: ["Yes, say it looks nice", "No, remain objective", "Yes, critique the price", "No, but say you want to go"], correct: 1 },
   { q: "The swimming area is a specific function added to:", options: ["The forest", "The beach", "The pier", "The reception"], correct: 1 },
@@ -320,7 +320,7 @@ export const MAP_QUIZ_B: QuizQuestion[] = [
   { q: "The vehicle track leads to:", options: ["The swimming pool", "The reception/restaurant", "Nowhere", "The sea"], correct: 1 },
   { q: "Footpaths connect:", options: ["The huts to the center", "The sea to the sky", "The boat to the pier", "Nothing"], correct: 0 },
   { q: "The scale bar (100m) helps you:", options: ["Measure exact distances if relevant", "Ignore size", "Draw a picture", "Count tourists"], correct: 0 },
-  { q: "A good overview mentions:", options: ["The specific number of huts", "The total transformation into a resort", "The color of the roof", "The time of day"], correct: 1 },
+  { q: "A good overview mentions:", options: ["The specific number of huts", "The total transformation into a resort", "The colour of the roof", "The time of day"], correct: 1 },
   { q: "The 'Pier' allows access for:", options: ["Cars", "Boats/Yachts", "Planes", "Trains"], correct: 1 },
   { q: "The tense for 'Before' is usually:", options: ["Past Simple", "Future Perfect", "Present Continuous", "Imperative"], correct: 0 },
   { q: "Is the island completely destroyed?", options: ["Yes", "No, some trees and the beach remain", "Maybe", "It sank"], correct: 1 },
@@ -448,7 +448,7 @@ export const SALMON_QUIZ: QuizQuestion[] = [
     { q: "What is the first active stage called?", options: ["Fry", "Smolt", "Adult", "Egg"], correct: 0 },
     { q: "How long do they stay at sea?", options: ["Approx 5 years", "1 year", "6 months", "10 years"], correct: 0 },
     { q: "Which stage is the largest?", options: ["Adult", "Smolt", "Fry", "Egg"], correct: 0 },
-    { q: "The movement from river to sea implies a change in:", options: ["Water salinity", "Temperature only", "Gravity", "Color"], correct: 0 }
+    { q: "The movement from river to sea implies a change in:", options: ["Water salinity", "Temperature only", "Gravity", "Colour"], correct: 0 }
 ];
 
 // 5. SPORTS CENTRE
@@ -458,17 +458,17 @@ export const SPORTS_MAP_DATA = {
 };
 
 export const SPORTS_VOCAB: VocabItem[] = [
-    { term: "Redevelopment", def: "Changing an area/building.", ex: "The plan shows the proposed redevelopment of the center." },
+    { term: "Redevelopment", def: "Changing an area/building.", ex: "The plan shows the proposed redevelopment of the centre." },
     { term: "Extension", def: "Adding to a building.", ex: "The gym will undergo an extension." },
     { term: "Converted", def: "Changed use.", ex: "The outdoor courts will be converted into a sports hall." },
     { term: "Relocated", def: "Moved.", ex: "The changing room will be relocated." },
-    { term: "Boast", def: "Feature something good.", ex: "The new center will boast a leisure pool." },
+    { term: "Boast", def: "Feature something good.", ex: "The new centre will boast a leisure pool." },
     { term: "Amenities", def: "Facilities.", ex: "New amenities like a cafe and shop will be added." }
 ];
 
 export const SPORTS_QUIZ: QuizQuestion[] = [
     { q: "What will happen to the outdoor courts?", options: ["Replaced by Sports Hall", "Expanded", "Moved to roof", "Stay the same"], correct: 0 },
-    { q: "Where is the new Leisure Pool located?", options: ["West side", "East side", "Center", "Outside"], correct: 0 },
+    { q: "Where is the new Leisure Pool located?", options: ["West side", "East side", "Centre", "Outside"], correct: 0 },
     { q: "What new commercial facilities are added?", options: ["Cafe and Shop", "Cinema", "Hotel", "Bank"], correct: 0 },
     { q: "The gym will be:", options: ["Expanded", "Demolished", "Shrunk", "Moved"], correct: 0 },
     { q: "How many dance studios are planned?", options: ["2", "1", "4", "0"], correct: 0 }

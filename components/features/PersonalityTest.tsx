@@ -1,3 +1,5 @@
+
+
 import React, { useState } from 'react';
 import { Activity, Brain, Zap, Fingerprint, ArrowRight, CheckCircle, X, Globe } from 'lucide-react';
 
@@ -154,7 +156,7 @@ const TRANSLATIONS = {
       options: {
         strongAgree: "Mutlaqo qo'shilaman",
         agree: "Qo'shilaman",
-        neutral: "Beto'xtov",
+        neutral: "Betaraf",
         disagree: "Qo'shilmayman",
         strongDisagree: "Mutlaqo qo'shilmayman"
       }
