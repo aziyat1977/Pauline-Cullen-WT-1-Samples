@@ -1,15 +1,22 @@
 
 
+
+
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon, ArrowLeft, Zap, Gamepad2, Terminal, ChevronRight, X, ArrowRight, CheckCircle, RefreshCw } from 'lucide-react';
 import Chart3D from '../features/Chart3D';
 import ChartHousing from '../features/ChartHousing';
 import ChartTransport from '../features/ChartTransport';
+import ChartFish from '../features/ChartFish';
+import ChartTea from '../features/ChartTea';
+import DiagramSugar from '../features/DiagramSugar';
+import DiagramSalmon from '../features/DiagramSalmon';
+import MapSports from '../features/MapSports';
 import { ZenBarChart, ZenHousingChart, ConceptNode, ReflectionPrompt } from '../introvert/ZenComponents';
 import DataSlayer from '../features/DataSlayer';
 import WriterConsole from '../features/WriterConsole';
 import LogicGate from '../features/LogicGate';
-import { VOCAB_LIST, HOUSING_VOCAB_LIST, TRANSPORT_VOCAB_LIST, QUIZ_A, HOUSING_QUIZ_A, TRANSPORT_QUIZ_A, CHART_DATA, HOUSING_CHART_DATA, TRANSPORT_CHART_DATA } from '../../constants';
+import { VOCAB_LIST, HOUSING_VOCAB_LIST, TRANSPORT_VOCAB_LIST, FISH_VOCAB, TEA_VOCAB, SUGAR_VOCAB, SALMON_VOCAB, SPORTS_VOCAB, QUIZ_A, HOUSING_QUIZ_A, TRANSPORT_QUIZ_A, FISH_QUIZ, TEA_QUIZ, SUGAR_QUIZ, SALMON_QUIZ, SPORTS_QUIZ, CHART_DATA, HOUSING_CHART_DATA, TRANSPORT_CHART_DATA, FISH_DATA, TEA_DATA, SUGAR_STEPS, SALMON_CYCLE, SPORTS_MAP_DATA } from '../../constants';
 import SentenceBuilder from '../features/SentenceBuilder';
 import { useSuperAI } from '../../hooks/useSuperAI';
 import NexusAvatar from '../features/NexusAvatar';
@@ -84,7 +91,7 @@ const FluxLesson: React.FC<FluxLessonProps> = ({ moduleId, onBack, onExit, onNex
             sentence: ["The", "bar", "chart", "compares", "housing", "tenure", "in", "England", "and", "Wales."],
             rawData: HOUSING_CHART_DATA
         };
-        default: return { 
+        case 'transport': return { 
             title: 'Transport Emissions', 
             chart3D: <ChartTransport />, 
             chartZen: <div className="p-8 border border-dashed border-stone-700 text-stone-500 font-mono text-center">DATA SET TOO COMPLEX FOR REDUCTION</div>,
@@ -92,6 +99,60 @@ const FluxLesson: React.FC<FluxLessonProps> = ({ moduleId, onBack, onExit, onNex
             quiz: TRANSPORT_QUIZ_A,
             sentence: ["The", "chart", "compares", "average", "CO2", "emissions", "for", "different", "modes", "of", "transport."],
             rawData: TRANSPORT_CHART_DATA
+        };
+        case 'fish': return { 
+            title: 'Fish Consumption', 
+            chart3D: <ChartFish />, 
+            chartZen: <div className="p-8 border border-dashed border-stone-700 text-stone-500 font-mono text-center">MULTI-LINE DATA ABSTRACT</div>,
+            vocab: FISH_VOCAB,
+            quiz: FISH_QUIZ,
+            sentence: ["The", "chart", "shows", "consumption", "of", "fish", "and", "different", "kinds", "of", "meat."],
+            rawData: FISH_DATA
+        };
+        case 'tea': return { 
+            title: 'Tea Sales', 
+            chart3D: <ChartTea />, 
+            chartZen: <div className="p-8 border border-dashed border-stone-700 text-stone-500 font-mono text-center">5-NATION LINE DATA</div>,
+            vocab: TEA_VOCAB,
+            quiz: TEA_QUIZ,
+            sentence: ["The", "chart", "compares", "tea", "sales", "in", "five", "different", "countries", "over", "40", "years."],
+            rawData: TEA_DATA
+        };
+        case 'sugar': return { 
+            title: 'Sugar Process', 
+            chart3D: <DiagramSugar />, 
+            chartZen: <div className="p-8 border border-dashed border-stone-700 text-stone-500 font-mono text-center">SEQUENTIAL FLOW CHART</div>,
+            vocab: SUGAR_VOCAB,
+            quiz: SUGAR_QUIZ,
+            sentence: ["The", "diagram", "illustrates", "how", "sugar", "is", "produced", "from", "sugar", "cane."],
+            rawData: SUGAR_STEPS
+        };
+        case 'salmon': return { 
+            title: 'Salmon Life Cycle', 
+            chart3D: <DiagramSalmon />, 
+            chartZen: <div className="p-8 border border-dashed border-stone-700 text-stone-500 font-mono text-center">BIOLOGICAL CYCLE</div>,
+            vocab: SALMON_VOCAB,
+            quiz: SALMON_QUIZ,
+            sentence: ["The", "diagram", "shows", "the", "life", "cycle", "of", "a", "species", "of", "large", "fish."],
+            rawData: SALMON_CYCLE
+        };
+        case 'sports': return { 
+            title: 'Sports Centre', 
+            chart3D: <MapSports />, 
+            chartZen: <div className="p-8 border border-dashed border-stone-700 text-stone-500 font-mono text-center">SPATIAL COMPARISON</div>,
+            vocab: SPORTS_VOCAB,
+            quiz: SPORTS_QUIZ,
+            sentence: ["The", "maps", "show", "the", "layout", "of", "a", "university", "sports", "centre", "now", "and", "in", "the", "future."],
+            rawData: SPORTS_MAP_DATA
+        };
+        default: return { 
+            title: 'Module', 
+            chart3D: <div>Load Error</div>, 
+            chartZen: <div>Load Error</div>,
+            vocab: [],
+            quiz: [],
+            sentence: [],
+            rawData: []
         };
     }
   };

@@ -1,7 +1,9 @@
 
 
+
+
 import React, { useState } from 'react';
-import { ArrowLeft, Menu, Activity, Moon, Sun, Layers, Network, Zap, Brain, Cpu, Radio, X, Swords, Trophy, Play } from 'lucide-react';
+import { ArrowLeft, Menu, Activity, Moon, Sun, Layers, Network, Zap, Brain, Cpu, Radio, X, Swords, Trophy, Play, Fish, Coffee, Factory, RefreshCcw, Map } from 'lucide-react';
 import FluxLesson from './FluxLesson';
 import NexusCanvas from '../features/NexusCanvas';
 import CoreInterface from './CoreInterface';
@@ -48,6 +50,42 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
         solarDesc: 'Rapid magnitude comparison.',
         lunarDesc: 'Environmental impact logic mapping.',
         icon: <Network size={20} />
+    },
+    // NEW MODULES
+    { 
+        id: 'fish', 
+        title: 'Fish Consumption', 
+        solarDesc: 'Multi-line trend tracking.',
+        lunarDesc: 'Complex dietary shift analysis.',
+        icon: <Fish size={20} />
+    },
+    { 
+        id: 'tea', 
+        title: 'Tea Sales', 
+        solarDesc: '5-Country comparison drill.',
+        lunarDesc: 'Market fluctuation logic.',
+        icon: <Coffee size={20} />
+    },
+    { 
+        id: 'sugar', 
+        title: 'Sugar Process', 
+        solarDesc: 'Sequential flow identification.',
+        lunarDesc: 'Manufacturing vocabulary matrix.',
+        icon: <Factory size={20} />
+    },
+    { 
+        id: 'salmon', 
+        title: 'Salmon Life Cycle', 
+        solarDesc: 'Cyclical biological phases.',
+        lunarDesc: 'Natural process descriptive logic.',
+        icon: <RefreshCcw size={20} />
+    },
+    { 
+        id: 'sports', 
+        title: 'Sports Centre', 
+        solarDesc: 'Before/After map comparison.',
+        lunarDesc: 'Infrastructure redevelopment analysis.',
+        icon: <Map size={20} />
     }
   ];
 
