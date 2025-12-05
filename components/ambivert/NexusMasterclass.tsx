@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid, RotateCcw, ChevronRight, Hash, TrendingUp, Search, Umbrella, Edit3, Check, Clock, TrendingDown, ClipboardCheck, ArrowDown, Headphones, Ruler, Trophy, Fish, Hourglass } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid, RotateCcw, ChevronRight, Hash, TrendingUp, Search, Umbrella, Edit3, Check, Clock, TrendingDown, ClipboardCheck, ArrowDown, Headphones, Ruler, Trophy, Fish, Hourglass, ArrowUp, Shuffle } from 'lucide-react';
 import ChartDualView from '../features/ChartDualView';
 import InteractiveMap from '../features/InteractiveMap';
 import MapSports from '../features/MapSports';
@@ -239,40 +239,147 @@ const SentenceCorrector = ({ sentence, correction }: { sentence: string, correct
     )
 }
 
-const VocabDimensionsTable = () => {
-    const data = [
-        { adj: "deep", noun: "depth", verb: "to deepen" },
-        { adj: "long", noun: "length", verb: "to lengthen" },
-        { adj: "wide", noun: "width", verb: "to widen" },
-        { adj: "tall", noun: "height", verb: "to make taller" },
-        { adj: "short", noun: "height", verb: "to shorten" },
-        { adj: "high", noun: "height", verb: "to make higher" },
-        { adj: "low", noun: "height", verb: "to lower" },
-    ];
+const ZigZagFlow = () => (
+  <div className="bg-white p-8 rounded-xl shadow-lg border border-slate-200 text-slate-800 font-serif relative overflow-hidden">
+    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
+    <div className="space-y-8 relative z-10">
+       <div className="relative">
+          <p className="text-lg">The salmon lays <span className="font-bold bg-yellow-200 px-1 border-b-2 border-yellow-500">eggs</span>................................................................</p>
+          <svg className="absolute -bottom-8 left-40 w-12 h-12 text-blue-500 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+             <path d="M4 0 V12 A12 12 0 0 0 16 24" />
+             <path d="M12 20 L16 24 L20 20" />
+          </svg>
+       </div>
+       <div className="pl-12 relative">
+          <p className="text-lg">The <span className="font-bold bg-yellow-200 px-1 border-b-2 border-yellow-500">eggs</span> hatch into young salmon called <span className="font-bold bg-yellow-200 px-1 border-b-2 border-yellow-500">fry</span>.....................</p>
+          <svg className="absolute -bottom-8 right-40 w-12 h-12 text-blue-500 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ transform: 'scaleX(-1)' }}>
+             <path d="M4 0 V12 A12 12 0 0 0 16 24" />
+             <path d="M12 20 L16 24 L20 20" />
+          </svg>
+       </div>
+       <div className="relative">
+          <p className="text-lg">The <span className="font-bold bg-yellow-200 px-1 border-b-2 border-yellow-500">fry</span> can grow up to eight centimetres and develop into a bigger fish called <span className="font-bold bg-yellow-200 px-1 border-b-2 border-yellow-500">smolt</span>.</p>
+          <svg className="absolute -bottom-8 left-20 w-12 h-12 text-blue-500 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+             <path d="M4 0 V12 A12 12 0 0 0 16 24" />
+             <path d="M12 20 L16 24 L20 20" />
+          </svg>
+       </div>
+       <div className="pl-12">
+          <p className="text-lg"><span className="font-bold bg-yellow-200 px-1 border-b-2 border-yellow-500">Smolt</span> ......................</p>
+       </div>
+    </div>
+  </div>
+);
+
+const WordScramble = ({ words, solution }: { words: string[], solution: string }) => {
+    const [currentOrder, setCurrentOrder] = useState<string[]>([]);
+    const [available, setAvailable] = useState<string[]>(words);
+    const [solved, setSolved] = useState(false);
+
+    // Reset when words change
+    useEffect(() => {
+        setAvailable(words);
+        setCurrentOrder([]);
+        setSolved(false);
+    }, [words]);
+
+    const handleAdd = (word: string) => {
+        const newOrder = [...currentOrder, word];
+        setCurrentOrder(newOrder);
+        setAvailable(prev => {
+            const idx = prev.indexOf(word);
+            const next = [...prev];
+            next.splice(idx, 1);
+            return next;
+        });
+        
+        if (newOrder.join(' ') === solution) {
+            setSolved(true);
+        }
+    };
+
+    const handleRemove = (word: string) => {
+        if (solved) return;
+        setAvailable(prev => [...prev, word]);
+        setCurrentOrder(prev => {
+            const idx = prev.indexOf(word);
+            const next = [...prev];
+            next.splice(idx, 1);
+            return next;
+        });
+    };
 
     return (
-        <div className="overflow-hidden rounded-xl border border-slate-700 shadow-xl">
-            <table className="w-full text-sm text-left">
-                <thead className="bg-slate-900 text-slate-400 font-mono text-xs uppercase">
-                    <tr>
-                        <th className="px-6 py-3">Adjective</th>
-                        <th className="px-6 py-3">Noun</th>
-                        <th className="px-6 py-3">Verb Form</th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800 bg-slate-900/50">
-                    {data.map((row, i) => (
-                        <tr key={i} className="hover:bg-slate-800/50 transition-colors">
-                            <td className="px-6 py-3 font-bold text-slate-300">{row.adj}</td>
-                            <td className="px-6 py-3 text-indigo-300">{row.noun}</td>
-                            <td className="px-6 py-3 text-emerald-400 font-mono">{row.verb}</td>
-                        </tr>
+        <div className="bg-slate-900 p-4 rounded-xl border border-slate-700 mb-4">
+            <div className={`min-h-[60px] bg-slate-800 rounded p-4 mb-4 flex flex-wrap gap-2 transition-colors ${solved ? 'border-2 border-emerald-500' : 'border border-slate-600'}`}>
+                {currentOrder.map((w, i) => (
+                    <button key={i} onClick={() => handleRemove(w)} className="px-3 py-1 bg-indigo-600 text-white rounded shadow text-sm hover:bg-red-500 transition-colors animate-pop-in">
+                        {w}
+                    </button>
+                ))}
+                {currentOrder.length === 0 && <span className="text-slate-500 italic text-sm">Tap words to build sentence...</span>}
+            </div>
+            {solved ? (
+                <div className="text-center text-emerald-400 font-bold flex items-center justify-center gap-2 animate-fade-in-up">
+                    <CheckCircle2 size={20} /> Correct!
+                </div>
+            ) : (
+                <div className="flex flex-wrap gap-2 justify-center">
+                    {available.map((w, i) => (
+                        <button key={i} onClick={() => handleAdd(w)} className="px-3 py-1 bg-slate-700 text-slate-300 rounded border border-slate-600 hover:bg-slate-600 transition-all text-sm">
+                            {w}
+                        </button>
                     ))}
-                </tbody>
-            </table>
+                </div>
+            )}
         </div>
     );
-};
+}
+
+const SequenceSort = () => {
+    const correctOrder = [
+        "There are four stages in the lifecycle of the Monarch butterfly.",
+        "In the first stage, eggs are laid on a plant.",
+        "After about four days, the eggs hatch into baby caterpillars, which are known as larvae.",
+        "The larvae eat almost continually at this stage, growing in size.",
+        "After two weeks, it is fully grown and can now begin a process called metamorphosis.",
+        "During metamorphosis, the larvae will form a chrysalis, which is a hard protective coating.",
+        "The chrysalis stage lasts for ten days.",
+        "During this time, the body of the caterpillar develops wings and transforms into a butterfly."
+    ];
+    
+    // Initial shuffled state
+    const [items, setItems] = useState([...correctOrder].sort(() => Math.random() - 0.5));
+    const [isCorrect, setIsCorrect] = useState(false);
+
+    const moveItem = (fromIdx: number, toIdx: number) => {
+        const newItems = [...items];
+        const [removed] = newItems.splice(fromIdx, 1);
+        newItems.splice(toIdx, 0, removed);
+        setItems(newItems);
+        
+        if (JSON.stringify(newItems) === JSON.stringify(correctOrder)) setIsCorrect(true);
+    };
+
+    return (
+        <div className="space-y-2">
+            {items.map((item, i) => (
+                <div key={item} className={`p-3 rounded border flex items-center gap-4 bg-slate-800 ${isCorrect ? 'border-emerald-500 text-emerald-100' : 'border-slate-700 text-slate-300'}`}>
+                    <div className="flex flex-col gap-1">
+                        <button onClick={() => i > 0 && moveItem(i, i - 1)} disabled={isCorrect || i === 0} className="hover:text-white disabled:opacity-30"><ArrowUp size={14}/></button>
+                        <button onClick={() => i < items.length - 1 && moveItem(i, i + 1)} disabled={isCorrect || i === items.length - 1} className="hover:text-white disabled:opacity-30"><ArrowDown size={14}/></button>
+                    </div>
+                    <span className="text-sm">{item}</span>
+                </div>
+            ))}
+            {isCorrect && (
+                <div className="mt-4 p-4 bg-emerald-900/30 border border-emerald-500 rounded text-center text-emerald-400 font-bold animate-pop-in">
+                    Sequence Verified. Zig-Zag Pattern Established.
+                </div>
+            )}
+        </div>
+    )
+}
 
 // --- MASTERCLASS COMPONENT ---
 
@@ -822,6 +929,163 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                 <div className="flex items-start gap-4">
                     <div className="p-2 bg-emerald-900/30 rounded text-emerald-400 font-bold">3</div>
                     <p className="text-slate-300 text-sm">Fry develop into / change into / turn into smolt, <strong className="text-emerald-400">which are</strong> 12-15 centimeters in length.</p>
+                </div>
+            </div>
+        )
+    },
+
+    // --- NEW CONTENT (9.2 Coherence & Cohesion) ---
+    // Slide 1: Theory
+    {
+        title: "9.2: Coherence & Cohesion",
+        headline: "CONNECTING IDEAS",
+        icon: <GitMerge size={64} className="text-yellow-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-slate-900 p-6 rounded-xl border-l-4 border-yellow-500">
+                    <h3 className="text-yellow-400 font-bold mb-4">Paragraph Organization</h3>
+                    <p className="text-slate-300 mb-4 leading-relaxed">
+                        The first sentence in any paragraph should tell your reader the main topic. Sentences that follow should expand on this. <br/><br/>
+                        <strong className="text-white">The Zig-Zag Pattern:</strong> New information at the end of one sentence becomes the subject of the next.
+                    </p>
+                    <ZigZagFlow />
+                </div>
+                <p className="text-center text-xs text-slate-500 italic">This pattern creates a logical chain of information.</p>
+            </div>
+        )
+    },
+
+    // Slide 2: Varying Sentences
+    {
+        title: "Varying Your Sentences",
+        headline: "COHESIVE DEVICES",
+        icon: <Shuffle size={64} className="text-indigo-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-slate-900 p-6 rounded-xl">
+                        <h4 className="font-bold text-white mb-2">Common Connectors</h4>
+                        <div className="flex flex-wrap gap-2 text-xs text-slate-300">
+                            <span className="px-2 py-1 bg-slate-800 rounded">First...</span>
+                            <span className="px-2 py-1 bg-slate-800 rounded">Then...</span>
+                            <span className="px-2 py-1 bg-slate-800 rounded">Next...</span>
+                            <span className="px-2 py-1 bg-slate-800 rounded">After this...</span>
+                            <span className="px-2 py-1 bg-slate-800 rounded">Finally...</span>
+                        </div>
+                    </div>
+                    <div className="bg-white text-slate-900 p-6 rounded-xl shadow-lg border-l-4 border-indigo-600">
+                        <h4 className="font-bold text-indigo-900 mb-2">Examiner Tip (Band 6+)</h4>
+                        <p className="text-xs leading-relaxed">
+                            "These markers are adequate, but a higher score might be achieved by <strong className="text-indigo-600">varying their position</strong> in each sentence rather than always placing them at the beginning."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // Slide 3: Sequence Logic (Butterfly Q1)
+    {
+        title: "Practice: Sequence Logic",
+        headline: "ORDER THE PROCESS",
+        icon: <ListOrdered size={64} className="text-emerald-500" />,
+        content: (
+            <div className="space-y-6">
+                <p className="text-slate-400 text-sm text-center">Reconstruct the Monarch Butterfly lifecycle by ordering these sentences correctly.</p>
+                <SequenceSort />
+            </div>
+        )
+    },
+
+    // Slide 4: Sentence Scramble (Q2-Q4)
+    {
+        title: "Practice: Syntax Build 1",
+        headline: "UNSCRAMBLE WORDS",
+        icon: <Hammer size={64} className="text-teal-500" />,
+        content: (
+            <div className="space-y-8">
+                <div>
+                    <h4 className="text-teal-400 font-bold mb-2 text-xs uppercase">Sentence 1</h4>
+                    <WordScramble 
+                        words={["There", "in", "of", "the", "four", "Monarch", "butterfly.", "the", "stages", "are", "lifecycle"]}
+                        solution="There are four stages in the lifecycle of the Monarch butterfly."
+                    />
+                </div>
+                <div>
+                    <h4 className="text-teal-400 font-bold mb-2 text-xs uppercase">Sentence 2</h4>
+                    <WordScramble 
+                        words={["laid", "the", "stage,", "are", "first", "In", "eggs", "on", "a", "plant."]}
+                        solution="In the first stage, eggs are laid on a plant."
+                    />
+                </div>
+                <div>
+                    <h4 className="text-teal-400 font-bold mb-2 text-xs uppercase">Sentence 3</h4>
+                    <WordScramble 
+                        words={["known", "hatch", "After", "four", "the", "baby", "into", "which", "larvae.", "days,", "about", "as", "are", "caterpillars,", "eggs"]}
+                        solution="After about four days, the eggs hatch into baby caterpillars, which are known as larvae."
+                    />
+                </div>
+            </div>
+        )
+    },
+
+    // Slide 5: Sentence Scramble (Q5-Q7)
+    {
+        title: "Practice: Syntax Build 2",
+        headline: "ADVANCED STRUCTURES",
+        icon: <Hammer size={64} className="text-purple-500" />,
+        content: (
+            <div className="space-y-8">
+                <div>
+                    <h4 className="text-purple-400 font-bold mb-2 text-xs uppercase">Sentence 4</h4>
+                    <WordScramble 
+                        words={["larvae", "almost", "size.", "The", "stage,", "growing", "in", "at", "this", "eat", "continually"]}
+                        solution="The larvae eat almost continually at this stage, growing in size."
+                    />
+                </div>
+                <div>
+                    <h4 className="text-purple-400 font-bold mb-2 text-xs uppercase">Sentence 5</h4>
+                    <WordScramble 
+                        words={["two", "process", "metamorphosis.", "and", "begin", "After", "it", "weeks,", "fully", "is", "called", "a", "grown", "can", "now"]}
+                        solution="After two weeks, it is fully grown and can now begin a process called metamorphosis."
+                    />
+                </div>
+                <div>
+                    <h4 className="text-purple-400 font-bold mb-2 text-xs uppercase">Sentence 6</h4>
+                    <WordScramble 
+                        words={["will", "coating.", "is", "form", "the", "a", "protective", "During", "a", "metamorphosis,", "chrysalis,", "larvae", "hard", "which"]}
+                        solution="During metamorphosis, the larvae will form a chrysalis, which is a hard protective coating."
+                    />
+                </div>
+            </div>
+        )
+    },
+
+    // Slide 6: Sentence Scramble (Q8-Q9) & Analysis
+    {
+        title: "Practice: Final Steps",
+        headline: "COMPLETING THE CYCLE",
+        icon: <CheckCircle2 size={64} className="text-blue-500" />,
+        content: (
+            <div className="space-y-8">
+                <div>
+                    <h4 className="text-blue-400 font-bold mb-2 text-xs uppercase">Sentence 7</h4>
+                    <WordScramble 
+                        words={["days.", "ten", "for", "The", "chrysalis", "lasts", "stage"]}
+                        solution="The chrysalis stage lasts for ten days."
+                    />
+                </div>
+                <div>
+                    <h4 className="text-blue-400 font-bold mb-2 text-xs uppercase">Sentence 8</h4>
+                    <WordScramble 
+                        words={["transforms", "a", "and", "butterfly.", "of", "into", "During", "the", "this", "caterpillar", "body", "time,", "develops", "the", "wings"]}
+                        solution="During this time, the body of the caterpillar develops wings and transforms into a butterfly."
+                    />
+                </div>
+                
+                <div className="p-4 bg-slate-800 rounded-xl border-l-4 border-emerald-500 text-sm text-slate-300">
+                    <strong className="text-emerald-400 block mb-1">Key Takeaway</strong>
+                    Notice how referencing words (this, which, it) connect the sentences like a chain.
                 </div>
             </div>
         )
