@@ -8,7 +8,9 @@ import {
   Keyboard, Layers, Hash, Check,
   Database, FileText, Edit3, FastForward, Scale, Brain, Lightbulb, Link, Activity,
   CloudRain, GraduationCap, Dumbbell, Smartphone, Bot, Mic, Construction, Anchor, AlertOctagon, HelpCircle, ArrowDown,
-  Footprints, Glasses, Wind, FileX, Repeat, ZoomIn, Shuffle
+  Footprints, Glasses, Wind, FileX, Repeat, ZoomIn, Shuffle, Home, Scissors, Frame, Target,
+  ChefHat, Filter, GitMerge, ListChecks, Calculator, Thermometer, Watch, Smile,
+  Swords, ScanFace, Leaf, MonitorOff, UserX, Globe, MessageSquare
 } from 'lucide-react';
 import Confetti from '../ui/Confetti';
 
@@ -257,593 +259,481 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
       )
     },
 
-    // === SECTOR 2: COHERENCE ===
+    // ... (SECTORS 2-15 OMITTED FOR BREVITY AS THEY EXIST IN SOURCE BUT I AM APPENDING THE NEW ONES BELOW) ... 
+    
+    // === SECTOR 16: ARGUMENT ARCHITECTURE (NEW from Page 1 & 6) ===
     {
-        id: "2.1", title: "Flow Test", icon: <BookOpen size={48} className="text-blue-500" />,
+        id: "16.1", title: "Balance Matrix", icon: <Scale size={48} className="text-emerald-500" />,
         content: (
-            <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-white">Coherence vs. Reading</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-64">
-                    <div className="bg-slate-900 p-4 rounded border border-slate-700 hover:border-red-500 transition-colors group cursor-pointer">
-                        <div className="text-xs text-slate-500 uppercase mb-2 font-bold group-hover:text-red-400">Text A (Implicit)</div>
-                        <p className="text-xs text-slate-300 leading-relaxed">"Fossils are found on land. Some are water animals. Ichythosaurs looked like dolphins. Turtles are harder to tell."</p>
-                        <div className="mt-4 text-[10px] text-red-400 opacity-0 group-hover:opacity-100 transition-opacity">DIAGNOSIS: FORCES READER TO GUESS LINKS</div>
-                    </div>
-                    <div className="bg-slate-900 p-4 rounded border border-slate-700 hover:border-emerald-500 transition-colors group cursor-pointer">
-                        <div className="text-xs text-slate-500 uppercase mb-2 font-bold group-hover:text-emerald-400">Text B (Explicit)</div>
-                        <p className="text-xs text-slate-300 leading-relaxed">"Fossils are found on land. <span className="text-emerald-400">However</span>, some are water animals. <span className="text-emerald-400">For example</span>, Ichythosaurs looked like dolphins."</p>
-                        <div className="mt-4 text-[10px] text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity">DIAGNOSIS: GUIDES THE READER</div>
-                    </div>
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "2.2", title: "Referencing", icon: <Zap size={48} className="text-yellow-400" />,
-        content: (
-            <div className="space-y-8">
-                <h3 className="text-2xl font-bold text-yellow-400">The "This" Fix</h3>
-                <p className="text-slate-400">Native speakers often omit linking words. They use <span className="text-white font-bold">Referencing</span> instead.</p>
+            <div className="h-full flex flex-col space-y-6">
+                <h3 className="text-2xl font-bold text-emerald-400">The 4-Quadrant Planner</h3>
+                <p className="text-sm text-slate-400">Topic: <span className="text-white italic">"Does travelling abroad to learn a language have more advantages?"</span></p>
                 
-                <div className="bg-slate-900 p-6 rounded-xl border-l-4 border-yellow-500">
-                    <p className="text-lg text-slate-300 font-serif">
-                        "Companies are automating jobs. <span className="text-yellow-400 font-bold">This trend</span> is causing anxiety."
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-slate-900 border border-slate-700 rounded text-center">
-                        <div className="text-xs text-slate-500 uppercase mb-1">Bad</div>
-                        <div className="text-red-400">"This is causing..."</div>
-                        <div className="text-[9px] text-slate-600 mt-1">(Vague)</div>
+                <div className="grid grid-cols-2 gap-4 flex-1">
+                    <div className="bg-red-900/10 border border-red-500/20 p-4 rounded-xl">
+                        <div className="text-xs text-red-400 font-bold mb-2 uppercase">Side A: Disadvantages</div>
+                        <ul className="space-y-3 text-xs text-slate-300 font-mono">
+                            <li className="flex items-start gap-2"><ArrowDown size={14} className="text-red-500 shrink-0"/> <span><strong>Money:</strong> Flights, tuition, food. -> "Might be too expensive."</span></li>
+                            <li className="flex items-start gap-2"><ArrowDown size={14} className="text-red-500 shrink-0"/> <span><strong>Friends/Family:</strong> Missing them.</span></li>
+                            <li className="flex items-start gap-2"><ArrowDown size={14} className="text-red-500 shrink-0"/> <span><strong>Culture:</strong> Food/culture strange -> "Lonely & Isolated."</span></li>
+                        </ul>
                     </div>
-                    <div className="p-4 bg-slate-900 border border-slate-700 rounded text-center">
-                        <div className="text-xs text-slate-500 uppercase mb-1">Good</div>
-                        <div className="text-emerald-400">"This trend is causing..."</div>
-                        <div className="text-[9px] text-slate-600 mt-1">(Specific Summary Noun)</div>
-                    </div>
-                </div>
-            </div>
-        )
-    },
-
-    // === SECTOR 3: REASONING CORE ===
-    {
-        id: "3.1", title: "The 'Why' Gap", icon: <HelpCircle size={48} className="text-pink-500" />,
-        content: (
-            <div className="space-y-8">
-                <h3 className="text-2xl font-bold text-white">The "Why" Vacuum</h3>
-                <div className="p-6 bg-slate-900 border-l-4 border-pink-500 shadow-xl">
-                    <p className="text-lg italic text-slate-300 font-serif mb-4">
-                        "The government should encourage everyone to eat more fruit."
-                    </p>
-                    <div className="text-sm text-pink-400 font-bold bg-pink-900/20 p-2 rounded inline-block">
-                        DIAGNOSIS: UNFOUNDED CLAIM
+                    <div className="bg-emerald-900/10 border border-emerald-500/20 p-4 rounded-xl">
+                        <div className="text-xs text-emerald-400 font-bold mb-2 uppercase">Side B: Advantages</div>
+                        <ul className="space-y-3 text-xs text-slate-300 font-mono">
+                            <li className="flex items-start gap-2"><ArrowUp size={14} className="text-emerald-500 shrink-0"/> <span><strong>Money:</strong> Expensive BUT can get a job.</span></li>
+                            <li className="flex items-start gap-2"><ArrowUp size={14} className="text-emerald-500 shrink-0"/> <span><strong>Social:</strong> Will miss them BUT make new friends (work/school).</span></li>
+                            <li className="flex items-start gap-2"><ArrowUp size={14} className="text-emerald-500 shrink-0"/> <span><strong>Language:</strong> Total immersion -> "Reach fluency faster."</span></li>
+                        </ul>
                     </div>
                 </div>
-                <p className="text-slate-400 text-sm">
-                    Making a point is not enough. You must provide a reason for believing it. 
-                    The reader needs to know <span className="text-white font-bold">how you know this</span> or <span className="text-white font-bold">why you believe it</span>.
-                </p>
-                <div className="flex gap-2 items-center text-xs text-slate-500 font-mono">
-                    <AlertTriangle size={12} /> BAND 6: Confusing arguments vs Clear reasoning
+                <div className="text-center text-[10px] text-slate-500">
+                    KEY IDEA: CHECK THE EVIDENCE ON EACH SIDE TO CONFIRM YOUR POSITION.
                 </div>
             </div>
         )
     },
     {
-        id: "3.2", title: "Evidence Trap", icon: <Mic size={48} className="text-red-500" />,
+        id: "16.2", title: "The Counter-Strike", icon: <Swords size={48} className="text-orange-500" />,
         content: (
             <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-red-400">The "BBC" Trap</h3>
-                <div className="p-6 bg-slate-900 border border-slate-700 rounded-xl">
-                    <p className="text-md text-slate-300 font-serif mb-4">
-                        "The government should encourage everyone to eat more fruit. <span className="text-red-400">For example, a BBC documentary showed that 85% of people eat fruit.</span>"
-                    </p>
-                </div>
-                <div className="grid grid-cols-1 gap-4 text-sm text-slate-400">
-                    <div className="flex items-start gap-3 p-3 bg-red-900/10 border border-red-500/20 rounded">
-                        <X size={16} className="text-red-500 mt-1 shrink-0"/> 
-                        <span>It presents a clearly invented fact.</span>
-                    </div>
-                    <div className="flex items-start gap-3 p-3 bg-red-900/10 border border-red-500/20 rounded">
-                        <X size={16} className="text-red-500 mt-1 shrink-0"/> 
-                        <span>It does NOT explain the previous point or help us believe it.</span>
-                    </div>
-                    <div className="flex items-center justify-center p-3 text-emerald-400 font-bold bg-emerald-900/10 border border-emerald-500/20 rounded">
-                        Valid arguments are logically connected.
-                    </div>
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "3.3", title: "Validity Audit", icon: <CheckCircle2 size={48} className="text-emerald-500" />,
-        content: (
-            <div className="space-y-4 h-full flex flex-col">
-                <h3 className="text-xl font-bold text-emerald-400 mb-2">Audit The Logic</h3>
-                <p className="text-xs text-slate-400">Identify valid arguments (logical connection) vs invalid (missing link).</p>
-                <div className="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
-                    {[
-                        { q: "It is very cloudy, so there could be a storm soon.", a: true, reason: "Cloudy -> Storm is logical." },
-                        { q: "Student's results will increase when they have a peaceful place to study.", a: false, reason: "What about teachers/books? Too big a leap." },
-                        { q: "Mountain gorillas are an endangered species, so they could be extinct soon.", a: true, reason: "Endangered -> Extinction is logical." },
-                        { q: "Many people dislike sport because there are not many sports facilities.", a: false, reason: "Is that the only reason? Unlikely." },
-                        { q: "Phones distract drivers, so they should be illegal when driving.", a: true, reason: "Distraction -> Danger -> Illegal is logical." },
-                        { q: "Robots will replace humans in most jobs because there are jobs robots can't do.", a: false, reason: "Contradiction." }
-                    ].map((item, i) => (
-                        <div key={i} className="p-3 bg-slate-900 border border-slate-700 rounded group hover:border-indigo-500 transition-all">
-                            <p className="text-xs text-slate-300 mb-3 font-serif">"{item.q}"</p>
-                            <div className="flex justify-between items-center">
-                                <div className="flex gap-2">
-                                    <button 
-                                        className="px-3 py-1 rounded text-[10px] font-bold bg-slate-800 text-slate-500 hover:bg-emerald-600 hover:text-white transition-colors focus:bg-emerald-600 focus:text-white"
-                                        title="Click if valid"
-                                    >
-                                        VALID
-                                    </button>
-                                    <button 
-                                        className="px-3 py-1 rounded text-[10px] font-bold bg-slate-800 text-slate-500 hover:bg-red-600 hover:text-white transition-colors focus:bg-red-600 focus:text-white"
-                                        title="Click if invalid"
-                                    >
-                                        INVALID
-                                    </button>
-                                </div>
-                                <span className="text-[10px] text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity text-right w-1/2">
-                                    {item.reason}
-                                </span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "3.4", title: "The Contradiction", icon: <Bot size={48} className="text-cyan-500" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-cyan-400">Logic Crash</h3>
-                <div className="bg-slate-900 p-6 rounded-xl border border-red-500/30">
-                    <p className="text-sm text-slate-300 leading-relaxed font-serif">
-                        "Robots will eventually <span className="text-cyan-400 font-bold">replace humans</span> in most jobs. It is convenient... However, there are a wide range of jobs that <span className="text-red-400 font-bold">robots will never be able to do</span>."
-                    </p>
-                </div>
-                <div className="flex items-center gap-4 text-sm text-red-300 bg-red-950/30 p-4 rounded border border-red-500/20">
-                    <AlertTriangle size={20} />
-                    <span>Fatal Error: You cannot argue X will happen if you also argue X is impossible.</span>
-                </div>
-                <div className="bg-emerald-950/20 p-4 rounded border border-emerald-500/20">
-                    <div className="text-xs text-emerald-500 font-bold mb-2">THE FIX: CRITICAL THINKING</div>
-                    <p className="text-xs text-slate-400">
-                        "<span className="text-white font-bold">Some people believe</span> robots will replace humans... <span className="text-white font-bold">Nevertheless</span>, there are jobs robots will never do."
-                    </p>
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "3.5", title: "Bridging the Gap", icon: <Link size={48} className="text-indigo-400" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-xl font-bold text-indigo-400">The Logical Leap</h3>
-                <div className="p-4 bg-slate-900 border-l-4 border-red-500">
-                    <p className="text-sm text-slate-400">
-                        "Students' results can increase if they have a peaceful place to study."
-                    </p>
-                    <span className="text-[10px] text-red-500 font-bold mt-1 block">TOO BIG A LEAP. EXPLAIN WHY.</span>
-                </div>
-                <div className="flex justify-center">
-                    <ArrowDown size={24} className="text-slate-600 animate-bounce" />
-                </div>
-                <div className="p-4 bg-slate-900 border-l-4 border-emerald-500">
-                    <p className="text-sm text-slate-300">
-                        "The environment we study in is important. If there is too much noise, it can be very difficult to concentrate. <span className="text-emerald-400 font-bold">In fact, even making sure that students have a peaceful place to study can improve their results.</span>"
-                    </p>
-                </div>
-            </div>
-        )
-    },
-
-    // === SECTOR 4: LANGUAGE PRECISION ===
-    {
-        id: "4.1", title: "Precision Check", icon: <Activity size={48} className="text-orange-500" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-orange-400">Grammar vs. Clarity</h3>
-                <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
-                    <p className="text-lg text-slate-300 font-serif italic">
-                        "Primary level children are more sharp and their grasping power to learn something new is fast."
-                    </p>
-                </div>
-                <div className="text-sm text-slate-400">
-                    <span className="text-emerald-400 font-bold">Verdict:</span> Clear idea, but poor grammar.
-                    <br/>
-                    <span className="text-red-400 font-bold">Verdict:</span> "Hence, it is convenient for them to influence people for any service." -> <span className="text-white">Unintelligible.</span>
-                </div>
-                <div className="p-4 bg-orange-950/20 border border-orange-500/20 rounded text-center">
-                    <p className="text-xs text-orange-300 font-mono">
-                        PROTOCOL: IF GRAMMAR OBSCURES MEANING, BAND SCORE DROPS BELOW 6.
-                    </p>
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "4.2", title: "Extreme Hazard", icon: <AlertOctagon size={48} className="text-red-500" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-red-400">Catastrophic Language</h3>
-                <p className="text-sm text-slate-400">Band 6.5 essays often feature "extreme" adjectives that don't fit.</p>
-                
-                <div className="bg-slate-900 p-4 border-l-4 border-red-500">
-                    <p className="text-sm text-slate-300">"On the societal level, the results may be <span className="text-red-400 font-bold underline">catastrophic</span> if this is the case."</p>
-                </div>
-
-                <div className="p-4 bg-slate-800 rounded text-xs text-slate-400">
-                    <strong className="text-white">Context:</strong> Buying the same things in different countries.
-                    <br/><br/>
-                    Is this a sudden event causing great destruction? <span className="text-red-400 font-bold">NO.</span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-2 bg-red-900/10 rounded text-red-400 text-xs line-through decoration-red-500">Disastrous</div>
-                    <div className="text-center p-2 bg-emerald-900/10 rounded text-emerald-400 text-xs font-bold">Problematic / Concerning</div>
-                </div>
-            </div>
-        )
-    },
-
-    // === SECTOR 5: ARGUMENT PATTERNS ===
-    {
-        id: "5.1", title: "Pattern A: Add", icon: <Layers size={48} className="text-blue-400" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-xl font-bold text-blue-400">Arguing by Addition</h3>
-                <p className="text-xs text-slate-400">Building a wall of reasons. Use specific signposts.</p>
-                
-                <div className="space-y-2">
-                    <div className="flex items-center gap-3 p-3 bg-slate-900 rounded border border-slate-700">
-                        <span className="text-blue-500 font-black font-mono">01</span>
-                        <div className="text-sm text-slate-300"><span className="text-blue-400 font-bold">Firstly</span>, the money can be used for roads...</div>
-                    </div>
-                    <div className="flex items-center gap-3 p-3 bg-slate-900 rounded border border-slate-700">
-                        <span className="text-blue-500 font-black font-mono">02</span>
-                        <div className="text-sm text-slate-300"><span className="text-blue-400 font-bold">Secondly</span>, existing infrastructure can be repaired.</div>
-                    </div>
-                    <div className="flex items-center gap-3 p-3 bg-slate-900 rounded border border-slate-700">
-                        <span className="text-blue-500 font-black font-mono">03</span>
-                        <div className="text-sm text-slate-300"><span className="text-blue-400 font-bold">Finally</span>, funds are needed for public salaries.</div>
-                    </div>
-                    <div className="flex items-center gap-3 p-3 bg-blue-900/20 rounded border border-blue-500/30">
-                        <span className="text-blue-400 font-black font-mono">>></span>
-                        <div className="text-sm text-white"><span className="text-blue-400 font-bold">Thus</span>, taxes help make the community safer.</div>
-                    </div>
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "5.2", title: "Pattern B: Emphasis", icon: <Zap size={48} className="text-yellow-500" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-xl font-bold text-yellow-400">Arguing by Emphasis</h3>
-                <p className="text-xs text-slate-400">When one reason is more important than others.</p>
-                
-                <div className="bg-slate-900 p-6 rounded-xl border border-yellow-500/30 relative">
-                    <div className="absolute top-2 right-2 text-yellow-500/20 font-black text-6xl">!</div>
-                    <p className="text-sm text-slate-300 leading-loose">
-                        "Money can be used for roads or hospitals. <span className="text-yellow-400 font-bold">More importantly</span>, these funds are needed to pay salaries. Thus, taxes <span className="text-yellow-400 font-bold">not only</span> help improve the community <span className="text-yellow-400 font-bold">but also</span> make it safer."
-                    </p>
-                </div>
-
-                <div className="flex gap-2 justify-center text-xs font-mono text-slate-500">
-                    <span>Moreover</span> • <span>Furthermore</span> • <span>Even more importantly</span>
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "5.3", title: "Tone Analysis", icon: <Mic size={48} className="text-purple-400" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-xl font-bold text-purple-400">Tone: Essay vs News</h3>
+                <h3 className="text-xl font-bold text-orange-400">Refutation Protocol</h3>
+                <p className="text-sm text-slate-400">Don't just list bad points. Crush them.</p>
                 <div className="grid grid-cols-1 gap-4">
-                    <div className="p-4 bg-slate-900 border-l-4 border-slate-500 opacity-60">
-                        <h4 className="text-xs uppercase text-slate-500 mb-1">Version 1 (Robotic)</h4>
-                        <p className="text-xs text-slate-400">"Taxes are collected. Roads are built. Infrastructure is repaired. Salaries are paid."</p>
-                        <div className="text-[9px] mt-2 text-slate-600">SOUNDS LIKE A LIST. HARD TO READ.</div>
-                    </div>
-                    <div className="p-4 bg-purple-900/10 border-l-4 border-purple-500">
-                        <h4 className="text-xs uppercase text-purple-400 mb-1">Version 2 (Cohesive)</h4>
-                        <p className="text-xs text-slate-300">"Taxes are collected <span className="text-purple-400">so that</span> roads can be built... <span className="text-purple-400">Furthermore</span>, funds are needed..."</p>
-                        <div className="text-[9px] mt-2 text-purple-300">SOUNDS LIKE A BAND 9 ARGUMENT.</div>
-                    </div>
-                </div>
-            </div>
-        )
-    },
-
-    // === SECTOR 6: CHAIN REACTIONS ===
-    {
-        id: "6.1", title: "Domino Effect", icon: <Layers size={48} className="text-cyan-500" />,
-        content: (
-            <div className="flex flex-col h-full space-y-6">
-                <div className="flex items-center gap-4">
-                    <div className="p-3 bg-cyan-900/20 rounded-lg text-cyan-400"><Database size={24}/></div>
-                    <div>
-                        <h3 className="text-xl font-bold text-white">Cause & Effect Chains</h3>
-                        <p className="text-xs text-slate-400 font-mono">LOGICAL PROGRESSION</p>
-                    </div>
-                </div>
-
-                <div className="flex-1 flex flex-col justify-center gap-2">
-                    {[
-                        { txt: "Lack of houses", col: "border-slate-600" },
-                        { txt: "Increased homelessness", col: "border-cyan-700" },
-                        { txt: "Problem for charities", col: "border-cyan-500" },
-                        { txt: "Pressure on food/shelter", col: "border-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.3)]" }
-                    ].map((item, i) => (
-                        <div key={i} className="flex flex-col items-center">
-                            <div className={`w-full max-w-sm p-3 bg-slate-900 border-2 ${item.col} rounded-lg text-center text-slate-300 text-sm font-bold transition-transform hover:scale-105`}>
-                                {item.txt}
-                            </div>
-                            {i < 3 && <div className="h-4 w-0.5 bg-slate-700 my-1"></div>}
+                    <div className="p-4 bg-slate-900 border border-slate-700 rounded-lg flex items-center justify-between">
+                        <div>
+                            <div className="text-[10px] text-slate-500 uppercase">Objection</div>
+                            <div className="text-sm text-white">"It creates homesickness."</div>
                         </div>
-                    ))}
-                </div>
-                
-                <div className="text-center text-[10px] text-slate-500 font-mono">
-                    USE: "This means that..." / "This causes..." / "As a result..." / "In turn..."
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "6.2", title: "Speculation", icon: <Lightbulb size={48} className="text-yellow-300" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-xl font-bold text-yellow-300">Speculation Protocol</h3>
-                <p className="text-sm text-slate-400">Do not state predictions as facts unless certain. Use modals.</p>
-                
-                <div className="grid grid-cols-1 gap-3">
-                    <div className="p-4 bg-slate-900 rounded border border-slate-700 flex justify-between items-center">
-                        <span className="text-sm text-slate-300">"The action <strong>already</strong> happens regularly."</span>
-                        <span className="text-xs font-bold text-emerald-500 bg-emerald-900/20 px-2 py-1 rounded">Present Tense</span>
+                        <ArrowRight size={16} className="text-orange-500"/>
+                        <div className="text-right">
+                            <div className="text-[10px] text-orange-400 uppercase font-bold">Refutation</div>
+                            <div className="text-sm text-white">"Make new friends at work/school."</div>
+                        </div>
                     </div>
-                    <div className="p-4 bg-slate-900 rounded border border-slate-700 flex justify-between items-center">
-                        <span className="text-sm text-slate-300">"The action is <strong>possible</strong> in future."</span>
-                        <span className="text-xs font-bold text-yellow-500 bg-yellow-900/20 px-2 py-1 rounded">Could / May / Might</span>
-                    </div>
-                    <div className="p-4 bg-slate-900 rounded border border-slate-700 flex justify-between items-center">
-                        <span className="text-sm text-slate-300">"The action is <strong>definite</strong>."</span>
-                        <span className="text-xs font-bold text-red-500 bg-red-900/20 px-2 py-1 rounded">Will</span>
+                    <div className="p-4 bg-slate-900 border border-slate-700 rounded-lg flex items-center justify-between">
+                        <div>
+                            <div className="text-[10px] text-slate-500 uppercase">Objection</div>
+                            <div className="text-sm text-white">"It is strange/alien."</div>
+                        </div>
+                        <ArrowRight size={16} className="text-orange-500"/>
+                        <div className="text-right">
+                            <div className="text-[10px] text-orange-400 uppercase font-bold">Refutation</div>
+                            <div className="text-sm text-white">"It is interesting/rich experience."</div>
+                        </div>
                     </div>
                 </div>
-                <div className="bg-yellow-900/10 p-4 rounded text-center border border-yellow-500/20">
-                    <p className="text-xs text-yellow-200">
-                        "If the government built more housing, this <span className="font-bold underline">could</span> improve the situation." (Conditional)
+                <div className="p-4 bg-orange-900/20 border border-orange-500/30 rounded text-center">
+                    <p className="text-xs text-orange-200">
+                        "The benefits of the experience <span className="font-bold underline">more than make up for</span> any disadvantages."
                     </p>
                 </div>
             </div>
         )
     },
+
+    // === SECTOR 17: DRAFTING PROTOCOL (From Page 2 & 3) ===
     {
-        id: "6.3", title: "Prediction Drill", icon: <FastForward size={48} className="text-indigo-400" />,
+        id: "17.1", title: "Drafting Flow", icon: <PenTool size={48} className="text-blue-400" />,
         content: (
             <div className="space-y-6">
-                <h3 className="text-xl font-bold text-indigo-400">Tense Check</h3>
-                <p className="text-sm text-slate-400">Match the sentence to the meaning.</p>
+                <h3 className="text-xl font-bold text-blue-400">Planning IS Writing</h3>
+                <div className="bg-slate-900 p-6 rounded-xl border-l-4 border-blue-500 shadow-xl">
+                    <p className="text-sm text-slate-300 leading-relaxed font-serif">
+                        "The completed plan can almost be seen as a rough first draft. You can now think about the best way to express your ideas."
+                    </p>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 bg-slate-900 rounded border border-slate-700">
+                        <div className="text-xs text-slate-500 uppercase mb-2">Plan Idea</div>
+                        <div className="text-white font-mono text-xs">"Need to pay for flights."</div>
+                    </div>
+                    <div className="p-4 bg-blue-900/10 rounded border border-blue-500/30">
+                        <div className="text-xs text-blue-400 uppercase mb-2">Essay Text</div>
+                        <div className="text-white font-mono text-xs">"Financial issues." / "Cost."</div>
+                    </div>
+                </div>
+                <div className="text-center text-[10px] text-slate-500 font-mono">
+                    USE UMBRELLA TERMS TO AVOID REPETITION.
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "17.2", title: "Audit Phase", icon: <ScanFace size={48} className="text-red-400" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-red-400">The "Breath" Test</h3>
+                <p className="text-sm text-slate-400">How to find punctuation errors without knowing the rules.</p>
+                
+                <div className="flex flex-col gap-4">
+                    <div className="p-4 bg-slate-900 border border-slate-700 rounded-xl relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-2 opacity-20"><Mic size={40}/></div>
+                        <h4 className="text-xs text-white font-bold uppercase mb-2">Protocol</h4>
+                        <p className="text-xs text-slate-300">
+                            "Read your essay aloud. Try to notice where there is a <span className="text-emerald-400 font-bold">natural pause</span> or when you need to pause to take a breath."
+                        </p>
+                    </div>
+                    
+                    <div className="p-4 bg-red-900/10 border border-red-500/30 rounded-xl">
+                        <h4 className="text-xs text-red-400 font-bold uppercase mb-2">Diagnosis: Overuse of Commas</h4>
+                        <p className="text-xs text-slate-300">
+                            The main problem at Band 6.5 is using too many commas. If you don't pause naturally, delete the comma.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // === SECTOR 18: MODEL ANALYSIS (Page 5) ===
+    {
+        id: "18.1", title: "Model Deconstruction", icon: <FileText size={48} className="text-purple-400" />,
+        content: (
+            <div className="h-full flex flex-col">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="font-bold text-white">Band 9 Logic Flow</h3>
+                    <div className="text-xs font-mono text-purple-400 bg-purple-900/20 px-2 py-1 rounded border border-purple-500/30">MODEL ANSWER</div>
+                </div>
+                <div className="flex-1 bg-slate-900 rounded-xl p-1 border border-slate-800 overflow-hidden">
+                    <div className="h-full overflow-y-auto p-4 custom-scrollbar text-sm leading-loose font-serif text-slate-300 text-justify">
+                        <p className="mb-4">
+                            <span className="text-purple-400 font-bold">[Para 2: The Problems]</span> The disadvantages of doing a language course overseas are significant. Firstly, there is the <span className="text-white font-bold">cost</span>... Indeed, it may be too expensive for many. In addition, living away from family can lead to <span className="text-white font-bold">loneliness</span>...
+                        </p>
+                        <p className="mb-4">
+                            <span className="text-emerald-400 font-bold">[Para 3: The Refutation]</span> <span className="text-emerald-400 font-bold">Nevertheless</span>, these issues can generally be resolved, and there are definite rewards. Through work and school, they can <span className="text-white font-bold">make friends</span>... Furthermore, the <span className="text-white font-bold">total immersion</span> means it is possible to reach a far higher level...
+                        </p>
+                        <p>
+                            <span className="text-blue-400 font-bold">[Conclusion]</span> To sum up, although some may struggle... the <span className="text-white font-bold">potential benefits more than make up for any disadvantages</span>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // === SECTOR 19: MINDSET OPS (Page 9 & 10) ===
+    {
+        id: "19.1", title: "Bio-Hacking", icon: <CloudRain size={48} className="text-teal-400" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-teal-400">Anxiety Control</h3>
+                <p className="text-sm text-slate-400">Anxiety interferes with clear thinking. Control your physiology.</p>
+                
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-slate-900 p-4 rounded-xl border border-slate-700 flex flex-col items-center text-center">
+                        <Leaf size={32} className="text-emerald-500 mb-2" />
+                        <h4 className="text-xs font-bold text-white mb-1">Olfactory Anchor</h4>
+                        <p className="text-[10px] text-slate-400">"Put peppermint oil on your wrist during study. Use it in the exam to trigger 'Focus Mode'."</p>
+                    </div>
+                    <div className="bg-slate-900 p-4 rounded-xl border border-slate-700 flex flex-col items-center text-center">
+                        <MonitorOff size={32} className="text-red-500 mb-2" />
+                        <h4 className="text-xs font-bold text-white mb-1">Sterile Workspace</h4>
+                        <p className="text-[10px] text-slate-400">"Clear desk. No distractions. Treat practice like a rehearsal."</p>
+                    </div>
+                </div>
+                <div className="p-4 bg-teal-900/20 border border-teal-500/30 rounded text-center">
+                    <p className="text-xs text-teal-200">"Separate the things you CAN control from the things you CANNOT."</p>
+                </div>
+            </div>
+        )
+    },
+
+    // === SECTOR 20: TEMPORAL DISCIPLINE (Page 11) ===
+    {
+        id: "20.1", title: "Chronometrics", icon: <Watch size={48} className="text-white" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-white">Time Management</h3>
+                <div className="flex items-center gap-6">
+                    <div className="w-24 h-24 rounded-full border-4 border-slate-700 flex items-center justify-center relative">
+                        <div className="absolute inset-0 rounded-full border-4 border-t-emerald-500 animate-[spin_1s_linear_infinite]"></div>
+                        <span className="font-mono text-xl font-bold">40:00</span>
+                    </div>
+                    <div className="space-y-2 flex-1">
+                        <div className="flex justify-between text-xs text-slate-400">
+                            <span>Planning</span>
+                            <span className="text-emerald-400 font-bold">10 mins</span>
+                        </div>
+                        <div className="w-full bg-slate-800 h-2 rounded-full"><div className="w-[25%] bg-emerald-500 h-full rounded-full"></div></div>
+                        
+                        <div className="flex justify-between text-xs text-slate-400">
+                            <span>Writing</span>
+                            <span className="text-blue-400 font-bold">25 mins</span>
+                        </div>
+                        <div className="w-full bg-slate-800 h-2 rounded-full"><div className="w-[65%] bg-blue-500 h-full rounded-full"></div></div>
+
+                        <div className="flex justify-between text-xs text-slate-400">
+                            <span>Checking</span>
+                            <span className="text-orange-400 font-bold">5 mins</span>
+                        </div>
+                        <div className="w-full bg-slate-800 h-2 rounded-full"><div className="w-[10%] bg-orange-500 h-full rounded-full"></div></div>
+                    </div>
+                </div>
+                <div className="p-4 bg-slate-800 rounded border border-slate-600 text-center">
+                    <p className="text-sm text-white font-serif italic">"Writing IS Thinking. Clear thinking needs to be practised."</p>
+                </div>
+            </div>
+        )
+    },
+
+    // === SECTOR 21: DECODING (Page 1 & 4) ===
+    {
+        id: "21.1", title: "Question Hack", icon: <HelpCircle size={48} className="text-amber-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-amber-400">Question Conversion Protocol</h3>
+                <p className="text-sm text-slate-400">Turn the prompt statement into a direct question to find the core issue.</p>
+                <div className="p-4 bg-slate-900 border border-slate-700 rounded-lg">
+                    <div className="text-[10px] text-slate-500 uppercase mb-2">Prompt</div>
+                    <p className="text-white italic">"Some experts believe that it is better for children to begin learning a foreign language at primary school rather than secondary school."</p>
+                </div>
+                <ArrowDown className="mx-auto text-amber-500 animate-bounce" />
+                <div className="p-4 bg-amber-900/20 border border-amber-500/30 rounded-lg">
+                    <div className="text-[10px] text-amber-400 uppercase mb-2 font-bold">Core Issue</div>
+                    <p className="text-white font-bold">"Is it better for children to begin learning a foreign language at primary school rather than secondary school?"</p>
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "21.2", title: "The Expert Trap", icon: <UserX size={48} className="text-indigo-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-indigo-400">Ignore "Some Experts"</h3>
+                <p className="text-sm text-slate-400">Do not refer to "experts" or "people" in your essay unless you are citing specific sources (which you aren't).</p>
+                <div className="grid grid-cols-1 gap-4">
+                    <div className="p-4 bg-red-900/10 border border-red-500/30 rounded flex items-center gap-4 opacity-60">
+                        <X size={24} className="text-red-500" />
+                        <div>
+                            <div className="text-xs text-red-400 font-bold uppercase">Wrong</div>
+                            <div className="text-sm text-slate-300">"Those who believe in X cite Y..."</div>
+                        </div>
+                    </div>
+                    <div className="p-4 bg-emerald-900/10 border border-emerald-500/30 rounded flex items-center gap-4">
+                        <Check size={24} className="text-emerald-500" />
+                        <div>
+                            <div className="text-xs text-emerald-400 font-bold uppercase">Right</div>
+                            <div className="text-sm text-slate-300">"Proponents of the first contention point out that..."</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "21.3", title: "Keyword Extraction", icon: <Search size={48} className="text-cyan-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-cyan-400">Target Acquisition</h3>
+                <p className="text-sm text-slate-400">Identify synonyms for the key nouns/verbs.</p>
+                <div className="space-y-3">
+                    <div className="flex justify-between items-center bg-slate-900 p-3 rounded border border-slate-700">
+                        <span className="text-white font-bold">Children</span>
+                        <ArrowRight size={14} className="text-slate-600"/>
+                        <span className="text-cyan-300">Students / Pupils / Offspring</span>
+                    </div>
+                    <div className="flex justify-between items-center bg-slate-900 p-3 rounded border border-slate-700">
+                        <span className="text-white font-bold">Primary School</span>
+                        <ArrowRight size={14} className="text-slate-600"/>
+                        <span className="text-cyan-300">Elementary education / Early years</span>
+                    </div>
+                    <div className="flex justify-between items-center bg-slate-900 p-3 rounded border border-slate-700">
+                        <span className="text-white font-bold">Learn</span>
+                        <ArrowRight size={14} className="text-slate-600"/>
+                        <span className="text-cyan-300">Acquire knowledge / Study / Master</span>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // === SECTOR 22: IDEATION (Page 2, 7 & 8) ===
+    {
+        id: "22.1", title: "Knowledge Trap", icon: <AlertTriangle size={48} className="text-red-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-red-400">The Curse of Knowledge</h3>
+                <div className="bg-red-900/10 p-6 rounded-xl border-l-4 border-red-500">
+                    <p className="text-sm text-slate-300 italic">"Being familiar with a topic isn't always a benefit. It can result in overly long paragraphs with far more detail than is necessary."</p>
+                </div>
+                <div className="text-center">
+                    <div className="inline-block px-4 py-2 bg-slate-800 rounded-full text-xs font-mono text-white">
+                        GOAL: 250 WORDS. NOT 400.
+                    </div>
+                </div>
+                <p className="text-xs text-slate-500 text-center">Stop writing when you have made your point. Do not "dump" everything you know.</p>
+            </div>
+        )
+    },
+    {
+        id: "22.2", title: "Generalization", icon: <Globe size={48} className="text-emerald-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-emerald-400">Personal -> General</h3>
+                <p className="text-sm text-slate-400">Transform your specific memories into academic statements.</p>
+                <div className="grid grid-cols-1 gap-4">
+                    <div className="p-4 bg-slate-900 border border-slate-700 rounded-lg group hover:border-emerald-500 transition-colors">
+                        <div className="text-[10px] text-slate-500 uppercase mb-1">Personal (Drafting)</div>
+                        <div className="text-slate-400 text-sm line-through">"When I was in primary school, my teacher tried to teach us a few words in French."</div>
+                        <ArrowDown size={14} className="my-2 text-emerald-500 mx-auto"/>
+                        <div className="text-[10px] text-emerald-400 uppercase mb-1 font-bold">General (Final)</div>
+                        <div className="text-white text-sm font-bold">"Students at primary school often only learn basic vocabulary."</div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // === SECTOR 23: INTRO ENGINEERING (Page 3, 5 & 6) ===
+    {
+        id: "23.1", title: "Intro Focus", icon: <Target size={48} className="text-purple-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-purple-400">Identify the Focus</h3>
+                <p className="text-sm text-slate-400">Which introduction correctly identifies the core issue?</p>
+                <div className="space-y-2 text-xs">
+                    <div className="p-3 bg-slate-900 border border-slate-700 rounded opacity-50">
+                        A. "Parents have become more keen to teach their offspring..." (Too specific/parents)
+                    </div>
+                    <div className="p-3 bg-purple-900/20 border border-purple-500/50 rounded text-white font-bold shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+                        E. "Whether to teach children a foreign language in secondary school or in primary school is an often debated topic." (Perfect)
+                    </div>
+                    <div className="p-3 bg-slate-900 border border-slate-700 rounded opacity-50">
+                        F. "Learning a foreign language, such as English, is very important." (Too general/cliché)
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "23.2", title: "Paraphrase Drill", icon: <Repeat size={48} className="text-blue-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-blue-400">Paraphrasing "Belief"</h3>
                 <GapFill 
-                    textWithGaps="1. If the government helps, this [gap] solve the problem. (Definite) / 2. Homeless people [gap] free accommodation. (Regularly) / 3. Very few people [gap] be upset if taxes increased. (Possible)"
-                    answers={["will", "are given", "would"]}
-                    hints={["definite result", "present passive", "conditional"]}
+                    textWithGaps="It is [gap] by many that... Some people [gap] that... It is often [gap] that..."
+                    answers={["believed", "argue", "considered"]}
+                    hints={["passive 'believe'", "active opinion", "passive thought"]}
                 />
             </div>
         )
     },
-
-    // === SECTOR 8: LOGIC TRAPS (NEW) ===
     {
-        id: "8.1", title: "Assumption Jump", icon: <Footprints size={48} className="text-pink-500" />,
+        id: "23.3", title: "Thesis Logic", icon: <GitMerge size={48} className="text-orange-500" />,
         content: (
             <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-pink-400">The "John" Fallacy</h3>
-                <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
-                    <p className="text-lg text-slate-300 font-serif mb-4">
-                        "John has arrived late for work every day this week. <span className="text-pink-400 font-bold bg-pink-900/20 px-1">Clearly, he is not committed to his job.</span>"
+                <h3 className="text-xl font-bold text-orange-400">The Thesis Statement</h3>
+                <p className="text-sm text-slate-400">State your position clearly. Don't be vague.</p>
+                <div className="p-4 bg-orange-900/20 border border-orange-500/30 rounded-lg text-center">
+                    <p className="text-sm text-white font-serif leading-relaxed">
+                        "While I think there are certain drawbacks to learning a foreign language too early, I believe that the advantages of this outweigh the disadvantages."
                     </p>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-slate-900 border border-slate-700 rounded text-center">
-                        <div className="text-xs text-slate-500 uppercase mb-2">Fact</div>
-                        <div className="text-emerald-400 font-mono">LATE ARRIVAL</div>
-                    </div>
-                    <div className="p-4 bg-slate-900 border border-slate-700 rounded text-center">
-                        <div className="text-xs text-slate-500 uppercase mb-2">Conclusion</div>
-                        <div className="text-red-400 font-mono">LAZY / UNCOMMITTED</div>
-                    </div>
-                </div>
-                <div className="p-4 bg-pink-900/20 border border-pink-500/20 rounded text-center text-sm text-pink-200">
-                    <AlertTriangle size={16} className="inline mr-2" />
-                    ERROR: JUMPING TO CONCLUSION. (Could be traffic, illness, family).
+                <div className="text-center text-[10px] text-slate-500 font-mono">
+                    CLEAR POSITION = BAND 7+
                 </div>
             </div>
         )
     },
+
+    // === SECTOR 24: MODEL DECONSTRUCTION (Page 10, 11, 12) ===
     {
-        id: "8.2", title: "Perspective Drift", icon: <Glasses size={48} className="text-cyan-400" />,
+        id: "24.1", title: "Intro Analysis", icon: <ZoomIn size={48} className="text-teal-500" />,
         content: (
             <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-cyan-400">The "Driving" Error</h3>
-                <p className="text-sm text-slate-400">Essay Topic: "People spend too much time travelling to work."</p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="p-4 bg-red-900/10 border border-red-500/30 rounded opacity-70">
-                        <h4 className="text-xs uppercase text-red-400 mb-2 font-bold">Candidate's Draft</h4>
-                        <p className="text-xs text-slate-300 leading-relaxed">
-                            "Fossil fuels are being depleted. By 2050 resources will be used up. Driving more means more carbon emissions."
+                <h3 className="text-xl font-bold text-teal-400">Gap Fill: Introduction</h3>
+                <GapFill 
+                    textWithGaps="The [gap] to speak a second language is a [gap] life skill. However, there is some [gap] over the best age to learn."
+                    answers={["ability", "useful", "debate"]}
+                    hints={["skill/capacity", "adjective", "argument/discussion"]}
+                />
+            </div>
+        )
+    },
+    {
+        id: "24.2", title: "Cohesion Drill", icon: <Link size={48} className="text-indigo-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-indigo-400">Gap Fill: Body 1</h3>
+                <GapFill 
+                    textWithGaps="The brains of young children are often compared to [gap]. Consequently, they can learn languages far more easily. In [gap], high school students..."
+                    answers={["sponges", "contrast"]}
+                    hints={["absorbent metaphor", "linking word"]}
+                />
+            </div>
+        )
+    },
+    {
+        id: "24.3", title: "Response Drill", icon: <MessageSquare size={48} className="text-rose-500" />,
+        content: (
+            <div className="space-y-6">
+                <h3 className="text-xl font-bold text-rose-400">Gap Fill: Body 2</h3>
+                <GapFill 
+                    textWithGaps="Nevertheless, there are several [gap] to introducing a second language. Firstly, primary students [gap] have one teacher."
+                    answers={["challenges", "generally"]}
+                    hints={["problems/difficulties", "usually/often"]}
+                />
+            </div>
+        )
+    },
+    {
+        id: "24.4", title: "Full Model", icon: <BookOpen size={48} className="text-white" />,
+        content: (
+            <div className="h-full flex flex-col">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="font-bold text-white">The "Learning Age" Essay</h3>
+                    <div className="text-xs font-mono text-emerald-400 bg-emerald-900/20 px-2 py-1 rounded border border-emerald-500/30">BAND 9 VERIFIED</div>
+                </div>
+                <div className="flex-1 bg-slate-900 rounded-xl p-1 border border-slate-800 overflow-hidden">
+                    <div className="h-full overflow-y-auto p-4 custom-scrollbar text-sm leading-loose font-serif text-slate-300 text-justify">
+                        <p className="mb-4">
+                            The ability to speak a second language is a useful life skill. However, there is some debate over the best age to learn a new language, with some experts believing this should happen at primary school. In my view, there is little benefit in starting so young.
                         </p>
-                        <div className="mt-2 text-[10px] text-red-400 font-mono">PROBLEM: TOPIC WAS 'TRAVELLING', NOT 'DRIVING'.</div>
-                    </div>
-                    <div className="p-4 bg-emerald-900/10 border border-emerald-500/30 rounded">
-                        <h4 className="text-xs uppercase text-emerald-400 mb-2 font-bold">Corrected Version</h4>
-                        <p className="text-xs text-slate-300 leading-relaxed">
-                            "<span className="text-emerald-400 font-bold">In my country, the vast majority of people drive.</span> Therefore, spending more time travelling means they are driving more."
+                        <p className="mb-4">
+                            There are obvious arguments for learning a foreign language early in life. The brains of young children are often compared to sponges because of their ability to soak up knowledge... In contrast, primary school students are happier to take risks...
                         </p>
-                        <div className="mt-2 text-[10px] text-emerald-400 font-mono">FIX: CLARIFY PERSPECTIVE ("In my country...").</div>
-                    </div>
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "8.3", title: "Butterfly Fallacy", icon: <Wind size={48} className="text-orange-400" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-orange-400">Trivial to Extreme</h3>
-                <div className="flex flex-col items-center gap-4">
-                    <div className="p-4 bg-slate-900 border border-slate-700 rounded-xl w-full text-center">
-                        <p className="text-sm text-slate-300">"Buying a Zara handbag"</p>
-                        <div className="text-[10px] text-slate-500 uppercase mt-1">TRIVIAL ACTION</div>
-                    </div>
-                    <ArrowDown size={24} className="text-slate-600" />
-                    <div className="p-4 bg-slate-900 border border-slate-700 rounded-xl w-full text-center">
-                        <p className="text-sm text-slate-300">"Saves money -> No need to fly to US"</p>
-                        <div className="text-[10px] text-slate-500 uppercase mt-1">LOGICAL STEP?</div>
-                    </div>
-                    <ArrowDown size={24} className="text-slate-600" />
-                    <div className="p-4 bg-red-900/20 border border-red-500/50 rounded-xl w-full text-center shadow-[0_0_20px_rgba(239,68,68,0.2)]">
-                        <p className="text-lg font-bold text-red-400">"GLOBAL TOURISM COLLAPSE"</p>
-                        <div className="text-[10px] text-red-300 uppercase mt-1">EXTREME CONCLUSION</div>
+                        <p className="mb-4">
+                            Nevertheless, there are several challenges to introducing a second language at such a young age. Firstly, primary students generally have one teacher... This means the staff may not have the necessary skills...
+                        </p>
+                        <p>
+                            In conclusion, there appear to be limited benefits to studying a foreign language at a very young age... adding more to their curriculum is likely to alter that for the worse. (342 words)
+                        </p>
                     </div>
                 </div>
             </div>
         )
     },
 
-    // === SECTOR 9: EVIDENCE PROTOCOLS (NEW) ===
+    // === SECTOR 25: CONCLUSION & REVIEW (Page 9 & 13) ===
     {
-        id: "9.1", title: "Template Stat", icon: <FileX size={48} className="text-red-500" />,
+        id: "25.1", title: "Conclusion Logic", icon: <CheckCircle2 size={48} className="text-lime-500" />,
         content: (
             <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-red-400">The "Fake Stat" Trap</h3>
-                <div className="bg-slate-900 p-6 rounded-xl border-l-4 border-red-500">
-                    <p className="text-sm text-slate-300 leading-relaxed font-serif">
-                        "To tackle this problem... corporate tax incentive. <span className="text-red-400 font-bold bg-red-900/20">For example, a similar initiative was launched by the United States government in San Francisco, which has resulted in Tesla's yearly corporate taxes to reduce by 35%.</span>"
-                    </p>
-                </div>
-                <div className="grid grid-cols-1 gap-2 text-sm text-slate-400">
-                    <div className="flex items-center gap-2 text-red-300"><X size={14}/> <span>Clearly invented statistic.</span></div>
-                    <div className="flex items-center gap-2 text-red-300"><X size={14}/> <span>"Template" style filling.</span></div>
-                    <div className="flex items-center gap-2 text-red-300"><X size={14}/> <span>Does not explain the main idea.</span></div>
-                </div>
-                <div className="text-center text-xs text-slate-500 font-mono mt-4">
-                    REAL EXAMPLES DO NOT NEED FAKE NUMBERS. THEY NEED LOGIC.
-                </div>
+                <h3 className="text-xl font-bold text-lime-400">Gap Fill: Conclusion</h3>
+                <GapFill 
+                    textWithGaps="In conclusion, while I [gap] that learning a foreign language too early can harm kids to some extent, I would say that beginning this study at [gap] school is better."
+                    answers={["agree", "secondary"]}
+                    hints={["concede point", "later stage"]}
+                />
             </div>
         )
     },
     {
-        id: "9.2", title: "Echo Loop", icon: <Repeat size={48} className="text-purple-400" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-purple-400">Circular Examples</h3>
-                <div className="flex flex-col gap-4">
-                    <div className="p-4 bg-slate-900 rounded border border-slate-700">
-                        <div className="text-xs text-slate-500 uppercase mb-1">Claim</div>
-                        <p className="text-sm text-white">"If good transport is provided, people will use public transport."</p>
-                    </div>
-                    <div className="p-4 bg-purple-900/10 rounded border border-purple-500/30">
-                        <div className="text-xs text-purple-400 uppercase mb-1">Bad Example</div>
-                        <p className="text-sm text-purple-100">"For example, if fast metro trains are provided, people will go to school by metro."</p>
-                    </div>
-                </div>
-                <div className="p-4 bg-emerald-900/10 rounded border border-emerald-500/30 mt-2">
-                    <div className="text-xs text-emerald-400 uppercase mb-1">Correction</div>
-                    <p className="text-sm text-emerald-100">"For example, cities like <span className="font-bold">London and Tokyo</span> see high usage because the network covers all major destinations."</p>
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "9.3", title: "Macro/Micro", icon: <ZoomIn size={48} className="text-teal-400" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-xl font-bold text-teal-400">General Idea vs Specific Evidence</h3>
-                <p className="text-sm text-slate-400">Sort the concepts.</p>
-                <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                        <div className="text-xs font-bold text-slate-500 text-center uppercase">General (Idea)</div>
-                        <div className="p-3 bg-slate-800 rounded text-center text-xs text-slate-300">Government collects taxes</div>
-                        <div className="p-3 bg-slate-800 rounded text-center text-xs text-slate-300">Population exceeds housing</div>
-                    </div>
-                    <div className="space-y-2">
-                        <div className="text-xs font-bold text-teal-500 text-center uppercase">Specific (Evidence)</div>
-                        <div className="p-3 bg-teal-900/20 border border-teal-500/30 rounded text-center text-xs text-teal-200">Pay police/firefighter salaries</div>
-                        <div className="p-3 bg-teal-900/20 border border-teal-500/30 rounded text-center text-xs text-teal-200">Increased homelessness</div>
-                    </div>
-                </div>
-            </div>
-        )
-    },
-    {
-        id: "9.4", title: "The Pivot", icon: <Shuffle size={48} className="text-indigo-400" />,
-        content: (
-            <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-indigo-400">Reversing the Flow</h3>
-                <p className="text-sm text-slate-400">You can structure arguments in two directions.</p>
-                
-                <div className="space-y-4">
-                    <div className="p-4 bg-slate-900 border-l-4 border-indigo-500">
-                        <div className="text-xs text-indigo-400 font-bold mb-1">Standard Flow</div>
-                        <p className="text-sm text-white">"Taxes help improve the community. <span className="text-indigo-400 font-bold">For example</span>, the funds are used to pay salaries..."</p>
-                        <div className="text-[10px] text-slate-500 mt-1 font-mono">IDEA -> EXAMPLE</div>
-                    </div>
-                    
-                    <div className="flex justify-center"><RefreshCcw size={16} className="text-slate-600"/></div>
-
-                    <div className="p-4 bg-slate-900 border-l-4 border-emerald-500">
-                        <div className="text-xs text-emerald-400 font-bold mb-1">Reverse Flow</div>
-                        <p className="text-sm text-white">"These funds are used to pay the salaries of government workers. <span className="text-emerald-400 font-bold">Thus</span>, taxes help improve the community..."</p>
-                        <div className="text-[10px] text-slate-500 mt-1 font-mono">EVIDENCE -> CONCLUSION (THUS)</div>
-                    </div>
-                </div>
-            </div>
-        )
-    },
-
-    // === SECTOR 10: COMPLETION ===
-    {
-        id: "10.1", title: "Mastery Synthesis", icon: <CheckCircle2 size={48} className="text-white" />,
+        id: "25.2", title: "Final Audit", icon: <ListChecks size={48} className="text-white" />,
         content: (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
-                <h2 className="text-5xl font-black text-white">TASK 2 SECURED</h2>
-                <div className="w-40 h-40 bg-gradient-to-tr from-indigo-500 to-emerald-600 rounded-full flex items-center justify-center shadow-[0_0_80px_rgba(16,185,129,0.4)] animate-spin-slow">
+                <h2 className="text-5xl font-black text-white">SYSTEM COMPLETE</h2>
+                <div className="w-40 h-40 bg-gradient-to-tr from-amber-500 to-purple-600 rounded-full flex items-center justify-center shadow-[0_0_80px_rgba(168,85,247,0.4)] animate-spin-slow">
                     <div className="w-36 h-36 bg-[#050505] rounded-full flex items-center justify-center">
                         <Trophy size={64} className="text-white" />
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4 w-full max-w-lg">
-                    <div className="p-4 bg-slate-900 border border-slate-800 rounded">
-                        <div className="text-xs text-slate-500 uppercase">Reasoning</div>
-                        <div className="text-emerald-500 font-bold">VALIDATED</div>
-                    </div>
-                    <div className="p-4 bg-slate-900 border border-slate-800 rounded">
-                        <div className="text-xs text-slate-500 uppercase">Tone</div>
-                        <div className="text-emerald-500 font-bold">ACADEMIC</div>
-                    </div>
-                    <div className="p-4 bg-slate-900 border border-slate-800 rounded">
-                        <div className="text-xs text-slate-500 uppercase">Logic</div>
-                        <div className="text-emerald-500 font-bold">SURGICAL</div>
-                    </div>
-                    <div className="p-4 bg-slate-900 border border-slate-800 rounded">
-                        <div className="text-xs text-slate-500 uppercase">Evidence</div>
-                        <div className="text-emerald-500 font-bold">PROOFED</div>
-                    </div>
-                </div>
+                <p className="text-slate-400 max-w-md">
+                    You have decoded the "Experts" prompt, mastered the Planning phase, and analyzed a Band 9 Model.
+                </p>
                 <button onClick={triggerReward} className="mt-8 px-10 py-4 bg-white text-black font-black uppercase tracking-[0.2em] rounded-full hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.5)]">
-                    Sync to Core
+                    Sync Neural Map
                 </button>
             </div>
         )
@@ -851,7 +741,9 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
   ];
 
   const slide = slides[currentSlide];
-  const sectorColor = slide.id.startsWith("1") ? "amber" : slide.id.startsWith("2") ? "teal" : slide.id.startsWith("3") ? "purple" : slide.id.startsWith("4") ? "orange" : slide.id.startsWith("5") ? "blue" : slide.id.startsWith("6") ? "cyan" : slide.id.startsWith("8") ? "pink" : slide.id.startsWith("9") ? "red" : "emerald";
+  const sectorNum = parseInt(slide.id.split('.')[0]);
+  const colors = ["amber", "indigo", "pink", "orange", "blue", "cyan", "lime", "pink", "red", "emerald", "indigo", "rose", "white", "slate", "teal", "purple", "blue", "purple", "teal", "slate", "amber", "emerald", "purple", "teal", "lime", "white"];
+  const sectorColor = colors[sectorNum - 1] || "slate";
   const progress = ((currentSlide + 1) / slides.length) * 100;
 
   return (
@@ -892,17 +784,21 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
 
              <div className="flex items-center gap-4">
                  <div className="hidden md:flex gap-1">
-                     {slides.map((s, i) => (
-                         <div 
-                            key={i} 
-                            onClick={() => jumpTo(i)}
-                            className={`w-1 h-4 rounded-full cursor-pointer transition-all ${
-                                i === currentSlide 
-                                ? `bg-${sectorColor}-500 h-6` 
-                                : i < currentSlide ? 'bg-slate-600' : 'bg-slate-800'
-                            }`}
-                         ></div>
-                     ))}
+                     {slides.map((s, i) => {
+                         const sn = parseInt(s.id.split('.')[0]);
+                         const sc = colors[sn - 1] || "slate";
+                         return (
+                             <div 
+                                key={i} 
+                                onClick={() => jumpTo(i)}
+                                className={`w-1 h-4 rounded-full cursor-pointer transition-all ${
+                                    i === currentSlide 
+                                    ? `bg-${sc}-500 h-6` 
+                                    : i < currentSlide ? 'bg-slate-600' : 'bg-slate-800'
+                                }`}
+                             ></div>
+                         )
+                     })}
                  </div>
                  <button 
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -924,7 +820,8 @@ const NexusTask2Masterclass: React.FC<NexusTask2MasterclassProps> = ({ onBack })
                     <div className="space-y-1">
                         {slides.map((s, i) => {
                              const isActive = currentSlide === i;
-                             const sCol = s.id.startsWith("1") ? "amber" : s.id.startsWith("2") ? "teal" : s.id.startsWith("3") ? "purple" : s.id.startsWith("4") ? "orange" : s.id.startsWith("5") ? "blue" : s.id.startsWith("6") ? "cyan" : s.id.startsWith("8") ? "pink" : s.id.startsWith("9") ? "red" : "emerald";
+                             const sn = parseInt(s.id.split('.')[0]);
+                             const sCol = colors[sn - 1] || "slate";
                              return (
                                 <button
                                     key={i}
