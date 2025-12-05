@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid, RotateCcw, ChevronRight } from 'lucide-react';
 import ChartDualView from '../features/ChartDualView';
 import InteractiveMap from '../features/InteractiveMap';
 import ChartHousing from '../features/ChartHousing';
@@ -76,6 +76,116 @@ const GapFill = ({ parts, options, correct }: { parts: string[], options: string
         </div>
     );
 };
+
+const VocabTable = () => {
+    const [inputs, setInputs] = useState<Record<string, string>>({});
+    const answers: Record<string, string> = {
+        'build': 'building',
+        'construct': 'construction',
+        'improve': 'improvement',
+        'develop': 'development',
+        'refurbish': 'refurbishment',
+        'renovate': 'renovation',
+        'redevelop': 'redevelopment'
+    };
+
+    const handleChange = (key: string, val: string) => {
+        setInputs(prev => ({...prev, [key]: val}));
+    };
+
+    return (
+        <div className="overflow-hidden rounded-lg border border-slate-700">
+            <table className="w-full text-left text-sm text-slate-400">
+                <thead className="bg-purple-900/20 text-purple-400 uppercase font-mono text-xs">
+                    <tr>
+                        <th className="px-4 py-3">Verb</th>
+                        <th className="px-4 py-3">Noun (Input)</th>
+                        <th className="px-4 py-3">Meaning</th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800 bg-slate-900/50">
+                    {[
+                        { v: 'to build', m: 'make something using materials such as bricks or wood etc.', k: 'build' },
+                        { v: 'to construct', m: 'build something or put pieces together', k: 'construct' },
+                        { v: 'to improve', m: 'make something better', k: 'improve' },
+                        { v: 'to develop', m: 'change a place so that it becomes more advanced', k: 'develop' },
+                        { v: 'to refurbish', m: 'make a building look new again by painting, repairing', k: 'refurbish' },
+                        { v: 'to renovate', m: 'repair and improve something to make it \'new\' again', k: 'renovate' },
+                        { v: 'to redevelop', m: 'change an area of a town by replacing old buildings', k: 'redevelop' }
+                    ].map((row, i) => {
+                        const isCorrect = inputs[row.k]?.toLowerCase().trim() === answers[row.k];
+                        return (
+                            <tr key={i}>
+                                <td className="px-4 py-3 font-bold text-white">{row.v}</td>
+                                <td className="px-4 py-3">
+                                    <input 
+                                        type="text" 
+                                        className={`bg-slate-950 border px-2 py-1 rounded w-full transition-colors outline-none ${
+                                            isCorrect 
+                                            ? 'border-emerald-500 text-emerald-400 bg-emerald-950/20' 
+                                            : 'border-slate-600 text-white focus:border-purple-500'
+                                        }`}
+                                        placeholder="..."
+                                        onChange={(e) => handleChange(row.k, e.target.value)}
+                                    />
+                                </td>
+                                <td className="px-4 py-3 text-xs italic">{row.m}</td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+        </div>
+    )
+}
+
+const FlashcardDeck = () => {
+    const cards = [
+        { q: "to change an area of a town by replacing old buildings with new ones", a: "to redevelop" },
+        { q: "noun form of 'to construct'", a: "construction" },
+        { q: "two verbs that mean 'to make a building look new again by repairing, decorating etc.'", a: "1) to renovate 2) to refurbish" },
+        { q: "noun form of 'to improve'", a: "improvement" },
+        { q: "noun form of 'to build'", a: "building" },
+        { q: "noun form of 'to develop'", a: "development" },
+        { q: "to make something better", a: "to improve" },
+        { q: "to change a (usually wild or untouched) place so that it becomes more advanced / habitable", a: "to develop" },
+        { q: "noun form of 'to renovate'", a: "renovation" },
+        { q: "noun form of 'to redevelop'", a: "redevelopment" },
+        { q: "noun form of 'to refurbish'", a: "refurbishment" },
+        { q: "two verbs that mean 'to make something using materials such as bricks or wood'", a: "1) build 2) construct" }
+    ];
+
+    const [index, setIndex] = useState(0);
+    const [flipped, setFlipped] = useState(false);
+
+    const next = () => {
+        setFlipped(false);
+        setTimeout(() => setIndex((index + 1) % cards.length), 200);
+    };
+
+    return (
+        <div className="w-full max-w-md mx-auto aspect-[4/3] perspective-1000 group cursor-pointer" onClick={() => setFlipped(!flipped)}>
+            <div className={`relative w-full h-full transition-all duration-500 transform-style-3d ${flipped ? 'rotate-y-180' : ''}`}>
+                {/* Front */}
+                <div className="absolute inset-0 bg-purple-600 rounded-2xl shadow-xl flex flex-col items-center justify-center p-8 text-center backface-hidden border-4 border-white/20">
+                    <div className="absolute top-4 left-4 bg-white/20 px-2 py-1 rounded text-[10px] font-bold text-white">CARD {index + 1}/{cards.length}</div>
+                    <p className="text-xl md:text-2xl font-bold text-white">{cards[index].q}</p>
+                    <p className="mt-8 text-purple-200 text-sm font-mono animate-pulse">TAP TO FLIP</p>
+                </div>
+                {/* Back */}
+                <div className="absolute inset-0 bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center p-8 text-center backface-hidden rotate-y-180">
+                    <p className="text-2xl md:text-3xl font-black text-purple-600">{cards[index].a}</p>
+                    <button 
+                        onClick={(e) => { e.stopPropagation(); next(); }} 
+                        className="mt-8 px-6 py-2 bg-purple-600 text-white rounded-full font-bold hover:bg-purple-700 transition-colors flex items-center gap-2"
+                    >
+                        Next Card <ChevronRight size={16}/>
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 const MatchingProtocol = ({ pairs }: { pairs: { label: string, icon: React.ReactNode }[] }) => {
     const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
@@ -786,7 +896,6 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
             </div>
         )
     },
-    // --- PDF INTEGRATION START ---
     {
         title: "SECTOR 17: INTRODUCTORY SENTENCE",
         headline: "THE OPENING MOVE",
@@ -1121,6 +1230,214 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                     options={["For", "over", "during", "from", "to"]}
                     correct={["For", "over", "during", "from", "to"]}
                 />
+            </div>
+        )
+    },
+    // --- PDF INTEGRATION START ---
+    {
+        title: "SECTOR 28: MAP TASKS INTRO",
+        headline: "BEFORE & AFTER LOGIC",
+        icon: <Layout size={64} className="text-cyan-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-cyan-950/20 border-l-4 border-cyan-500 p-8">
+                    <h3 className="text-3xl font-black text-cyan-500 mb-4">MAP & PLAN FUNDAMENTALS</h3>
+                    <p className="text-xl text-slate-300 leading-relaxed">
+                        With maps, you are always shown two images: <span className="text-white font-bold">Before</span> something happened and <span className="text-white font-bold">After</span>.
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 text-sm">
+                        <div className="bg-slate-900 p-3 rounded">
+                            <span className="block text-cyan-400 font-bold mb-1">Example A</span>
+                            An island before and after the construction of tourist facilities.
+                        </div>
+                        <div className="bg-slate-900 p-3 rounded">
+                            <span className="block text-cyan-400 font-bold mb-1">Example B</span>
+                            The layout of a university sports centre now vs future redevelopment.
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-slate-900 border border-slate-800 p-6 rounded-lg">
+                    <h4 className="text-xs font-mono text-cyan-500 uppercase tracking-widest mb-4">GRAMMAR PROTOCOL: 'BEFORE' vs 'PRIOR TO'</h4>
+                    <div className="space-y-4">
+                        <div>
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="text-white font-bold">Use with Verb (+ing):</span>
+                                <span className="text-slate-500 text-xs">AFTER / BEFORE only</span>
+                            </div>
+                            <p className="text-slate-400 italic pl-4 border-l-2 border-slate-700">"After <span className="text-cyan-400">building</span> some facilities..."</p>
+                        </div>
+                        <div>
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="text-white font-bold">Use with Noun:</span>
+                                <span className="text-slate-500 text-xs">ALL OK (Prior to, Following, After)</span>
+                            </div>
+                            <p className="text-slate-400 italic pl-4 border-l-2 border-slate-700">"Prior to the <span className="text-cyan-400">construction</span> of..."</p>
+                        </div>
+                        <div className="mt-4 p-2 bg-red-950/20 border border-red-900 text-red-400 text-xs text-center">
+                            WARNING: "Prior to building" is technically incorrect in formal grammar. Stick to Nouns for 'Prior to'.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 29: OVERLOAD ERROR",
+        headline: "GIVING TOO MUCH INFO",
+        icon: <AlertTriangle size={64} className="text-amber-500" />,
+        content: (
+            <div className="space-y-8">
+                <p className="text-xl text-slate-300 font-light">
+                    The introductory sentence should not be confused with your overview. Do not add comments or extra adjectives.
+                </p>
+
+                <div className="bg-slate-900 border border-red-500/50 p-6 rounded relative overflow-hidden">
+                    <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-3 py-1">BAD EXAMPLE</div>
+                    <p className="text-lg text-slate-300 mb-4">
+                        "The two maps illustrate the development that has taken place on <span className="text-red-500 line-through">the island</span> in terms of facilities for tourists that has turned a <span className="text-red-500 font-bold">desolate</span> place into one with several <span className="text-red-500 font-bold">amenities</span>."
+                    </p>
+                    <ul className="space-y-2 text-sm text-red-300 list-disc pl-4">
+                        <li>"The island": Which island? Introduce it first as "an island".</li>
+                        <li>"Desolate": This is an opinion/comment. It belongs in the body/overview, not the intro.</li>
+                        <li>"Amenities": Too specific for the first sentence.</li>
+                    </ul>
+                </div>
+
+                <div className="bg-slate-900 border border-emerald-500/50 p-6 rounded relative overflow-hidden">
+                    <div className="absolute top-0 right-0 bg-emerald-500 text-white text-xs font-bold px-3 py-1">OPTIMIZED</div>
+                    <p className="text-lg text-white">
+                        "The maps show an island <span className="text-emerald-400 font-bold">prior to and following its development</span> as a tourist destination."
+                    </p>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 30: HOMEWORK CONTEXT",
+        headline: "TABLE ANALYSIS",
+        icon: <Table size={64} className="text-purple-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-purple-950/20 border border-purple-500/30 p-6 rounded text-center">
+                    <h3 className="text-white font-bold mb-2">HOMEWORK BRIEF</h3>
+                    <p className="text-slate-400">"Summarise the information by selecting and reporting the main features, and make comparisons where relevant."</p>
+                </div>
+
+                <ChartCoffee />
+
+                <div className="text-center text-sm text-slate-500">
+                    <p>Refer to Sector 17 for the Introductory Sentence structure of this specific task.</p>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 31: VOCABULARY MATRIX",
+        headline: "BUILD & CONSTRUCT",
+        icon: <PenTool size={64} className="text-indigo-500" />,
+        content: (
+            <div className="space-y-8">
+                <p className="text-lg text-slate-300">
+                    Map tasks require specific transformation verbs. Convert the Verbs to Nouns below.
+                </p>
+                
+                <VocabTable />
+
+                <div className="mt-8 border-t border-slate-800 pt-8">
+                    <h4 className="text-indigo-400 font-bold mb-4 uppercase tracking-widest text-sm flex items-center gap-2">
+                        <Map size={16}/> PARAPHRASE CHALLENGE
+                    </h4>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div className="h-48 rounded-lg overflow-hidden border border-slate-700 relative">
+                             {/* Mini Map Preview */}
+                             <InteractiveMap />
+                        </div>
+                        <div className="flex flex-col justify-center gap-4">
+                            <p className="text-sm text-slate-400">Original Question:</p>
+                            <p className="text-white font-serif italic border-l-2 border-indigo-500 pl-4">"The two maps below show an island before and after the construction of some tourist facilities."</p>
+                            
+                            <div className="space-y-2">
+                                <p className="text-xs text-indigo-400 uppercase font-bold">Attempt Paraphrase:</p>
+                                <textarea className="w-full bg-slate-900 border border-slate-700 rounded p-3 text-sm text-white h-24" placeholder="The maps illustrate..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 32: ANSWERS & REVIEW",
+        headline: "PARAPHRASE SOLUTIONS",
+        icon: <CheckCircle2 size={64} className="text-emerald-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-emerald-950/20 border-l-4 border-emerald-500 p-8">
+                    <h3 className="text-2xl font-black text-emerald-500 mb-6">MODEL ANSWERS</h3>
+                    <div className="space-y-4">
+                        <div className="p-4 bg-slate-900 rounded border border-slate-800">
+                            <p className="text-white text-lg">"The maps show an island <span className="text-emerald-400 font-bold">prior to and following</span> the building of some facilities for tourists."</p>
+                        </div>
+                        <div className="p-4 bg-slate-900 rounded border border-slate-800">
+                            <p className="text-white text-lg">"The maps show changes on an island <span className="text-emerald-400 font-bold">following the construction</span> of some tourist facilities."</p>
+                        </div>
+                        <div className="p-4 bg-slate-900 rounded border border-slate-800">
+                            <p className="text-white text-lg">"The maps show how an island changed <span className="text-emerald-400 font-bold">after tourist facilities were constructed</span>."</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div className="text-center">
+                    <p className="text-slate-400">Notice the variation: <em>Nouns</em> (Construction), <em>Gerunds</em> (Building), and <em>Passive Voice</em> (Were constructed).</p>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 33: RAPID FIRE SYNONYMS",
+        headline: "FLASHCARD PROTOCOL",
+        icon: <Zap size={64} className="text-yellow-500" />,
+        content: (
+            <div className="flex flex-col items-center justify-center min-h-[500px]">
+                <div className="text-center mb-8">
+                    <h3 className="text-2xl font-black text-white mb-2">NEURAL RECALL DRILL</h3>
+                    <p className="text-slate-400">Test your definitions. Speed is key.</p>
+                </div>
+                <FlashcardDeck />
+                <div className="mt-8 flex gap-2 text-xs text-slate-600 font-mono uppercase">
+                    <RotateCcw size={12}/> Loop <span className="mx-2">|</span> <MousePointer2 size={12}/> Click to Flip
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 34: FINAL GRID TEST",
+        headline: "MASTERY VERIFICATION",
+        icon: <Grid size={64} className="text-fuchsia-500" />,
+        content: (
+            <div className="space-y-8">
+                <p className="text-xl text-slate-300 text-center">
+                    Complete the final matching protocol to verify map vocabulary retention.
+                </p>
+                
+                <div className="w-full max-w-4xl mx-auto">
+                    <MatchingProtocol 
+                        pairs={[
+                            { label: "Make something using materials", icon: <span className="font-bold text-sm">To Build</span> },
+                            { label: "Make something better", icon: <span className="font-bold text-sm">To Improve</span> },
+                            { label: "Change a wild place to be usable", icon: <span className="font-bold text-sm">To Develop</span> },
+                            { label: "Replace old buildings with new", icon: <span className="font-bold text-sm">Redevelop</span> },
+                            { label: "Repair to make 'new' again", icon: <span className="font-bold text-sm">Renovate</span> }
+                        ]}
+                    />
+                </div>
+
+                <div className="text-center mt-12">
+                    <div className="inline-block px-6 py-2 bg-fuchsia-900/30 text-fuchsia-400 border border-fuchsia-500 rounded-full text-xs font-bold uppercase tracking-widest animate-pulse">
+                        End of Masterclass Module
+                    </div>
+                </div>
             </div>
         )
     }
