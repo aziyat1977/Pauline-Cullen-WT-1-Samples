@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Star, Menu, X, BarChart2, Home, Layout, Coffee, Globe, Map, Moon, Sun, ArrowLeft, Trophy, Zap, Activity, BookOpen, ChevronRight, BrainCircuit, Fingerprint } from 'lucide-react';
+import { Star, Menu, X, BarChart2, Home, Layout, Coffee, Globe, Map, Moon, Sun, ArrowLeft, Trophy, Zap, Activity, BookOpen, ChevronRight, BrainCircuit, Fingerprint, Network } from 'lucide-react';
 import { AppState } from './types';
 import LessonFlight from './components/lessons/LessonFlight';
 import LessonHousing from './components/lessons/LessonHousing';
@@ -10,10 +10,11 @@ import LessonDegradation from './components/lessons/LessonDegradation';
 import LessonMaps from './components/lessons/LessonMaps';
 import ReactiveBackground from './components/ui/ReactiveBackground';
 import Sanctuary from './components/introvert/Sanctuary';
+import TheNexus from './components/ambivert/TheNexus';
 import PersonalityTest from './components/features/PersonalityTest';
 
 type LessonId = 'flight' | 'housing' | 'transport' | 'coffee' | 'degradation' | 'maps';
-type ViewState = 'dashboard' | 'lesson' | 'sanctuary';
+type ViewState = 'dashboard' | 'lesson' | 'sanctuary' | 'nexus';
 
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>({ xp: 0, completedSections: [] });
@@ -80,10 +81,10 @@ const App: React.FC = () => {
       {isMenuOpen && (
         <>
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] animate-fade-in" onClick={() => setIsMenuOpen(false)} />
-          <div className={`fixed left-4 bottom-4 w-80 bg-white/95 dark:bg-slate-900/95 shadow-2xl z-[60] overflow-y-auto rounded-3xl border border-white/20 dark:border-slate-800 animate-slide-in-right p-2 ${view === 'sanctuary' ? 'top-4' : 'top-[85px]'}`}>
+          <div className={`fixed left-4 bottom-4 w-80 bg-white/95 dark:bg-slate-900/95 shadow-2xl z-[60] overflow-y-auto rounded-3xl border border-white/20 dark:border-slate-800 animate-slide-in-right p-2 ${view === 'sanctuary' || view === 'nexus' ? 'top-4' : 'top-[85px]'}`}>
              <div className="p-4">
                 
-                {/* Personality Test Entry Point (Top Left of Menu) */}
+                {/* Personality Test Entry Point */}
                 <button 
                   onClick={() => setShowPersonalityTest(true)}
                   className="w-full flex items-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 mb-4 shadow-xl shadow-indigo-500/20 group relative overflow-hidden"
@@ -96,18 +97,31 @@ const App: React.FC = () => {
                    </div>
                 </button>
 
+                {/* THE NEXUS (Ambivert Special) - Hidden Top Left Logic */}
+                <button 
+                  onClick={() => { setView('nexus'); setIsMenuOpen(false); }}
+                  className="w-full flex items-center gap-3 p-4 rounded-2xl bg-teal-900/10 dark:bg-teal-900/30 hover:bg-teal-900/20 dark:hover:bg-teal-900/50 mb-2 border border-teal-500/20 group transition-all"
+                >
+                   <Network size={20} className="text-teal-600 dark:text-teal-400 group-hover:scale-110 transition-transform" />
+                   <div className="text-left">
+                      <span className="block font-bold text-sm text-teal-800 dark:text-teal-200">The Nexus</span>
+                      <span className="text-[10px] text-teal-600 dark:text-teal-400 uppercase tracking-wider">Bridge Architecture</span>
+                   </div>
+                </button>
+
+                {/* Sanctuary (Introvert Special) */}
                 <button 
                   onClick={() => { setView('sanctuary'); setIsMenuOpen(false); }}
-                  className="w-full flex items-center gap-3 p-4 rounded-2xl bg-stone-900 mb-6 shadow-xl border border-stone-700 group"
+                  className="w-full flex items-center gap-3 p-4 rounded-2xl hover:bg-stone-100 dark:hover:bg-white/5 mb-6 group transition-all"
                 >
-                   <BrainCircuit size={20} className="text-emerald-400" />
+                   <BrainCircuit size={20} className="text-emerald-500" />
                    <div className="text-left">
-                      <span className="block font-bold text-sm text-stone-100">The Sanctuary</span>
+                      <span className="block font-bold text-sm text-stone-600 dark:text-stone-300">The Sanctuary</span>
                       <span className="text-[10px] text-stone-400 uppercase tracking-wider">Deep Focus Mode</span>
                    </div>
                 </button>
                 
-                {view !== 'sanctuary' && (
+                {view !== 'sanctuary' && view !== 'nexus' && (
                   <>
                     <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 px-2">Modules</h3>
                     <div className="space-y-2">
@@ -129,12 +143,12 @@ const App: React.FC = () => {
                   </>
                 )}
                 
-                {view === 'sanctuary' && (
+                {(view === 'sanctuary' || view === 'nexus') && (
                    <button 
                       onClick={() => { setView('dashboard'); setIsMenuOpen(false); }}
                       className="w-full flex items-center gap-3 p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-sm"
                    >
-                     <ArrowLeft size={18} /> Exit Sanctuary
+                     <ArrowLeft size={18} /> Exit Special Mode
                    </button>
                 )}
              </div>
@@ -146,6 +160,10 @@ const App: React.FC = () => {
       {view === 'sanctuary' ? (
         <div className="flex-1 overflow-y-auto z-50">
            <Sanctuary onExit={() => setView('dashboard')} onOpenMenu={() => setIsMenuOpen(true)} />
+        </div>
+      ) : view === 'nexus' ? (
+        <div className="flex-1 overflow-y-auto z-50">
+           <TheNexus onExit={() => setView('dashboard')} onOpenMenu={() => setIsMenuOpen(true)} />
         </div>
       ) : (
         <>
@@ -180,12 +198,11 @@ const App: React.FC = () => {
               
               <div className="flex items-center gap-4">
                 <button 
-                  onClick={() => setView('sanctuary')}
-                  className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-stone-900 text-stone-200 border border-stone-700 hover:bg-stone-800 transition-all shadow-lg group"
-                  title="Enter The Sanctuary (Deep Focus Mode)"
+                  onClick={() => setView('nexus')}
+                  className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-teal-900/5 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-700/50 hover:bg-teal-100 dark:hover:bg-teal-900/50 transition-all group"
                 >
-                  <BrainCircuit size={18} className="text-emerald-400 group-hover:text-emerald-300 transition-colors" />
-                  <span className="text-xs font-bold tracking-widest uppercase">The Sanctuary</span>
+                  <Network size={18} className="group-hover:rotate-45 transition-transform" />
+                  <span className="text-xs font-bold tracking-widest uppercase">Nexus</span>
                 </button>
 
                 <button 
