@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid } from 'lucide-react';
 import ChartDualView from '../features/ChartDualView';
 import InteractiveMap from '../features/InteractiveMap';
 import ChartHousing from '../features/ChartHousing';
@@ -191,6 +192,7 @@ interface NexusMasterclassProps {
 const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [animate, setAnimate] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Restart animation on slide change
   useEffect(() => {
@@ -1133,16 +1135,68 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500 via-indigo-500 to-fuchsia-500"></div>
 
         {/* Header */}
-        <header className="px-8 py-6 flex justify-between items-center relative z-10 border-b border-slate-800">
-             <div className="flex items-center gap-4">
+        <header className="px-8 py-6 flex justify-between items-center relative z-30 border-b border-slate-800">
+             <div className="flex items-center gap-4 relative">
                  <button onClick={onBack} className="p-2 hover:bg-slate-800 rounded-full transition-colors text-slate-400 hover:text-white">
                      <ArrowLeft size={24} />
                  </button>
+                 
+                 {/* Sector Menu Trigger - Top Left */}
+                 <button 
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className={`p-2 rounded-full transition-colors text-teal-400 hover:text-teal-300 hover:bg-slate-800 ${isMenuOpen ? 'bg-slate-800' : ''}`}
+                    title="Sector Map"
+                 >
+                    <Grid size={24} />
+                 </button>
+
                  <div>
                      <h1 className="text-xs font-mono text-slate-500 uppercase tracking-[0.3em]">Nexus Masterclass</h1>
                      <div className="text-white font-bold text-lg">DATA RESPONSE PROTOCOLS</div>
                  </div>
+
+                 {/* SECTOR MAP MENU OVERLAY */}
+                 {isMenuOpen && (
+                    <>
+                        {/* Backdrop to close menu when clicking outside */}
+                        <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)}></div>
+                        
+                        <div className="absolute top-16 left-4 z-50 w-80 bg-slate-900 border border-slate-700 shadow-2xl rounded-lg overflow-hidden animate-fade-in-up max-h-[80vh] flex flex-col">
+                            <div className="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
+                                <span className="text-xs font-mono text-teal-500 uppercase tracking-widest flex items-center gap-2">
+                                    <Map size={14} /> Sector Map
+                                </span>
+                                <button onClick={() => setIsMenuOpen(false)} className="text-slate-500 hover:text-white transition-colors">
+                                    <X size={16} />
+                                </button>
+                            </div>
+                            <div className="overflow-y-auto flex-1 p-1 bg-slate-900/95 min-h-0">
+                                {slides.map((s, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => {
+                                            setCurrentSlide(i);
+                                            setIsMenuOpen(false);
+                                        }}
+                                        className={`w-full p-3 text-left text-xs font-mono border-l-2 transition-all hover:bg-white/5 flex flex-col gap-1 mb-1 rounded-r ${
+                                            currentSlide === i 
+                                            ? 'border-teal-500 text-teal-400 bg-teal-950/30' 
+                                            : 'border-transparent text-slate-400 hover:text-slate-200'
+                                        }`}
+                                    >
+                                        <div className="flex justify-between items-baseline">
+                                            <span className="opacity-50 text-[10px] uppercase">Sector {i + 1}</span>
+                                            {currentSlide === i && <Zap size={10} className="text-teal-500 animate-pulse"/>}
+                                        </div>
+                                        <span className="font-bold truncate w-full">{s.title.includes(': ') ? s.title.split(': ')[1] : s.title}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                 )}
              </div>
+
              <div className="flex items-center gap-2 overflow-x-auto max-w-[50vw] no-scrollbar">
                  {slides.map((_, i) => (
                      <div key={i} className={`h-1.5 w-8 rounded-full transition-all duration-500 shrink-0 ${i === currentSlide ? 'bg-white shadow-[0_0_10px_white]' : 'bg-slate-800'}`}></div>
