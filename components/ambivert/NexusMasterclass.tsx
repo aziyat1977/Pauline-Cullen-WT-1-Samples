@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid, RotateCcw, ChevronRight, Hash, TrendingUp, Search, Umbrella, Edit3, Check, Clock, TrendingDown, ClipboardCheck, ArrowDown, Headphones } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid, RotateCcw, ChevronRight, Hash, TrendingUp, Search, Umbrella, Edit3, Check, Clock, TrendingDown, ClipboardCheck, ArrowDown, Headphones, Ruler, Trophy, Fish, Hourglass } from 'lucide-react';
 import ChartDualView from '../features/ChartDualView';
 import InteractiveMap from '../features/InteractiveMap';
 import MapSports from '../features/MapSports';
@@ -8,6 +8,8 @@ import ChartHousing from '../features/ChartHousing';
 import Chart3D from '../features/Chart3D';
 import ChartCoffee from '../features/ChartCoffee';
 import ChartFish from '../features/ChartFish';
+import DiagramSalmon from '../features/DiagramSalmon';
+import WriterConsole from '../features/WriterConsole';
 
 // --- MICRO-COMPONENTS ---
 
@@ -59,7 +61,6 @@ const TextHighlighter = ({ text, targets }: { text: string, targets: string[] })
     const [selected, setSelected] = useState<number[]>([]);
     const [showResult, setShowResult] = useState(false);
     
-    // Simple split by space, retaining punctuation attached
     const words = text.split(/(\s+)/);
 
     const toggleWord = (index: number) => {
@@ -75,7 +76,6 @@ const TextHighlighter = ({ text, targets }: { text: string, targets: string[] })
         <div className="space-y-6">
             <div className="bg-white text-slate-800 p-8 rounded-xl shadow-xl font-serif text-lg leading-loose">
                 {words.map((word, i) => {
-                    // Check if word matches a target (strip punctuation)
                     const cleanWord = word.trim().replace(/[.,]/g, '').toLowerCase();
                     const isTarget = targets.some(t => cleanWord.includes(t.toLowerCase()));
                     const isSelected = selected.includes(i);
@@ -101,7 +101,7 @@ const TextHighlighter = ({ text, targets }: { text: string, targets: string[] })
                 })}
             </div>
             <div className="flex justify-between items-center">
-                <p className="text-xs text-slate-400 font-mono">Click words that show personal opinion / subjectivity.</p>
+                <p className="text-xs text-slate-400 font-mono">Click words that match the criteria.</p>
                 <button 
                     onClick={() => setShowResult(!showResult)} 
                     className="px-6 py-2 bg-indigo-600 text-white rounded-full font-bold text-xs uppercase tracking-widest"
@@ -114,7 +114,6 @@ const TextHighlighter = ({ text, targets }: { text: string, targets: string[] })
 }
 
 const VocabMatcher = ({ pairs }: { pairs: { term: string, def: string }[] }) => {
-    // pairs = [{ term: "western", def: "in the west" }]
     const [inputs, setInputs] = useState<Record<string, string>>({});
     const [show, setShow] = useState(false);
 
@@ -140,6 +139,141 @@ const VocabMatcher = ({ pairs }: { pairs: { term: string, def: string }[] }) => 
     )
 }
 
+const Checklist = ({ items }: { items: string[] }) => {
+  const [checked, setChecked] = useState<number[]>([]);
+  return (
+    <div className="space-y-2">
+      {items.map((item, i) => (
+        <button key={i} onClick={() => setChecked(prev => prev.includes(i) ? prev.filter(x => x!==i) : [...prev, i])} className={`w-full text-left p-3 rounded border flex items-center gap-3 transition-all ${checked.includes(i) ? 'bg-emerald-900/20 border-emerald-500/50 text-emerald-400' : 'bg-slate-900 border-slate-700 text-slate-400 hover:bg-slate-800'}`}>
+           <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${checked.includes(i) ? 'bg-emerald-500 border-emerald-500 text-black' : 'border-slate-600'}`}>
+              {checked.includes(i) && <Check size={14} />}
+           </div>
+           {item}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+const VerbSorter = () => {
+    const initialPool = ['remain', 'stay', 'flow', 'develop into', 'spend', 'grow into', 'take', 'last', 'move', 'travel', 'migrate', 'continue', 'change', 'become', 'leave', 'transform', 'turn into'];
+    const [pool, setPool] = useState(initialPool);
+    const [cats, setCats] = useState({
+        time: [] as string[],
+        movement: [] as string[],
+        change: [] as string[]
+    });
+    
+    const [selected, setSelected] = useState<string | null>(null);
+
+    const handleSelect = (word: string) => setSelected(word);
+    
+    const handlePlace = (category: 'time' | 'movement' | 'change') => {
+        if (!selected) return;
+        setCats(prev => ({ ...prev, [category]: [...prev[category], selected] }));
+        setPool(prev => prev.filter(w => w !== selected));
+        setSelected(null);
+    }
+
+    return (
+        <div className="space-y-6">
+            <div className="flex flex-wrap gap-2 p-4 bg-slate-900 rounded-xl min-h-[60px] border border-slate-800">
+                {pool.map(word => (
+                    <button 
+                        key={word} 
+                        onClick={() => handleSelect(word)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${selected === word ? 'bg-indigo-500 text-white scale-110' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
+                    >
+                        {word}
+                    </button>
+                ))}
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4">
+                {[
+                    { id: 'time', label: 'Time', color: 'border-blue-500/30 bg-blue-900/10' },
+                    { id: 'movement', label: 'Movement', color: 'border-emerald-500/30 bg-emerald-900/10' },
+                    { id: 'change', label: 'Physical Change', color: 'border-amber-500/30 bg-amber-900/10' },
+                ].map(c => (
+                    <div 
+                        key={c.id} 
+                        onClick={() => handlePlace(c.id as any)}
+                        className={`h-40 rounded-xl border-2 border-dashed p-3 ${c.color} cursor-pointer transition-all hover:bg-opacity-20`}
+                    >
+                        <h4 className="font-bold text-center text-xs uppercase mb-3 opacity-70">{c.label}</h4>
+                        <div className="flex flex-wrap gap-1 justify-center">
+                            {cats[c.id as keyof typeof cats].map(w => (
+                                <span key={w} className="px-2 py-1 bg-black/40 rounded text-[10px] text-white">{w}</span>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+}
+
+const SentenceCorrector = ({ sentence, correction }: { sentence: string, correction: string }) => {
+    const [revealed, setRevealed] = useState(false);
+    
+    return (
+        <div className="bg-slate-900 border border-slate-800 rounded-lg p-4 mb-4">
+            <div className="flex items-start gap-3 mb-3">
+                <X size={18} className="text-red-500 mt-0.5" />
+                <p className="text-slate-300 font-mono text-sm line-through decoration-red-500/50">{sentence}</p>
+            </div>
+            {revealed ? (
+                <div className="flex items-start gap-3 animate-fade-in-up">
+                    <CheckCircle2 size={18} className="text-emerald-500 mt-0.5" />
+                    <p className="text-emerald-300 font-bold text-sm">{correction}</p>
+                </div>
+            ) : (
+                <button 
+                    onClick={() => setRevealed(true)}
+                    className="text-xs text-indigo-400 hover:text-indigo-300 underline ml-8"
+                >
+                    Show Correction
+                </button>
+            )}
+        </div>
+    )
+}
+
+const VocabDimensionsTable = () => {
+    const data = [
+        { adj: "deep", noun: "depth", verb: "to deepen" },
+        { adj: "long", noun: "length", verb: "to lengthen" },
+        { adj: "wide", noun: "width", verb: "to widen" },
+        { adj: "tall", noun: "height", verb: "to make taller" },
+        { adj: "short", noun: "height", verb: "to shorten" },
+        { adj: "high", noun: "height", verb: "to make higher" },
+        { adj: "low", noun: "height", verb: "to lower" },
+    ];
+
+    return (
+        <div className="overflow-hidden rounded-xl border border-slate-700 shadow-xl">
+            <table className="w-full text-sm text-left">
+                <thead className="bg-slate-900 text-slate-400 font-mono text-xs uppercase">
+                    <tr>
+                        <th className="px-6 py-3">Adjective</th>
+                        <th className="px-6 py-3">Noun</th>
+                        <th className="px-6 py-3">Verb Form</th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800 bg-slate-900/50">
+                    {data.map((row, i) => (
+                        <tr key={i} className="hover:bg-slate-800/50 transition-colors">
+                            <td className="px-6 py-3 font-bold text-slate-300">{row.adj}</td>
+                            <td className="px-6 py-3 text-indigo-300">{row.noun}</td>
+                            <td className="px-6 py-3 text-emerald-400 font-mono">{row.verb}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
+
 // --- MASTERCLASS COMPONENT ---
 
 interface NexusMasterclassProps {
@@ -157,7 +291,7 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
   }, [currentSlide]);
 
   const slides = [
-    // --- PAGE 1 ---
+    // --- PG 1 ---
     {
       title: "PG 1: Common Problems",
       headline: "GRAMMAR & STRUCTURE",
@@ -191,18 +325,12 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                    <p>Active: They built a restaurant.</p>
                    <p className="text-white">Passive: A restaurant <span className="text-indigo-400">was built</span>.</p>
                </div>
-               
-               <div className="mt-6 p-4 bg-slate-800 rounded-lg">
-                   <p className="text-xs text-slate-500 uppercase tracking-widest mb-2">Quick Check: Correct the sentence</p>
-                   <p className="text-slate-300 italic mb-2">"There has built a restaurant in the centre."</p>
-                   <div className="text-emerald-400 font-bold">Answer: A restaurant has been built...</div>
-               </div>
            </div>
         </div>
       )
     },
 
-    // --- PAGE 2 ---
+    // --- PG 2 ---
     {
         title: "PG 2: Tenses & Logic",
         headline: "THINKING IN TIME",
@@ -232,15 +360,11 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-amber-950/30 p-6 rounded-xl border border-amber-600/30 text-center">
-                    <Quote className="mx-auto text-amber-500 mb-2" size={24} />
-                    <p className="text-amber-200 italic">"Writing is thinking we can see. Change your thinking to change your writing."</p>
-                </div>
             </div>
         )
     },
 
-    // --- PAGE 3 ---
+    // --- PG 3 ---
     {
         title: "PG 3: Cohesion & Overview",
         headline: "AVOIDING TEMPLATES",
@@ -253,13 +377,6 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                     
                     <div className="p-4 bg-black rounded border border-slate-800 font-serif text-slate-300 text-sm leading-relaxed">
                         <span className="text-red-400 underline decoration-wavy">Firstly</span>, they preserved all of the trees. <span className="text-red-400 underline decoration-wavy">On the contrary</span>, they built a new pier. A vehicle path runs to the reception. <span className="text-red-400 underline decoration-wavy">Lastly</span>, there is a spectacular beach.
-                    </div>
-                    
-                    <div className="mt-4 flex gap-2 items-start">
-                        <AlertTriangle className="text-red-500 shrink-0" size={16} />
-                        <p className="text-xs text-red-300">
-                            <strong>Problem:</strong> "On the contrary" is for opposing ideas, not just difference. "Lastly" implies a sequence of arguments, not spatial features.
-                        </p>
                     </div>
                 </div>
 
@@ -281,7 +398,7 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
         )
     },
 
-    // --- PAGE 4 ---
+    // --- PG 4 ---
     {
         title: "PG 4: Exercise - Subjectivity",
         headline: "DETECTING BIAS",
@@ -301,7 +418,7 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
         )
     },
 
-    // --- PAGE 5 ---
+    // --- PG 5 ---
     {
         title: "PG 5: Solutions - Subjectivity",
         headline: "OBJECTIVE CORRECTION",
@@ -314,23 +431,11 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                         After the <span className="line-through text-red-500 opacity-50">advanced</span> development, the island became <span className="bg-emerald-900/50 text-emerald-300 px-1">a tourist destination</span>. The <span className="line-through text-red-500 opacity-50">remarkable</span> new buildings, which include a restaurant, reception and accommodation, have <span className="bg-emerald-900/50 text-emerald-300 px-1">changed the island significantly</span>. Tourists <span className="bg-emerald-900/50 text-emerald-300 px-1">can now go</span> sailing and <span className="bg-emerald-900/50 text-emerald-300 px-1">eat</span> in the restaurant as well as swimming.
                     </div>
                 </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-400">
-                    <div className="p-3 border border-slate-700 rounded">
-                        <strong>Change 1:</strong><br/>"Well civilised" → "A tourist destination" (Fact)
-                    </div>
-                    <div className="p-3 border border-slate-700 rounded">
-                        <strong>Change 2:</strong><br/>"Enormous ways" → "Significantly" (Academic quantifier)
-                    </div>
-                    <div className="p-3 border border-slate-700 rounded">
-                        <strong>Change 3:</strong><br/>"Will amuse/delight" → "Can now go..." (Possibility, not emotion)
-                    </div>
-                </div>
             </div>
         )
     },
 
-    // --- PAGE 6 & 7 ---
+    // --- PG 6 & 7 ---
     {
         title: "PG 6-7: Cohesion Audit",
         headline: "ERROR ANALYSIS",
@@ -359,10 +464,7 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
         )
     },
 
-    // --- PAGE 8 & 9 (Answers) merged into previous logical flow --- 
-    // Skipped explicit "Page 8/9" slide as it's the answer key to 6/7 provided above.
-
-    // --- PAGE 10 ---
+    // --- PG 10 ---
     {
         title: "PG 10: Model Answer Construction",
         headline: "GAP FILL CHALLENGE",
@@ -383,7 +485,7 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
         )
     },
 
-    // --- PAGE 11 ---
+    // --- PG 11 ---
     {
         title: "PG 11: Logical Organisation",
         headline: "STRUCTURING YOUR REPORT",
@@ -411,94 +513,315 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
         )
     },
 
-    // --- PAGE 12 ---
+    // --- PDF PAGE 1 ---
     {
-        title: "PG 12: Sports Centre Task",
-        headline: "NEW TASK ANALYSIS",
-        icon: <Map size={64} className="text-slate-200" />,
+        title: "8.3: My Model Answer",
+        headline: "SPORTS CENTRE MODEL",
+        icon: <Trophy size={64} className="text-yellow-500" />,
         content: (
             <div className="space-y-6">
-                <div className="flex flex-col items-center">
-                    <h2 className="text-2xl font-bold text-white mb-2 text-center">University Sports Centre</h2>
-                    <p className="text-slate-400 text-sm mb-6">Summarise the information by selecting and reporting the main features.</p>
-                    
-                    <div className="w-full max-w-2xl bg-white p-4 rounded-xl shadow-2xl">
-                        <MapSports />
-                        <div className="flex justify-between mt-2 text-[10px] text-slate-500 font-mono uppercase">
-                            <span>Map A: Present</span>
-                            <span>Map B: Future Plans</span>
-                        </div>
+                <div className="bg-slate-900 p-6 rounded-xl border-l-4 border-yellow-500">
+                    <h3 className="text-yellow-400 font-bold mb-4">Model Answer</h3>
+                    <div className="text-slate-300 text-sm leading-relaxed space-y-4 font-serif">
+                        <p>The plans show a university sports centre as it is now and the new layout following its redevelopment. Overall, while some outdoor facilities will be lost, the new centre will be significantly larger and will cater for a wider range of sports.</p>
+                        <p>The sports centre currently consists of a relatively small central building with an outdoor court on each side. The building houses a 25-metre pool, with a seating area and changing room, and there is a gym to the rear and a reception area to the front.</p>
+                        <p>Following the renovations, only the central pool and its facilities will remain the same. The building will be expanded to the east and west removing the outdoor courts and making way for more indoor facilities. These include a leisure pool on the western side, which will be slightly larger than the existing one and will have its own changing room, and on the eastern side, a new sports hall, and two dance studios. The current gym will be lengthened so that it is double its current size. The reception area will also be widened making it more spacious. On arrival, visitors to the new centre will benefit from a third changing room, a sports shop and a café, all located around the reception area.</p>
+                    </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4 text-xs">
+                    <div className="bg-slate-800 p-3 rounded border border-slate-700">
+                        <span className="text-emerald-400 font-bold block">to house</span>
+                        to provide space for something
+                    </div>
+                    <div className="bg-slate-800 p-3 rounded border border-slate-700">
+                        <span className="text-emerald-400 font-bold block">to cater for</span>
+                        to provide facilities for
                     </div>
                 </div>
             </div>
         )
     },
 
-    // --- PAGE 13 ---
+    // --- PDF PAGE 2 ---
     {
-        title: "PG 13: Sports Centre Exercises",
-        headline: "APPLIED PRACTICE",
-        icon: <Edit3 size={64} className="text-orange-500" />,
+        title: "Points to Notice",
+        headline: "ANALYSIS & HOMEWORK",
+        icon: <Search size={64} className="text-sky-500" />,
         content: (
-            <div className="h-[500px] overflow-y-auto pr-4 space-y-12">
+            <div className="space-y-8">
+                <div className="bg-slate-900 p-6 rounded-xl">
+                    <h3 className="text-white font-bold mb-4">Points to Notice</h3>
+                    <ul className="text-sm text-slate-400 space-y-2 list-disc pl-4">
+                        <li>Key features in overview 'prove' the overview statement.</li>
+                        <li>Used "On arrival, visitors to the new centre..." to vary language.</li>
+                        <li>Only referred to location when it was key information.</li>
+                    </ul>
+                </div>
+
+                <div className="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                    <h3 className="text-indigo-900 font-bold mb-4 uppercase tracking-widest text-sm">Self-Check: Your Answer</h3>
+                    <Checklist items={[
+                        "Did you include: New centre will be bigger?",
+                        "Did you include: Wider range of facilities?",
+                        "Did you include: Outdoor facilities gone?",
+                        "Did you avoid minor details in the overview?",
+                        "Is your first body paragraph shorter than the second?"
+                    ]} />
+                </div>
                 
-                {/* Q1 */}
-                <section>
-                    <h3 className="text-orange-400 font-bold mb-4 sticky top-0 bg-slate-950 py-2 z-10 border-b border-slate-800">Q1: Grammar Gap Fill</h3>
-                    <div className="bg-slate-900 p-4 rounded-xl">
-                        <GapFill 
-                            textWithGaps="The two maps show an island both before and after it [gap] (develop) as a tourist destination. Overall, most development [gap] (take place) on the western areas... where amenities [gap] (build)."
-                            answers={["was developed", "took place", "were built"]}
-                            hints={["passive", "past", "passive"]}
-                        />
+                <div className="bg-cyan-900/20 p-4 rounded-xl border border-cyan-500/30 flex items-center gap-4">
+                    <div className="p-3 bg-cyan-900 rounded-full text-cyan-400"><Fish size={24} /></div>
+                    <div>
+                        <h4 className="text-cyan-400 font-bold text-sm">Upcoming: Process Tasks</h4>
+                        <p className="text-xs text-slate-400">Next lesson involves the Salmon Life Cycle.</p>
                     </div>
-                </section>
-
-                {/* Q2 */}
-                <section>
-                    <h3 className="text-orange-400 font-bold mb-4 sticky top-0 bg-slate-950 py-2 z-10 border-b border-slate-800">Q2: Vocabulary Match</h3>
-                    <VocabMatcher 
-                        pairs={[
-                            { term: "western", def: "in the west" },
-                            { term: "uninhabited", def: "no one was living there" },
-                            { term: "natural features", def: "features produced by nature" },
-                            { term: "dense", def: "close together, thick" },
-                            { term: "sympathetic", def: "showing an understanding of" },
-                            { term: "single-storey", def: "having one level" }
-                        ]}
-                    />
-                </section>
-
-                {/* Q3 */}
-                <section>
-                    <h3 className="text-orange-400 font-bold mb-4 sticky top-0 bg-slate-950 py-2 z-10 border-b border-slate-800">Q3: Paragraph Completion</h3>
-                    <div className="bg-slate-900 p-4 rounded-xl text-sm leading-loose text-slate-300">
-                        <GapFill 
-                            textWithGaps="The two maps show an island... Overall, most development took place on the [gap] and [gap] areas of the island, where a small number of tourist [gap] have been built."
-                            answers={["western", "central", "amenities"]}
-                        />
-                    </div>
-                </section>
+                </div>
             </div>
         )
     },
 
-    // --- PAGE 14 & 15 (Answers) ---
+    // --- PDF PAGE 3 ---
     {
-        title: "PG 14-15: Model Answers",
-        headline: "FINAL VERIFICATION",
-        icon: <ClipboardCheck size={64} className="text-emerald-500" />,
+        title: "Homework: Writing",
+        headline: "PROCESS TASK DRILL",
+        icon: <PenTool size={64} className="text-indigo-500" />,
+        content: (
+            <div className="h-full flex flex-col">
+                <p className="text-slate-400 mb-4 text-center">Summarise the information by selecting and reporting the main features, and make comparisons where relevant. (Write at least 150 words)</p>
+                <div className="flex-1">
+                    <WriterConsole />
+                </div>
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 4 ---
+    {
+        title: "Practice: Gap Fill",
+        headline: "RECREATE THE MODEL",
+        icon: <Edit3 size={64} className="text-purple-500" />,
+        content: (
+            <div className="space-y-6">
+                <p className="text-sm text-slate-400">Fill in the gaps to recreate the model. Add articles, prepositions, and linking words.</p>
+                <GapFill 
+                    textWithGaps="Following [gap] renovations, only [gap] central pool and its facilities [gap] remain the same. The building [gap] be expanded [gap] the east [gap] west removing [gap] outdoor courts."
+                    answers={["the", "the", "will", "will", "to", "and", "the"]}
+                    hints={["article", "article", "future", "future", "prep", "conj", "article"]}
+                />
+                <GapFill 
+                    textWithGaps="These include a leisure pool on the [gap] side, which will be slightly [gap] than the existing one and will have its [gap] changing room."
+                    answers={["western", "larger", "own"]}
+                    hints={["direction", "comp. adj", "possessive"]}
+                />
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 5 ---
+    {
+        title: "Model Answer Key",
+        headline: "FULL TEXT REVEAL",
+        icon: <BookOpen size={64} className="text-emerald-500" />,
+        content: (
+            <div className="bg-slate-900 p-8 rounded-xl border border-emerald-500/20 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-5">
+                    <CheckCircle2 size={120} />
+                </div>
+                <div className="text-slate-300 font-serif leading-loose text-sm space-y-4 relative z-10">
+                    <p>The plans show a university sports centre as it is now and the new layout following its redevelopment. Overall, while some outdoor facilities will be <strong className="text-emerald-400">lost</strong>, the new centre will be significantly larger and will cater for a wider range of sports.</p>
+                    <p>Following the renovations, only the central pool and its facilities will remain the same. The building will be expanded to the east and west removing the outdoor courts and making way for more indoor facilities. These include a leisure pool on the western side, which will be slightly larger than the existing one and will have its own changing room...</p>
+                    <p>The current gym will be <strong className="text-emerald-400">lengthened</strong> so that it is double its current size. The reception area will also be <strong className="text-emerald-400">widened</strong>, making it more spacious. <strong className="text-emerald-400">On arrival</strong>, visitors to the new centre will benefit from a third changing room, a sports shop and a café, all located around the reception area.</p>
+                </div>
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 6 & 7 ---
+    {
+        title: "Lesson 9: Process Tasks",
+        headline: "LANGUAGE OF PROCESSES",
+        icon: <RefreshCcw size={64} className="text-cyan-500" />,
         content: (
             <div className="space-y-8">
-                <div className="bg-slate-900 p-8 rounded-2xl border border-emerald-500/20 shadow-2xl">
-                    <h3 className="text-emerald-400 font-bold mb-6 border-b border-emerald-900/50 pb-2">Full Model Response</h3>
-                    <div className="text-slate-300 font-serif leading-loose text-sm space-y-4">
-                        <p>The two maps show an island both before and after it <span className="text-emerald-400 font-bold">was developed</span> as a tourist destination. Overall, most development <span className="text-emerald-400 font-bold">took place</span> on the western and central areas of the island, where a small number of tourist amenities <span className="text-emerald-400 font-bold">have been built</span>, while the eastern coast <span className="text-emerald-400 font-bold">has been left</span> in its natural state.</p>
-                        
-                        <p>Prior to development, this relatively small island <span className="text-emerald-400 font-bold">was uninhabited</span>. In terms of its natural features, <span className="text-emerald-400 font-bold">there was</span> a beach area on the west coast, and some vegetation, which <span className="text-emerald-400 font-bold">was</span> more dense on the eastern part. As part of the development programme, this vegetation <span className="text-emerald-400 font-bold">has largely been retained</span>.</p>
-                        
-                        <p>Following construction, although the island is now more developed, the style of the buildings is generally <span className="text-emerald-400 font-bold">sympathetic</span> to the natural environment.</p>
+                <div className="bg-white p-4 rounded-xl shadow-lg">
+                    <DiagramSalmon />
+                </div>
+                
+                <div className="bg-slate-900 p-6 rounded-xl border border-cyan-500/30">
+                    <h3 className="text-cyan-400 font-bold mb-4">9.1 Language Features</h3>
+                    <p className="text-slate-300 text-sm mb-4">Describing a process involves movement and physical changes. Issues of coherence are different (step-by-step).</p>
+                    
+                    <div className="p-4 bg-slate-800 rounded border border-slate-700 mb-4">
+                        <span className="text-yellow-400 font-bold block text-xs uppercase mb-1">Vocab Note</span>
+                        "Fish" is generally uncountable. "The salmon swim" (plural), not "The salmons".
                     </div>
+
+                    <h4 className="text-white font-bold text-sm mb-2">Periods of Time</h4>
+                    <ul className="text-xs text-slate-400 space-y-2 font-mono">
+                        <li>• This stage <span className="text-cyan-300">lasts</span> for four years.</li>
+                        <li>• The fry <span className="text-cyan-300">spend</span> four years in the upper river.</li>
+                        <li>• It <span className="text-cyan-300">took</span> five years to complete.</li>
+                    </ul>
+                </div>
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 8 ---
+    {
+        title: "Describing Change",
+        headline: "PHYSICAL TRANSFORMATION",
+        icon: <TrendingUp size={64} className="text-pink-500" />,
+        content: (
+            <div className="space-y-6">
+                <div className="bg-slate-900 p-6 rounded-xl">
+                    <h3 className="text-white font-bold mb-4">Verbs of Change</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div className="p-3 bg-slate-800 rounded">
+                            <strong className="text-pink-400 block mb-1">Become</strong>
+                            Often with comparative: "become bigger".
+                        </div>
+                        <div className="p-3 bg-slate-800 rounded">
+                            <strong className="text-pink-400 block mb-1">Turn into</strong>
+                            Phrasal verb similar to "change into". "The fry turns into a smolt."
+                        </div>
+                        <div className="p-3 bg-slate-800 rounded">
+                            <strong className="text-pink-400 block mb-1">Develop / Grow</strong>
+                            "The egg hatches and the young fish develops fins."
+                        </div>
+                    </div>
+                    <div className="mt-4 p-2 bg-red-950/30 text-red-300 text-xs rounded border border-red-900 text-center">
+                        Warning: Don't use "evolve" (too slow) or "transform" (too dramatic) for simple growth.
+                    </div>
+                </div>
+
+                <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                    <h3 className="text-white font-bold mb-2">Adjective Accuracy</h3>
+                    <p className="text-xs text-slate-400 mb-4">Avoid exaggeration.</p>
+                    <TextHighlighter 
+                        text="The fish grow enormously in size during the final stage. The huge salmon returns. The fry migrate downstream to a highly turbulent water. At the end of this period, it turns into gigantic adult salmon."
+                        targets={["enormously", "huge", "highly", "gigantic"]}
+                    />
+                </div>
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 9 ---
+    {
+        title: "Numbers & Size",
+        headline: "DESCRIBING RANGES",
+        icon: <Ruler size={64} className="text-teal-500" />,
+        content: (
+            <div className="space-y-6">
+                <div className="text-center text-sm text-slate-300 mb-4">
+                    Salmon size ranges: <strong>3-8cm</strong>, <strong>12-15cm</strong>, <strong>70-76cm</strong>.
+                </div>
+                
+                <div className="bg-slate-900 p-6 rounded-xl border border-teal-500/30">
+                    <h3 className="text-teal-400 font-bold mb-4">Grammar Check</h3>
+                    <SentenceCorrector 
+                        sentence="The salmon eggs take 5-6 months to break out... with only 3-8 cm in length."
+                        correction="...which are only 3-8 cm in length."
+                    />
+                    <SentenceCorrector 
+                        sentence="The little salmon can grow to more than three centimeters, less than eight in length."
+                        correction="The little salmon can grow to between three and eight centimeters in length."
+                    />
+                    <SentenceCorrector 
+                        sentence="Fry evolve into smolt that is 12-15 centimeters."
+                        correction="Fry develop into smolt, which are 12-15 centimeters long."
+                    />
+                </div>
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 11 ---
+    {
+        title: "Verb Categorization",
+        headline: "SORT THE VERBS",
+        icon: <Split size={64} className="text-indigo-500" />,
+        content: (
+            <div className="space-y-6">
+                <p className="text-center text-slate-400 text-sm">Drag or click words to categorize them.</p>
+                <VerbSorter />
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 11 Collocations ---
+    {
+        title: "Collocations",
+        headline: "MATCHING PAIRS",
+        icon: <Link size={64} className="text-purple-500" />,
+        content: (
+            <div className="space-y-6">
+                <div className="bg-slate-900 p-6 rounded-xl border border-purple-500/30">
+                    <h3 className="text-purple-400 font-bold mb-4">Match Verb + Preposition</h3>
+                    <VocabMatcher pairs={[
+                        { term: "for", def: "To last..." },
+                        { term: "for", def: "To continue..." },
+                        { term: "in / at", def: "To remain..." },
+                        { term: "along / away from", def: "To flow..." },
+                        { term: "into", def: "To grow..." },
+                        { term: "into", def: "To turn..." }
+                    ]} />
+                </div>
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 11 Sentences ---
+    {
+        title: "Sentence Correction",
+        headline: "FIX THE ERRORS",
+        icon: <Bug size={64} className="text-red-500" />,
+        content: (
+            <div className="space-y-4">
+                <SentenceCorrector 
+                    sentence="This stage lasts to six months."
+                    correction="This stage lasts for six months."
+                />
+                <SentenceCorrector 
+                    sentence="The young fish moves away at the upper river."
+                    correction="The young fish moves away from the upper river."
+                />
+                <SentenceCorrector 
+                    sentence="The fry changes to a smolt."
+                    correction="The fry changes into a smolt."
+                />
+                <SentenceCorrector 
+                    sentence="The fry spends for at least five months here."
+                    correction="The fry spends at least five months here."
+                />
+                <SentenceCorrector 
+                    sentence="The smolt develops in an adult salmon."
+                    correction="The smolt develops into an adult salmon."
+                />
+            </div>
+        )
+    },
+
+    // --- PDF PAGE 16 ---
+    {
+        title: "Final Corrections",
+        headline: "ANSWER KEY",
+        icon: <CheckCircle2 size={64} className="text-emerald-500" />,
+        content: (
+            <div className="bg-slate-900 p-8 rounded-xl border border-emerald-500/20 shadow-2xl space-y-6">
+                <div className="flex items-start gap-4">
+                    <div className="p-2 bg-emerald-900/30 rounded text-emerald-400 font-bold">1</div>
+                    <p className="text-slate-300 text-sm">The salmon eggs take approximately 5-6 months to break out of their eggs and develop into baby salmon called ‘fry’, <strong className="text-emerald-400">which are</strong> only 3-8 cm in length. (Non-defining relative clause)</p>
+                </div>
+                <div className="flex items-start gap-4">
+                    <div className="p-2 bg-emerald-900/30 rounded text-emerald-400 font-bold">2</div>
+                    <p className="text-slate-300 text-sm">The little salmon can grow <strong className="text-emerald-400">to between</strong> three and eight centimeters in length.</p>
+                </div>
+                <div className="flex items-start gap-4">
+                    <div className="p-2 bg-emerald-900/30 rounded text-emerald-400 font-bold">3</div>
+                    <p className="text-slate-300 text-sm">Fry develop into / change into / turn into smolt, <strong className="text-emerald-400">which are</strong> 12-15 centimeters in length.</p>
                 </div>
             </div>
         )
@@ -520,7 +843,6 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                      <ArrowLeft size={24} />
                  </button>
                  
-                 {/* Sector Menu Trigger - Top Left */}
                  <button 
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                     className={`p-2 rounded-full transition-colors text-teal-400 hover:text-teal-300 hover:bg-slate-800 ${isMenuOpen ? 'bg-slate-800' : ''}`}
@@ -531,15 +853,12 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
 
                  <div>
                      <h1 className="text-xs font-mono text-slate-500 uppercase tracking-[0.3em]">Nexus Masterclass</h1>
-                     <div className="text-white font-bold text-lg">LESSON 7: MAP TASKS & BEYOND</div>
+                     <div className="text-white font-bold text-lg">LESSON 7-9: MAPS & PROCESSES</div>
                  </div>
 
-                 {/* SECTOR MAP MENU OVERLAY */}
                  {isMenuOpen && (
                     <>
-                        {/* Backdrop to close menu when clicking outside */}
                         <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)}></div>
-                        
                         <div className="absolute top-16 left-4 z-50 w-80 bg-slate-900 border border-slate-700 shadow-2xl rounded-lg overflow-hidden animate-fade-in-up max-h-[80vh] flex flex-col">
                             <div className="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
                                 <span className="text-xs font-mono text-teal-500 uppercase tracking-widest flex items-center gap-2">
