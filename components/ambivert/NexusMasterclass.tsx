@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout } from 'lucide-react';
 
 interface NexusMasterclassProps {
   onBack: () => void;
@@ -425,6 +425,182 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                  </div>
             </div>
         )
+    },
+    {
+        title: "SECTOR 13: PRE-FLIGHT CHECK",
+        headline: "THE RUSH PROTOCOL",
+        icon: <Timer size={64} className="text-rose-600" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-rose-950/20 border-l-4 border-rose-600 p-8">
+                    <h3 className="text-3xl font-black text-rose-500 mb-4">HASTE = FAILURE</h3>
+                    <p className="text-xl text-slate-300 leading-relaxed">
+                        If you do not manage your time well, you risk misunderstanding the data. A Band 3 is awarded if the task has been <span className="text-white font-bold border-b border-rose-500">completely misunderstood</span>.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                     <div className="bg-slate-900 border border-slate-800 p-6 flex flex-col gap-4">
+                         <div className="text-xs font-mono text-rose-500 uppercase flex items-center gap-2"><AlertTriangle size={12}/> CASE STUDY: BALLOON FLIGHT</div>
+                         <p className="text-slate-400 text-sm italic">
+                             "Using 1 candle was shown to be <span className="text-rose-500 font-bold">better</span> than using 2 or 3."
+                         </p>
+                         <p className="text-xs text-slate-500 border-t border-slate-800 pt-2">
+                             DIAGNOSIS: The chart measures <span className="text-white">time (seconds)</span> to reach a height. Lower bar = Faster. "Better" is vague. The user misinterpreted the axis.
+                         </p>
+                     </div>
+                     <div className="bg-slate-900 border border-emerald-900/50 p-6 flex flex-col gap-4">
+                         <div className="text-xs font-mono text-emerald-500 uppercase flex items-center gap-2"><CheckCircle2 size={12}/> CORRECTION</div>
+                         <p className="text-slate-300 text-sm">
+                             "When one candle was used, the balloon took <span className="text-emerald-400 font-bold">longer</span> to reach the height (14-15s), whereas flights with 3 candles were <span className="text-emerald-400 font-bold">faster</span> (10s)."
+                         </p>
+                         <p className="text-xs text-slate-500 border-t border-slate-800 pt-2">
+                             RESULT: Accurate data reporting.
+                         </p>
+                     </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 14: TARGET ACQUISITION",
+        headline: "SIGNAL VS NOISE",
+        icon: <Scan size={64} className="text-lime-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="flex flex-col md:flex-row gap-8 items-center">
+                    <div className="flex-1">
+                        <h3 className="text-3xl font-black text-white mb-4">IDENTIFYING KEY FEATURES</h3>
+                        <p className="text-xl text-slate-300 font-light">
+                            If you only notice details, you will just list information ("Focus on details" = Band 5). You must <span className="text-lime-400 font-bold">highlight</span> key features (Band 7).
+                        </p>
+                    </div>
+                </div>
+
+                <div className="bg-slate-900 p-6 rounded-lg border border-slate-800">
+                    <h4 className="text-xs font-mono text-lime-500 uppercase tracking-widest mb-4">SCANNING PROTOCOL</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                        {[
+                            { label: "BIG CHANGES", desc: "Where is the steepest climb or drop?" },
+                            { label: "EXTREMES", desc: "What are the highest and lowest points?" },
+                            { label: "SIMILARITIES", desc: "Do any lines mirror each other?" },
+                            { label: "STABILITY", desc: "Did anything stay the same?" }
+                        ].map((item, i) => (
+                            <div key={i} className="flex items-start gap-3 p-3 bg-black/20 rounded">
+                                <Target size={16} className="text-lime-500 mt-1 shrink-0" />
+                                <div>
+                                    <div className="text-white font-bold text-sm">{item.label}</div>
+                                    <div className="text-slate-500 text-xs">{item.desc}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 15: TACTICAL MARKUP",
+        headline: "VISUAL SHORTHAND",
+        icon: <Highlighter size={64} className="text-yellow-400" />,
+        content: (
+            <div className="space-y-8">
+                <p className="text-xl text-slate-300">
+                    Reduce your mental load during writing by marking up the question paper. Use a consistent symbol system.
+                </p>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-slate-900 border border-slate-800 p-6 flex flex-col items-center gap-4 hover:border-yellow-500/50 transition-colors group">
+                        <span className="text-6xl font-serif text-yellow-400 group-hover:scale-110 transition-transform">{"}"}</span>
+                        <div className="text-center">
+                            <div className="text-white font-bold text-sm">GROUPING</div>
+                            <div className="text-slate-500 text-xs">Connect similar data points</div>
+                        </div>
+                    </div>
+                    <div className="bg-slate-900 border border-slate-800 p-6 flex flex-col items-center gap-4 hover:border-yellow-500/50 transition-colors group">
+                        <span className="text-6xl font-black text-yellow-400 group-hover:scale-110 transition-transform">!</span>
+                        <div className="text-center">
+                            <div className="text-white font-bold text-sm">ANOMALY</div>
+                            <div className="text-slate-500 text-xs">Unusual figures (e.g. Zero)</div>
+                        </div>
+                    </div>
+                    <div className="bg-slate-900 border border-slate-800 p-6 flex flex-col items-center gap-4 hover:border-yellow-500/50 transition-colors group">
+                        <span className="text-6xl font-black text-yellow-400 group-hover:scale-110 transition-transform">*</span>
+                        <div className="text-center">
+                            <div className="text-white font-bold text-sm">KEY FEATURE</div>
+                            <div className="text-slate-500 text-xs">Must include in Overview</div>
+                        </div>
+                    </div>
+                    <div className="bg-slate-900 border border-slate-800 p-6 flex flex-col items-center gap-4 hover:border-yellow-500/50 transition-colors group">
+                        <div className="flex flex-col items-center">
+                            <span className="text-4xl font-black text-yellow-400">↑</span>
+                            <span className="text-4xl font-black text-yellow-400">↓</span>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-white font-bold text-sm">TREND</div>
+                            <div className="text-slate-500 text-xs">Direction of movement</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div className="bg-yellow-950/20 p-4 border border-yellow-500/30 rounded text-center">
+                    <p className="text-sm text-yellow-200">
+                        "Noticing small details like 'Number of travellers' vs 'Percentage' is crucial. Circle this information immediately."
+                    </p>
+                </div>
+            </div>
+        )
+    },
+    {
+        title: "SECTOR 16: LOGIC GATES",
+        headline: "ORGANISATION STRATEGY",
+        icon: <Layout size={64} className="text-sky-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-sky-950/20 border-l-4 border-sky-500 p-8">
+                    <h3 className="text-3xl font-black text-sky-500 mb-4">BE OBVIOUS</h3>
+                    <p className="text-xl text-slate-300">
+                        "If you don't take the time to think about organization, it will not be clear to the examiner. You do not need to be inventive—the most obvious organization is usually the most logical."
+                    </p>
+                </div>
+
+                <div className="space-y-4">
+                    <h4 className="text-xs font-mono text-slate-500 uppercase tracking-widest">COMMON LOGIC PATTERNS</h4>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="bg-slate-900 p-4 border border-slate-800 flex flex-col gap-2">
+                            <div className="text-sky-400 font-bold text-sm uppercase">Scenario A</div>
+                            <div className="text-white text-sm">Two Categories (Coffee & Bananas)</div>
+                            <div className="h-px bg-slate-800 w-full my-2"></div>
+                            <div className="text-slate-400 text-xs">
+                                Para 1: Coffee Sales<br/>
+                                Para 2: Banana Sales
+                            </div>
+                        </div>
+
+                        <div className="bg-slate-900 p-4 border border-slate-800 flex flex-col gap-2">
+                            <div className="text-sky-400 font-bold text-sm uppercase">Scenario B</div>
+                            <div className="text-white text-sm">Mixed Charts (Pie + Table)</div>
+                            <div className="h-px bg-slate-800 w-full my-2"></div>
+                            <div className="text-slate-400 text-xs">
+                                Para 1: Pie Chart (Global)<br/>
+                                Para 2: Table (Regional)
+                            </div>
+                        </div>
+
+                        <div className="bg-slate-900 p-4 border border-slate-800 flex flex-col gap-2">
+                            <div className="text-sky-400 font-bold text-sm uppercase">Scenario C</div>
+                            <div className="text-white text-sm">Process Map (Island)</div>
+                            <div className="h-px bg-slate-800 w-full my-2"></div>
+                            <div className="text-slate-400 text-xs">
+                                Para 1: Before Development<br/>
+                                Para 2: After Development
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
     }
   ];
 
@@ -447,9 +623,9 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                      <div className="text-white font-bold text-lg">DATA RESPONSE PROTOCOLS</div>
                  </div>
              </div>
-             <div className="flex items-center gap-2">
+             <div className="flex items-center gap-2 overflow-x-auto max-w-[50vw] no-scrollbar">
                  {slides.map((_, i) => (
-                     <div key={i} className={`h-1.5 w-8 rounded-full transition-all duration-500 ${i === currentSlide ? 'bg-white shadow-[0_0_10px_white]' : 'bg-slate-800'}`}></div>
+                     <div key={i} className={`h-1.5 w-8 rounded-full transition-all duration-500 shrink-0 ${i === currentSlide ? 'bg-white shadow-[0_0_10px_white]' : 'bg-slate-800'}`}></div>
                  ))}
              </div>
         </header>
