@@ -3,15 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ArrowRight, Zap, Target, BookOpen, AlertTriangle, ShieldCheck, PenTool, CheckCircle2, X, FileWarning, EyeOff, Link, Hammer, Layers, RefreshCcw, ListOrdered, Bug, GitMerge, Timer, Scan, Highlighter, Layout, Split, Move, Quote, Map, BarChart2, PieChart, Table, MousePointer2, Activity, Menu, Grid, RotateCcw, ChevronRight, Hash, TrendingUp, Search, Umbrella, Edit3, Check, Clock, TrendingDown, ClipboardCheck, ArrowDown, Headphones } from 'lucide-react';
 import ChartDualView from '../features/ChartDualView';
 import InteractiveMap from '../features/InteractiveMap';
+import MapSports from '../features/MapSports';
 import ChartHousing from '../features/ChartHousing';
 import Chart3D from '../features/Chart3D';
 import ChartCoffee from '../features/ChartCoffee';
 import ChartFish from '../features/ChartFish';
 
-// --- MICRO-COMPONENTS FOR INTERACTIVITY ---
+// --- MICRO-COMPONENTS ---
 
-const GapFill = ({ textWithGaps, answers }: { textWithGaps: string, answers: string[] }) => {
-    // textWithGaps format: "Some text [gap] more text."
+const GapFill = ({ textWithGaps, answers, hints = [] }: { textWithGaps: string, answers: string[], hints?: string[] }) => {
     const parts = textWithGaps.split(/\[gap\]/g);
     const [inputs, setInputs] = useState<string[]>(Array(parts.length - 1).fill(''));
     const [showAnswers, setShowAnswers] = useState(false);
@@ -31,10 +31,11 @@ const GapFill = ({ textWithGaps, answers }: { textWithGaps: string, answers: str
                                     newInputs[i] = e.target.value;
                                     setInputs(newInputs);
                                 }}
-                                className={`bg-slate-800 border-b-2 border-indigo-500/50 text-indigo-300 px-2 py-0 w-32 focus:outline-none focus:border-indigo-400 text-center transition-colors ${showAnswers && inputs[i].toLowerCase().trim() === answers[i].toLowerCase() ? 'text-emerald-400 border-emerald-500' : ''}`}
+                                placeholder={hints[i] || ""}
+                                className={`bg-slate-800 border-b-2 border-indigo-500/50 text-indigo-300 px-2 py-0 min-w-[80px] focus:outline-none focus:border-indigo-400 text-center transition-colors ${showAnswers && inputs[i].toLowerCase().trim() === answers[i].toLowerCase() ? 'text-emerald-400 border-emerald-500' : ''}`}
                             />
                             {showAnswers && (
-                                <div className="absolute top-full left-0 w-full text-[10px] text-emerald-500 font-sans font-bold text-center bg-slate-900 z-10 border border-emerald-900 rounded shadow-xl mt-1">
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 min-w-max text-[10px] text-emerald-500 font-sans font-bold text-center bg-slate-900 z-10 border border-emerald-900 rounded shadow-xl mt-1 px-2 py-1">
                                     {answers[i]}
                                 </div>
                             )}
@@ -54,167 +55,92 @@ const GapFill = ({ textWithGaps, answers }: { textWithGaps: string, answers: str
     );
 };
 
-const VocabSorter = () => {
-    const categories = [
-        "BUILDING MATERIALS", "FURNITURE", "PARTS OF A BUILDING", 
-        "EXTERNAL FEATURES", "FACILITIES", "TYPES OF BUILDINGS", "NATURAL FEATURES"
-    ];
+const TextHighlighter = ({ text, targets }: { text: string, targets: string[] }) => {
+    const [selected, setSelected] = useState<number[]>([]);
+    const [showResult, setShowResult] = useState(false);
     
-    const initialWords = [
-        { id: 1, text: "shed", cat: "TYPES OF BUILDINGS" },
-        { id: 2, text: "stairway", cat: "PARTS OF A BUILDING" },
-        { id: 3, text: "concrete", cat: "BUILDING MATERIALS" },
-        { id: 4, text: "footpath", cat: "EXTERNAL FEATURES" },
-        { id: 5, text: "toilets", cat: "FACILITIES" },
-        { id: 6, text: "roof", cat: "PARTS OF A BUILDING" },
-        { id: 7, text: "cupboard", cat: "FURNITURE" },
-        { id: 8, text: "cafe", cat: "FACILITIES" },
-        { id: 9, text: "corridor", cat: "PARTS OF A BUILDING" },
-        { id: 10, text: "stone", cat: "BUILDING MATERIALS" },
-        { id: 11, text: "entrance", cat: "PARTS OF A BUILDING" },
-        { id: 12, text: "table", cat: "FURNITURE" },
-        { id: 13, text: "chair", cat: "FURNITURE" },
-        { id: 14, text: "vegetation", cat: "NATURAL FEATURES" },
-        { id: 15, text: "desk", cat: "FURNITURE" },
-        { id: 16, text: "driveway", cat: "EXTERNAL FEATURES" },
-        { id: 17, text: "block of flats", cat: "TYPES OF BUILDINGS" },
-        { id: 18, text: "beach", cat: "NATURAL FEATURES" },
-        { id: 19, text: "wood", cat: "BUILDING MATERIALS" },
-        { id: 20, text: "changing rooms", cat: "FACILITIES" },
-        { id: 21, text: "garden", cat: "EXTERNAL FEATURES" },
-        { id: 22, text: "lake", cat: "NATURAL FEATURES" },
-        { id: 23, text: "cliff", cat: "NATURAL FEATURES" },
-        { id: 24, text: "hut", cat: "TYPES OF BUILDINGS" },
-        { id: 25, text: "car park", cat: "EXTERNAL FEATURES" },
-        { id: 26, text: "glass", cat: "BUILDING MATERIALS" },
-        { id: 27, text: "restaurant", cat: "FACILITIES" },
-    ];
+    // Simple split by space, retaining punctuation attached
+    const words = text.split(/(\s+)/);
 
-    const [words, setWords] = useState(initialWords);
-    const [selectedWord, setSelectedWord] = useState<number | null>(null);
-    const [assignments, setAssignments] = useState<Record<string, number[]>>({}); // Category -> Word IDs
-
-    const handleWordClick = (id: number) => {
-        setSelectedWord(id);
-    };
-
-    const handleCategoryClick = (cat: string) => {
-        if (selectedWord === null) return;
-        
-        // Correct check?
-        const word = words.find(w => w.id === selectedWord);
-        if (word) {
-            setAssignments(prev => ({
-                ...prev,
-                [cat]: [...(prev[cat] || []), word.id]
-            }));
-            setWords(prev => prev.filter(w => w.id !== selectedWord));
-            setSelectedWord(null);
+    const toggleWord = (index: number) => {
+        if (showResult) return;
+        if (selected.includes(index)) {
+            setSelected(prev => prev.filter(i => i !== index));
+        } else {
+            setSelected(prev => [...prev, index]);
         }
-    };
-
-    const isCorrect = (cat: string, id: number) => {
-        const word = initialWords.find(w => w.id === id);
-        return word?.cat === cat;
     };
 
     return (
         <div className="space-y-6">
-            {/* Word Bank */}
-            <div className="flex flex-wrap gap-2 min-h-[100px] p-4 bg-slate-900 rounded-xl border border-slate-700">
-                {words.map(w => (
-                    <button
-                        key={w.id}
-                        onClick={() => handleWordClick(w.id)}
-                        className={`px-3 py-1.5 rounded text-xs font-bold transition-all ${selectedWord === w.id ? 'bg-indigo-500 text-white shadow-lg scale-110 ring-2 ring-indigo-300' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
-                    >
-                        {w.text}
-                    </button>
-                ))}
-                {words.length === 0 && <div className="text-slate-500 text-sm italic w-full text-center py-2">All items sorted!</div>}
-            </div>
+            <div className="bg-white text-slate-800 p-8 rounded-xl shadow-xl font-serif text-lg leading-loose">
+                {words.map((word, i) => {
+                    // Check if word matches a target (strip punctuation)
+                    const cleanWord = word.trim().replace(/[.,]/g, '').toLowerCase();
+                    const isTarget = targets.some(t => cleanWord.includes(t.toLowerCase()));
+                    const isSelected = selected.includes(i);
+                    const isCorrect = isSelected && isTarget;
+                    const isMissed = showResult && isTarget && !isSelected;
+                    const isWrong = showResult && isSelected && !isTarget;
 
-            {/* Categories */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {categories.map(cat => (
-                    <div 
-                        key={cat}
-                        onClick={() => handleCategoryClick(cat)}
-                        className={`p-3 rounded-lg border-2 border-dashed transition-colors min-h-[120px] relative ${selectedWord ? 'border-indigo-500/50 bg-indigo-900/10 cursor-pointer hover:bg-indigo-900/30' : 'border-slate-700 bg-slate-900/50'}`}
-                    >
-                        <h4 className="text-[10px] font-bold text-slate-400 uppercase mb-2">{cat}</h4>
-                        <div className="flex flex-wrap gap-1">
-                            {assignments[cat]?.map(id => {
-                                const word = initialWords.find(w => w.id === id);
-                                const correct = isCorrect(cat, id);
-                                return (
-                                    <span key={id} className={`px-2 py-0.5 rounded text-[10px] font-bold ${correct ? 'bg-emerald-900/50 text-emerald-400 border border-emerald-500/30' : 'bg-red-900/50 text-red-400 border border-red-500/30'}`}>
-                                        {word?.text}
-                                    </span>
-                                )
-                            })}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-};
-
-// Interactive Text Error Spotter
-const TextErrorSpotter = ({ text, errors }: { text: string, errors: { id: number, match: string, correction: string, note: string }[] }) => {
-    const [activeError, setActiveError] = useState<number | null>(null);
-
-    return (
-        <div className="bg-[#1e1e24] p-6 rounded-lg border-l-4 border-red-500 shadow-xl leading-8 text-slate-300 font-serif text-lg">
-            {text.split('__').map((segment, i) => {
-                const err = errors.find(e => e.match === segment);
-                if (err) {
                     return (
-                        <span key={i} className="relative inline-block mx-1">
-                            <button
-                                onClick={() => setActiveError(err.id)}
-                                className={`px-1 rounded border-b-2 transition-all ${activeError === err.id ? 'bg-red-900/50 border-red-400 text-white' : 'border-red-500/50 text-red-200 hover:bg-red-900/20'}`}
-                            >
-                                {segment}
-                            </button>
-                            {activeError === err.id && (
-                                <div className="absolute z-20 bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-slate-900 border border-red-500 rounded p-3 shadow-xl animate-pop-in">
-                                    <div className="text-xs font-bold text-red-400 mb-1">PROBLEM:</div>
-                                    <div className="text-xs text-slate-300 mb-2">{err.note}</div>
-                                    <div className="text-xs font-bold text-emerald-400">FIX: {err.correction}</div>
-                                </div>
-                            )}
+                        <span 
+                            key={i}
+                            onClick={() => word.trim() && toggleWord(i)}
+                            className={`
+                                transition-all duration-200 cursor-pointer rounded px-0.5
+                                ${isSelected ? 'bg-indigo-200' : 'hover:bg-slate-100'}
+                                ${isCorrect && showResult ? '!bg-emerald-300' : ''}
+                                ${isWrong && showResult ? '!bg-red-300' : ''}
+                                ${isMissed ? 'border-b-2 border-emerald-500' : ''}
+                            `}
+                        >
+                            {word}
                         </span>
                     )
-                }
-                return <span key={i}>{segment}</span>
-            })}
-        </div>
-    )
-}
-
-const AnnotatedFishChart = ({ focus }: { focus: 'all' | 'chicken' | 'beef' | 'lamb_fish' }) => {
-    const opacity = (target: string) => focus === 'all' || focus === target ? 1 : 0.2;
-    const stroke = (target: string) => focus === 'all' || focus === target ? 3 : 1;
-
-    return (
-        <div className="relative w-full aspect-video bg-white rounded-xl shadow-lg p-6 border-4 border-slate-200">
-            <div className="absolute top-2 left-4 text-xs font-bold text-slate-400">Grams / person / week</div>
-            <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible" preserveAspectRatio="none">
-                {[0, 25, 50, 75, 100].map(y => <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="#f1f5f9" strokeWidth="1" />)}
-                
-                <path d="M 0 50 L 20 45 L 40 30 L 60 25 L 80 20 L 100 10" fill="none" stroke="#22c55e" strokeWidth={stroke('chicken')} opacity={opacity('chicken')} />
-                <path d="M 0 20 L 20 30 L 40 25 L 60 40 L 80 50 L 100 60" fill="none" stroke="#ef4444" strokeWidth={stroke('beef')} opacity={opacity('beef')} />
-                <path d="M 0 50 L 20 55 L 40 60 L 60 70 L 80 75 L 100 80" fill="none" stroke="#3b82f6" strokeWidth={stroke('lamb_fish')} opacity={opacity('lamb_fish')} />
-                <path d="M 0 80 L 100 82" fill="none" stroke="#f97316" strokeWidth={stroke('lamb_fish')} opacity={opacity('lamb_fish')} />
-            </svg>
-            <div className="absolute bottom-2 left-6 right-6 flex justify-between text-[8px] text-slate-500 font-mono">
-                <span>1979</span><span>1984</span><span>1989</span><span>1994</span><span>1999</span><span>2004</span>
+                })}
+            </div>
+            <div className="flex justify-between items-center">
+                <p className="text-xs text-slate-400 font-mono">Click words that show personal opinion / subjectivity.</p>
+                <button 
+                    onClick={() => setShowResult(!showResult)} 
+                    className="px-6 py-2 bg-indigo-600 text-white rounded-full font-bold text-xs uppercase tracking-widest"
+                >
+                    {showResult ? 'Reset' : 'Check Analysis'}
+                </button>
             </div>
         </div>
     )
 }
+
+const VocabMatcher = ({ pairs }: { pairs: { term: string, def: string }[] }) => {
+    // pairs = [{ term: "western", def: "in the west" }]
+    const [inputs, setInputs] = useState<Record<string, string>>({});
+    const [show, setShow] = useState(false);
+
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {pairs.map((p, i) => (
+                <div key={i} className="flex items-center justify-between bg-slate-900 p-3 rounded border border-slate-800">
+                    <span className="text-sm text-slate-400 italic">{p.def}</span>
+                    <div className="flex flex-col items-end">
+                        <input 
+                            type="text" 
+                            className="bg-slate-800 text-right text-indigo-300 text-sm border-b border-indigo-500/30 w-32 focus:outline-none"
+                            onChange={(e) => setInputs(prev => ({ ...prev, [i]: e.target.value }))}
+                        />
+                        {show && <span className="text-[10px] text-emerald-500 font-bold">{p.term}</span>}
+                    </div>
+                </div>
+            ))}
+            <div className="md:col-span-2 flex justify-center mt-4">
+                <button onClick={() => setShow(!show)} className="text-xs text-slate-500 hover:text-white underline">Reveal Answers</button>
+            </div>
+        </div>
+    )
+}
+
+// --- MASTERCLASS COMPONENT ---
 
 interface NexusMasterclassProps {
   onBack: () => void;
@@ -231,299 +157,349 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
   }, [currentSlide]);
 
   const slides = [
-    // --- PDF PAGE 1 ---
+    // --- PAGE 1 ---
     {
-      title: "PDF PG 1: CONSUMPTION TRENDS",
-      headline: "LISTENING TASK",
-      icon: <Headphones size={64} className="text-indigo-500" />,
+      title: "PG 1: Common Problems",
+      headline: "GRAMMAR & STRUCTURE",
+      icon: <AlertTriangle size={64} className="text-amber-500" />,
       content: (
         <div className="space-y-8">
-           <div className="flex flex-col md:flex-row gap-8 items-center">
-               <div className="w-full md:w-1/2">
-                   <ChartFish />
-                   <p className="text-[10px] text-slate-500 mt-2 text-center font-mono">FIG 1.1: FISH & MEAT CONSUMPTION (1979-2004)</p>
-               </div>
-               <div className="w-full md:w-1/2">
-                   <div className="bg-indigo-950/30 p-4 border-l-4 border-indigo-500 mb-4">
-                       <h4 className="text-indigo-400 font-bold mb-1">Instructions</h4>
-                       <p className="text-sm text-slate-300">Read the model answer logic below and complete the missing data points based on the graph.</p>
+           <div className="bg-slate-900/50 p-6 rounded-2xl border-l-4 border-amber-500">
+               <h3 className="text-xl font-bold text-amber-500 mb-4">1. There is / There are</h3>
+               <p className="text-slate-300 leading-relaxed mb-4">
+                   Used to say something exists. Be careful not to list minor details like a picture description.
+               </p>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                   <div className="p-4 bg-red-950/20 rounded border border-red-900/50">
+                       <span className="text-red-400 font-bold block mb-1">Incorrect Focus:</span>
+                       "There were some trees on the island." (Just listing)
                    </div>
-                   <GapFill 
-                     textWithGaps="The [gap] shows the weekly consumption of fish and three [gap] meat in one European country from 1979 to 2004. Although there [gap], overall, people in this country [gap] more meat [gap], and the [gap] was to move [gap] beef and lamb as chicken became [gap] food in this category."
-                     answers={["line graph", "types of", "were fluctuations", "consistently ate", "than fish", "general trend", "away from", "dominant"]}
-                   />
+                   <div className="p-4 bg-emerald-950/20 rounded border border-emerald-900/50">
+                       <span className="text-emerald-400 font-bold block mb-1">Correct Context:</span>
+                       "Before development, there were only trees..." (Contextual)
+                   </div>
+               </div>
+           </div>
+
+           <div className="bg-slate-900/50 p-6 rounded-2xl border-l-4 border-indigo-500">
+               <h3 className="text-xl font-bold text-indigo-500 mb-4">2. The Passive Voice</h3>
+               <p className="text-slate-300 leading-relaxed mb-4">
+                   Maps use passive because the builder (subject) is unknown/unimportant.
+                   <br/>Form: <strong>be + past participle</strong>
+               </p>
+               <div className="space-y-2 font-mono text-sm text-slate-400">
+                   <p>Active: They built a restaurant.</p>
+                   <p className="text-white">Passive: A restaurant <span className="text-indigo-400">was built</span>.</p>
+               </div>
+               
+               <div className="mt-6 p-4 bg-slate-800 rounded-lg">
+                   <p className="text-xs text-slate-500 uppercase tracking-widest mb-2">Quick Check: Correct the sentence</p>
+                   <p className="text-slate-300 italic mb-2">"There has built a restaurant in the centre."</p>
+                   <div className="text-emerald-400 font-bold">Answer: A restaurant has been built...</div>
                </div>
            </div>
         </div>
       )
     },
 
-    // --- PDF PAGE 2 ---
+    // --- PAGE 2 ---
     {
-        title: "PDF PG 2: MODEL ANSWER",
-        headline: "BAND 9 MODEL ANALYSIS",
+        title: "PG 2: Tenses & Logic",
+        headline: "THINKING IN TIME",
+        icon: <Clock size={64} className="text-blue-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                        <h4 className="font-bold text-slate-200 mb-4">Transforming Your Thinking</h4>
+                        <p className="text-slate-400 text-sm mb-4">Don't just ask "What can I see?". Ask:</p>
+                        <ul className="space-y-2 text-sm text-indigo-300">
+                            <li>• What did it look like before?</li>
+                            <li>• What has changed?</li>
+                            <li>• What has been added/removed?</li>
+                            <li>• What has been extended?</li>
+                        </ul>
+                    </div>
+                    <div className="bg-white text-slate-900 p-6 rounded-xl shadow-lg transform rotate-1">
+                        <h4 className="font-bold text-indigo-900 mb-2">Comparison Strategy</h4>
+                        <div className="text-xs space-y-4">
+                            <div className="p-2 bg-red-50 border-l-2 border-red-500">
+                                <strong>Bad:</strong> Listing Map 1 features, then Map 2 features separately.
+                            </div>
+                            <div className="p-2 bg-green-50 border-l-2 border-green-500">
+                                <strong>Good:</strong> Summarising changes. "Two blocks have been built so tourists can stay..."
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="bg-amber-950/30 p-6 rounded-xl border border-amber-600/30 text-center">
+                    <Quote className="mx-auto text-amber-500 mb-2" size={24} />
+                    <p className="text-amber-200 italic">"Writing is thinking we can see. Change your thinking to change your writing."</p>
+                </div>
+            </div>
+        )
+    },
+
+    // --- PAGE 3 ---
+    {
+        title: "PG 3: Cohesion & Overview",
+        headline: "AVOIDING TEMPLATES",
+        icon: <Link size={64} className="text-purple-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-slate-900 p-6 rounded-2xl">
+                    <h3 className="text-lg font-bold text-white mb-2">The "Template" Trap</h3>
+                    <p className="text-slate-400 text-sm mb-4">Avoid rote learning cohesive devices like <em>"Firstly... On the contrary... Lastly"</em>.</p>
+                    
+                    <div className="p-4 bg-black rounded border border-slate-800 font-serif text-slate-300 text-sm leading-relaxed">
+                        <span className="text-red-400 underline decoration-wavy">Firstly</span>, they preserved all of the trees. <span className="text-red-400 underline decoration-wavy">On the contrary</span>, they built a new pier. A vehicle path runs to the reception. <span className="text-red-400 underline decoration-wavy">Lastly</span>, there is a spectacular beach.
+                    </div>
+                    
+                    <div className="mt-4 flex gap-2 items-start">
+                        <AlertTriangle className="text-red-500 shrink-0" size={16} />
+                        <p className="text-xs text-red-300">
+                            <strong>Problem:</strong> "On the contrary" is for opposing ideas, not just difference. "Lastly" implies a sequence of arguments, not spatial features.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="bg-slate-900 p-6 rounded-2xl">
+                    <h3 className="text-lg font-bold text-white mb-2">Overview Precision</h3>
+                    <p className="text-slate-400 text-sm mb-4">Don't include details. Use <strong>Umbrella Terms</strong>.</p>
+                    <div className="grid grid-cols-2 gap-4 text-xs">
+                        <div className="p-3 bg-slate-800 rounded">
+                            <span className="text-red-400 font-bold">Too Detailed:</span><br/>
+                            "A restaurant, houses, footpath and vehicle track were built."
+                        </div>
+                        <div className="p-3 bg-slate-800 rounded">
+                            <span className="text-emerald-400 font-bold">Umbrella Term:</span><br/>
+                            "Changes were made to provide <strong>tourist facilities</strong>."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // --- PAGE 4 ---
+    {
+        title: "PG 4: Exercise - Subjectivity",
+        headline: "DETECTING BIAS",
+        icon: <EyeOff size={64} className="text-red-500" />,
+        content: (
+            <div className="space-y-6">
+                <div className="text-center mb-4">
+                    <h3 className="text-2xl font-bold text-white">Objective Language Drill</h3>
+                    <p className="text-slate-400">Task 1 must be factual. Click words in the text below that express a <strong>personal opinion</strong> instead of fact.</p>
+                </div>
+                
+                <TextHighlighter 
+                    text="After the advanced development, the island became well established and well civilised. The remarkable number of buildings, restaurants, reception, pier, accommodations, beach and greeneries have enhanced the island's beauty in very enormous ways. It could be said that these facilities will amuse the tourists. They must enjoy sailing and delight in eating in the restaurant as well as swimming."
+                    targets={["advanced", "well", "civilised", "remarkable", "enhanced", "beauty", "enormous", "amuse", "must", "enjoy", "delight"]}
+                />
+            </div>
+        )
+    },
+
+    // --- PAGE 5 ---
+    {
+        title: "PG 5: Solutions - Subjectivity",
+        headline: "OBJECTIVE CORRECTION",
         icon: <CheckCircle2 size={64} className="text-emerald-500" />,
         content: (
             <div className="space-y-8">
-                <div className="bg-slate-900 p-8 rounded-2xl border border-emerald-500/20 shadow-2xl relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-10">
-                        <Quote size={100} />
-                    </div>
-                    <h3 className="text-emerald-400 font-bold mb-6 uppercase tracking-widest text-sm border-b border-emerald-900/50 pb-2">Full Response</h3>
-                    <div className="space-y-6 text-slate-300 font-serif leading-loose text-lg">
-                        <p><span className="text-white font-bold bg-emerald-900/50 px-1">The line graph shows variations</span> in the weekly consumption of fish and three types of meat in one European country from 1979 to 2004. Although there <span className="text-emerald-400 border-b border-emerald-500/50">were fluctuations</span>, overall, people in this country consistently ate more meat than fish, and the <span className="text-emerald-400 border-b border-emerald-500/50">general trend</span> was to move away from beef and lamb as chicken became the dominant food.</p>
-                        
-                        <p>In the first decade, beef was consumed in significantly higher quantities than the other foods listed. Despite an <span className="text-emerald-400 border-b border-emerald-500/50">initial sharp fall</span> to approximately 175 grams, it then recovered reaching a high of close to 240 grams per week. However, from 1989 onwards, beef consumption <span className="text-emerald-400 border-b border-emerald-500/50">fell almost continually</span>, and by 2004 had almost halved.</p>
-                        
-                        <p>In contrast, chicken <span className="text-emerald-400 border-b border-emerald-500/50">climbed from</span> less than 150 grams in 1979 and <span className="text-emerald-400 border-b border-emerald-500/50">took the lead</span> from around 1990 onwards. Interestingly, the increases in chicken <span className="text-emerald-400 border-b border-emerald-500/50">corresponded with the declines</span> in beef and lamb.</p>
-                    </div>
-                </div>
-            </div>
-        )
-    },
-
-    // --- PDF PAGE 3 ---
-    {
-        title: "PDF PG 3: LESSON 7 - MAPS",
-        headline: "MODULE OVERVIEW: MAPS",
-        icon: <Map size={64} className="text-blue-500" />,
-        content: (
-            <div className="flex flex-col items-center justify-center h-full py-12">
-                <div className="bg-blue-950/20 p-12 rounded-full mb-8 border border-blue-500/20 animate-pulse">
-                    <Map size={80} className="text-blue-400" />
-                </div>
-                <h2 className="text-4xl font-black text-white mb-2">LESSON 7: MAP TASKS</h2>
-                <div className="h-1 w-24 bg-blue-500 rounded-full mb-8"></div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
-                    {[
-                        { id: "7.1", text: "How map tasks are different" },
-                        { id: "7.2", text: "Common problems in map tasks" },
-                        { id: "7.3", text: "My model answer" }
-                    ].map(item => (
-                        <div key={item.id} className="bg-slate-900 p-6 rounded-xl border border-slate-800 hover:border-blue-500 transition-all cursor-default group">
-                            <span className="block text-blue-500 font-mono text-xs mb-2 group-hover:text-blue-400">SECTION {item.id}</span>
-                            <span className="text-slate-300 font-bold group-hover:text-white">{item.text}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        )
-    },
-
-    // --- PDF PAGE 4 ---
-    {
-        title: "PDF PG 4: MAP FUNDAMENTALS",
-        headline: "LANGUAGE & VOCABULARY",
-        icon: <BookOpen size={64} className="text-amber-500" />,
-        content: (
-            <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-6">
-                        <div className="bg-slate-900 p-6 rounded-xl border-l-4 border-amber-500">
-                            <h4 className="text-amber-500 font-bold mb-2 flex items-center gap-2"><Clock size={16}/> Tenses & Voice</h4>
-                            <p className="text-slate-300 text-sm leading-relaxed">
-                                Unlike charts (active voice), map tasks often use the <strong>Passive Voice</strong>.
-                                <br/><br/>
-                                <span className="text-slate-500 italic">"The coffee was sold..."</span> (Chart)<br/>
-                                <span className="text-white font-bold">"The school was constructed..."</span> (Map)
-                            </p>
-                        </div>
-                        <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
-                            <h4 className="text-white font-bold mb-4">Umbrella Terms</h4>
-                            <ul className="grid grid-cols-2 gap-2 text-xs text-slate-400">
-                                <li>• Natural features</li>
-                                <li>• Outdoor spaces</li>
-                                <li>• Types of Buildings</li>
-                                <li>• Facilities</li>
-                                <li>• Parts of a building</li>
-                                <li>• Transport</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="bg-white p-4 rounded-xl shadow-lg transform rotate-1">
-                        <InteractiveMap />
-                        <p className="text-center text-slate-500 text-[10px] mt-2 font-mono">FIG 4.1: ISLAND BEFORE CONSTRUCTION</p>
-                    </div>
-                </div>
-            </div>
-        )
-    },
-
-    // --- PDF PAGE 5 ---
-    {
-        title: "PDF PG 5: KEY FEATURES",
-        headline: "READING THE MAP",
-        icon: <Scan size={64} className="text-purple-500" />,
-        content: (
-            <div className="space-y-8">
-                <div className="flex justify-center gap-4 mb-8">
-                    <div className="bg-slate-800 px-6 py-3 rounded-lg border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-3">
-                        <div className="w-12 h-1 bg-slate-500 relative"><div className="absolute -top-1 w-px h-3 bg-white left-0"></div><div className="absolute -top-1 w-px h-3 bg-white right-0"></div></div>
-                        SCALE: 100m
-                    </div>
-                    <div className="bg-slate-800 px-6 py-3 rounded-lg border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-3">
-                        <Move size={16} /> COMPASS: N/S/E/W
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="bg-purple-950/20 p-6 rounded-xl border border-purple-500/30">
-                        <h3 className="text-purple-400 font-bold mb-4 uppercase tracking-widest text-sm">Target Features</h3>
-                        <ul className="space-y-3 text-slate-300 text-sm">
-                            <li className="flex items-center gap-2"><Check size={14} className="text-purple-500"/> Features <strong>added</strong> (new buildings)</li>
-                            <li className="flex items-center gap-2"><Check size={14} className="text-purple-500"/> Features <strong>removed</strong> (trees cleared)</li>
-                            <li className="flex items-center gap-2"><Check size={14} className="text-purple-500"/> Features <strong>expanded</strong> (made bigger)</li>
-                            <li className="flex items-center gap-2"><Check size={14} className="text-purple-500"/> Features <strong>converted</strong> (changed use)</li>
-                        </ul>
-                    </div>
-                    <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
-                        <h3 className="text-slate-400 font-bold mb-4 uppercase tracking-widest text-sm">Passive Verbs</h3>
-                        <div className="flex flex-wrap gap-2">
-                            {['was constructed', 'were demolished', 'has been erected', 'was converted', 'were chopped down'].map((v, i) => (
-                                <span key={i} className="px-3 py-1 bg-slate-800 text-purple-300 rounded-full text-xs font-bold border border-slate-700">{v}</span>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    },
-
-    // --- PDF PAGE 6 ---
-    {
-        title: "PDF PG 6: AFTER DEVELOPMENT",
-        headline: "ANALYZING CHANGES",
-        icon: <Search size={64} className="text-teal-500" />,
-        content: (
-            <div className="space-y-8">
-                <div className="bg-white p-6 rounded-xl shadow-2xl relative">
-                    <InteractiveMap />
-                    
-                    {/* Annotations Overlay Simulation */}
-                    <div className="absolute top-1/4 left-1/4">
-                        <div className="relative group">
-                            <div className="w-4 h-4 rounded-full bg-teal-500 animate-ping absolute"></div>
-                            <div className="w-4 h-4 rounded-full bg-teal-500 relative border-2 border-white"></div>
-                            <div className="absolute left-6 top-0 bg-black/80 text-teal-300 text-[10px] px-2 py-1 rounded w-32 opacity-0 group-hover:opacity-100 transition-opacity">
-                                Accomodation Cluster (West)
-                            </div>
-                        </div>
-                    </div>
-                    <div className="absolute bottom-1/3 right-1/3">
-                        <div className="relative group">
-                            <div className="w-4 h-4 rounded-full bg-amber-500 animate-ping absolute"></div>
-                            <div className="w-4 h-4 rounded-full bg-amber-500 relative border-2 border-white"></div>
-                            <div className="absolute left-6 top-0 bg-black/80 text-amber-300 text-[10px] px-2 py-1 rounded w-32 opacity-0 group-hover:opacity-100 transition-opacity">
-                                Central Amenities (Restaurant)
-                            </div>
-                        </div>
+                <div className="bg-slate-900 p-6 rounded-xl border border-emerald-500/30">
+                    <h3 className="text-emerald-400 font-bold mb-4 uppercase tracking-widest text-sm">The Objective Rewrite</h3>
+                    <div className="text-slate-300 font-serif leading-relaxed text-lg">
+                        After the <span className="line-through text-red-500 opacity-50">advanced</span> development, the island became <span className="bg-emerald-900/50 text-emerald-300 px-1">a tourist destination</span>. The <span className="line-through text-red-500 opacity-50">remarkable</span> new buildings, which include a restaurant, reception and accommodation, have <span className="bg-emerald-900/50 text-emerald-300 px-1">changed the island significantly</span>. Tourists <span className="bg-emerald-900/50 text-emerald-300 px-1">can now go</span> sailing and <span className="bg-emerald-900/50 text-emerald-300 px-1">eat</span> in the restaurant as well as swimming.
                     </div>
                 </div>
                 
-                <div className="flex justify-center gap-4 text-xs text-slate-400 font-mono uppercase">
-                    <span>Key Areas:</span>
-                    <span className="text-white">Accommodation</span>
-                    <span className="text-white">Amenities</span>
-                    <span className="text-white">Leisure</span>
-                </div>
-            </div>
-        )
-    },
-
-    // --- PDF PAGE 7 ---
-    {
-        title: "PDF PG 7: ORGANISATION",
-        headline: "STRUCTURAL LOGIC",
-        icon: <Layout size={64} className="text-pink-500" />,
-        content: (
-            <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="bg-red-950/20 p-6 rounded-xl border border-red-500/30">
-                        <div className="flex items-center gap-2 text-red-500 font-bold mb-4">
-                            <X size={20} /> THE LIST METHOD
-                        </div>
-                        <h4 className="text-white font-bold mb-2">By Compass Point</h4>
-                        <div className="text-xs text-slate-400 leading-relaxed">
-                            "In the North there is X. In the South there is Y. In the East there is Z..."
-                            <br/><br/>
-                            <span className="text-red-400">Result:</span> Creates a boring list. Fails to group related information (e.g. all housing).
-                        </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-400">
+                    <div className="p-3 border border-slate-700 rounded">
+                        <strong>Change 1:</strong><br/>"Well civilised" → "A tourist destination" (Fact)
                     </div>
-
-                    <div className="bg-emerald-950/20 p-6 rounded-xl border border-emerald-500/30">
-                        <div className="flex items-center gap-2 text-emerald-500 font-bold mb-4">
-                            <Check size={20} /> THE GROUPING METHOD
-                        </div>
-                        <h4 className="text-white font-bold mb-2">By Time / Category</h4>
-                        <div className="text-xs text-slate-400 leading-relaxed">
-                            <strong>Para 1:</strong> The island Before + What was kept (Trees).<br/>
-                            <strong>Para 2:</strong> The island After + All new construction grouped by function (Housing, Services).
-                            <br/><br/>
-                            <span className="text-emerald-400">Result:</span> Clear comparison. Logical flow.
-                        </div>
+                    <div className="p-3 border border-slate-700 rounded">
+                        <strong>Change 2:</strong><br/>"Enormous ways" → "Significantly" (Academic quantifier)
+                    </div>
+                    <div className="p-3 border border-slate-700 rounded">
+                        <strong>Change 3:</strong><br/>"Will amuse/delight" → "Can now go..." (Possibility, not emotion)
                     </div>
                 </div>
             </div>
         )
     },
 
-    // --- PDF PAGE 8 ---
+    // --- PAGE 6 & 7 ---
     {
-        title: "PDF PG 8: VOCABULARY LAB",
-        headline: "CATEGORIZATION DRILL",
-        icon: <Grid size={64} className="text-indigo-500" />,
+        title: "PG 6-7: Cohesion Audit",
+        headline: "ERROR ANALYSIS",
+        icon: <GitMerge size={64} className="text-pink-500" />,
         content: (
             <div className="space-y-6">
-                <div className="bg-indigo-950/20 p-4 rounded-lg border border-indigo-500/30 text-center">
-                    <p className="text-indigo-300 text-sm">Drag or click the words to assign them to the correct <strong>Umbrella Term</strong>.</p>
+                <div className="bg-white text-slate-800 p-6 rounded-xl shadow-lg font-serif">
+                    <p className="mb-4"><strong className="text-red-600">A) Firstly</strong>, they preserved all of the trees on the island. <strong className="text-red-600">B) On the contrary</strong>, they built a new beautiful pier where ships can land. A vehicle path runs from the pier to the reception which is located centrally. A huge pretty restaurant lies behind the reception. Houses are wonderfully constructed to the right and left of the reception with a footpath connecting them. <strong className="text-red-600">C) Lastly</strong>, there is a spectacular beach with a safe swimming area.</p>
                 </div>
-                <VocabSorter />
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="p-4 bg-slate-900 border-l-4 border-red-500 rounded">
+                        <div className="text-red-400 font-bold mb-1">A) Firstly</div>
+                        <div className="text-xs text-slate-400">Used for steps in a process (e.g. recipe), not generally for describing static map features.</div>
+                    </div>
+                    <div className="p-4 bg-slate-900 border-l-4 border-red-500 rounded">
+                        <div className="text-red-400 font-bold mb-1">B) On the contrary</div>
+                        <div className="text-xs text-slate-400">Used to correct a mistaken idea ("It wasn't hot. On the contrary, it was freezing"). Incorrect here.</div>
+                    </div>
+                    <div className="p-4 bg-slate-900 border-l-4 border-red-500 rounded">
+                        <div className="text-red-400 font-bold mb-1">C) Lastly</div>
+                        <div className="text-xs text-slate-400">Implies the final step of a sequence. The beach isn't the "end" of the island.</div>
+                    </div>
+                </div>
             </div>
         )
     },
 
-    // --- PDF PAGE 9 ---
+    // --- PAGE 8 & 9 (Answers) merged into previous logical flow --- 
+    // Skipped explicit "Page 8/9" slide as it's the answer key to 6/7 provided above.
+
+    // --- PAGE 10 ---
     {
-        title: "PDF PG 9: ANSWER KEY",
-        headline: "VERIFICATION",
-        icon: <ClipboardCheck size={64} className="text-slate-400" />,
+        title: "PG 10: Model Answer Construction",
+        headline: "GAP FILL CHALLENGE",
+        icon: <PenTool size={64} className="text-teal-500" />,
         content: (
-            <div className="bg-white text-slate-900 p-8 rounded-xl shadow-2xl overflow-x-auto">
-                <table className="w-full text-xs text-left border-collapse">
-                    <thead>
-                        <tr className="bg-slate-100 border-b-2 border-slate-300">
-                            <th className="p-2 font-bold">NATURAL FEATURES</th>
-                            <th className="p-2 font-bold">PARTS OF BUILDING</th>
-                            <th className="p-2 font-bold">TYPES OF BUILDINGS</th>
-                            <th className="p-2 font-bold">EXTERNAL FEATURES</th>
-                            <th className="p-2 font-bold">MATERIALS</th>
-                            <th className="p-2 font-bold">FURNITURE</th>
-                        </tr>
-                    </thead>
-                    <tbody className="align-top">
-                        <tr>
-                            <td className="p-2">
-                                lake<br/>cliff<br/>beach<br/>vegetation
-                            </td>
-                            <td className="p-2">
-                                entrance<br/>corridor<br/>roof<br/>stairway
-                            </td>
-                            <td className="p-2">
-                                shed<br/>hut<br/>block of flats
-                            </td>
-                            <td className="p-2">
-                                garden<br/>driveway<br/>footpath<br/>car park
-                            </td>
-                            <td className="p-2">
-                                glass<br/>concrete<br/>stone<br/>wood
-                            </td>
-                            <td className="p-2">
-                                desk<br/>cupboard<br/>chair<br/>table
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div className="space-y-6">
+                <div className="bg-teal-950/20 p-4 rounded-lg border border-teal-500/30 mb-4">
+                    <h4 className="text-teal-400 font-bold text-sm mb-1">Task: My Model Answer</h4>
+                    <p className="text-xs text-slate-400">Fill in the gaps with the correct verb form (Tense + Voice).</p>
+                </div>
+                
+                <GapFill 
+                    textWithGaps="The simple past is used to describe the island before: Overall, most development [gap] (take place) on... Prior to development, this relatively small island [gap] (be) uninhabited. In terms of natural features, [gap] (there/be) a beach area... Perfect tenses link past to present: A small number of tourist amenities [gap] (build), while the eastern part [gap] (leave) in its natural state."
+                    answers={["took place", "was", "there was", "have been built", "has been left"]}
+                    hints={["past", "past", "past", "present perfect passive", "present perfect passive"]}
+                />
+            </div>
+        )
+    },
+
+    // --- PAGE 11 ---
+    {
+        title: "PG 11: Logical Organisation",
+        headline: "STRUCTURING YOUR REPORT",
+        icon: <ListOrdered size={64} className="text-indigo-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-slate-900 p-8 rounded-xl border border-slate-700 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                        <Layout size={120} />
+                    </div>
+                    <h3 className="text-white font-bold mb-6">Structuring Signals</h3>
+                    <ul className="space-y-4 text-slate-300 font-serif">
+                        <li className="flex items-center gap-3"><ChevronRight className="text-indigo-500"/> The two maps...</li>
+                        <li className="flex items-center gap-3"><ChevronRight className="text-indigo-500"/> Overall...</li>
+                        <li className="flex items-center gap-3"><ChevronRight className="text-indigo-500"/> Prior to development...</li>
+                        <li className="flex items-center gap-3"><ChevronRight className="text-indigo-500"/> Following construction...</li>
+                    </ul>
+                </div>
+                
+                <div className="p-4 bg-indigo-900/20 border border-indigo-500/30 rounded-xl text-center">
+                    <p className="text-indigo-300 font-bold mb-2">Key Idea: Signposting Topics</p>
+                    <p className="text-sm text-slate-400">"In terms of access..." / "Regarding accommodation..."</p>
+                </div>
+            </div>
+        )
+    },
+
+    // --- PAGE 12 ---
+    {
+        title: "PG 12: Sports Centre Task",
+        headline: "NEW TASK ANALYSIS",
+        icon: <Map size={64} className="text-slate-200" />,
+        content: (
+            <div className="space-y-6">
+                <div className="flex flex-col items-center">
+                    <h2 className="text-2xl font-bold text-white mb-2 text-center">University Sports Centre</h2>
+                    <p className="text-slate-400 text-sm mb-6">Summarise the information by selecting and reporting the main features.</p>
+                    
+                    <div className="w-full max-w-2xl bg-white p-4 rounded-xl shadow-2xl">
+                        <MapSports />
+                        <div className="flex justify-between mt-2 text-[10px] text-slate-500 font-mono uppercase">
+                            <span>Map A: Present</span>
+                            <span>Map B: Future Plans</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    },
+
+    // --- PAGE 13 ---
+    {
+        title: "PG 13: Sports Centre Exercises",
+        headline: "APPLIED PRACTICE",
+        icon: <Edit3 size={64} className="text-orange-500" />,
+        content: (
+            <div className="h-[500px] overflow-y-auto pr-4 space-y-12">
+                
+                {/* Q1 */}
+                <section>
+                    <h3 className="text-orange-400 font-bold mb-4 sticky top-0 bg-slate-950 py-2 z-10 border-b border-slate-800">Q1: Grammar Gap Fill</h3>
+                    <div className="bg-slate-900 p-4 rounded-xl">
+                        <GapFill 
+                            textWithGaps="The two maps show an island both before and after it [gap] (develop) as a tourist destination. Overall, most development [gap] (take place) on the western areas... where amenities [gap] (build)."
+                            answers={["was developed", "took place", "were built"]}
+                            hints={["passive", "past", "passive"]}
+                        />
+                    </div>
+                </section>
+
+                {/* Q2 */}
+                <section>
+                    <h3 className="text-orange-400 font-bold mb-4 sticky top-0 bg-slate-950 py-2 z-10 border-b border-slate-800">Q2: Vocabulary Match</h3>
+                    <VocabMatcher 
+                        pairs={[
+                            { term: "western", def: "in the west" },
+                            { term: "uninhabited", def: "no one was living there" },
+                            { term: "natural features", def: "features produced by nature" },
+                            { term: "dense", def: "close together, thick" },
+                            { term: "sympathetic", def: "showing an understanding of" },
+                            { term: "single-storey", def: "having one level" }
+                        ]}
+                    />
+                </section>
+
+                {/* Q3 */}
+                <section>
+                    <h3 className="text-orange-400 font-bold mb-4 sticky top-0 bg-slate-950 py-2 z-10 border-b border-slate-800">Q3: Paragraph Completion</h3>
+                    <div className="bg-slate-900 p-4 rounded-xl text-sm leading-loose text-slate-300">
+                        <GapFill 
+                            textWithGaps="The two maps show an island... Overall, most development took place on the [gap] and [gap] areas of the island, where a small number of tourist [gap] have been built."
+                            answers={["western", "central", "amenities"]}
+                        />
+                    </div>
+                </section>
+            </div>
+        )
+    },
+
+    // --- PAGE 14 & 15 (Answers) ---
+    {
+        title: "PG 14-15: Model Answers",
+        headline: "FINAL VERIFICATION",
+        icon: <ClipboardCheck size={64} className="text-emerald-500" />,
+        content: (
+            <div className="space-y-8">
+                <div className="bg-slate-900 p-8 rounded-2xl border border-emerald-500/20 shadow-2xl">
+                    <h3 className="text-emerald-400 font-bold mb-6 border-b border-emerald-900/50 pb-2">Full Model Response</h3>
+                    <div className="text-slate-300 font-serif leading-loose text-sm space-y-4">
+                        <p>The two maps show an island both before and after it <span className="text-emerald-400 font-bold">was developed</span> as a tourist destination. Overall, most development <span className="text-emerald-400 font-bold">took place</span> on the western and central areas of the island, where a small number of tourist amenities <span className="text-emerald-400 font-bold">have been built</span>, while the eastern coast <span className="text-emerald-400 font-bold">has been left</span> in its natural state.</p>
+                        
+                        <p>Prior to development, this relatively small island <span className="text-emerald-400 font-bold">was uninhabited</span>. In terms of its natural features, <span className="text-emerald-400 font-bold">there was</span> a beach area on the west coast, and some vegetation, which <span className="text-emerald-400 font-bold">was</span> more dense on the eastern part. As part of the development programme, this vegetation <span className="text-emerald-400 font-bold">has largely been retained</span>.</p>
+                        
+                        <p>Following construction, although the island is now more developed, the style of the buildings is generally <span className="text-emerald-400 font-bold">sympathetic</span> to the natural environment.</p>
+                    </div>
+                </div>
             </div>
         )
     }
@@ -555,7 +531,7 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
 
                  <div>
                      <h1 className="text-xs font-mono text-slate-500 uppercase tracking-[0.3em]">Nexus Masterclass</h1>
-                     <div className="text-white font-bold text-lg">PDF INTEGRATION PROTOCOLS</div>
+                     <div className="text-white font-bold text-lg">LESSON 7: MAP TASKS & BEYOND</div>
                  </div>
 
                  {/* SECTOR MAP MENU OVERLAY */}
@@ -588,7 +564,7 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                                         }`}
                                     >
                                         <div className="flex justify-between items-baseline">
-                                            <span className="opacity-50 text-[10px] uppercase">Sector {i + 1}</span>
+                                            <span className="opacity-50 text-[10px] uppercase">Page {i + 1}</span>
                                             {currentSlide === i && <Zap size={10} className="text-teal-500 animate-pulse"/>}
                                         </div>
                                         <span className="font-bold truncate w-full">{s.title.includes(': ') ? s.title.split(': ')[1] : s.title}</span>
@@ -643,7 +619,7 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                 className="flex items-center gap-4 px-6 py-3 rounded-lg border border-slate-800 hover:bg-slate-900 disabled:opacity-30 disabled:hover:bg-transparent transition-all group"
              >
                  <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                 <span className="font-bold text-sm uppercase tracking-wider">Previous Sector</span>
+                 <span className="font-bold text-sm uppercase tracking-wider">Previous Page</span>
              </button>
 
              <button 
@@ -656,7 +632,7 @@ const NexusMasterclass: React.FC<NexusMasterclassProps> = ({ onBack }) => {
                 }}
                 className="flex items-center gap-4 px-8 py-4 bg-white text-black rounded-lg hover:bg-slate-200 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)] group"
              >
-                 <span className="font-black text-sm uppercase tracking-wider">{currentSlide === slides.length - 1 ? 'Complete Briefing' : 'Next Sector'}</span>
+                 <span className="font-black text-sm uppercase tracking-wider">{currentSlide === slides.length - 1 ? 'Complete Masterclass' : 'Next Page'}</span>
                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
              </button>
         </footer>
