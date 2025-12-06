@@ -1,12 +1,11 @@
 
-import React, { useState } from 'react';
-import { ArrowLeft, Menu, Activity, Moon, Sun, Layers, Network, Zap, Brain, Cpu, Radio, X, Swords, Trophy, Play, Fish, Coffee, Factory, RefreshCcw, Map, BookOpenCheck, Lock } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Menu, Moon, Sun, Layers, Network, Zap, Cpu, X, Swords, Fish, Coffee, Factory, RefreshCcw, Map, BookOpenCheck, Lock, BrainCircuit, Activity } from 'lucide-react';
 import FluxLesson from './FluxLesson';
 import NexusCanvas from '../features/NexusCanvas';
 import CoreInterface from './CoreInterface';
 import NexusAvatar from '../features/NexusAvatar';
 import NexusMasterclass from './NexusMasterclass';
-import NexusTask2Masterclass from './NexusTask2Masterclass';
 import { useSuperAI } from '../../hooks/useSuperAI';
 import GamifiedQuiz from '../features/GamifiedQuiz';
 import { KAHOOT_QUIZ_1, KAHOOT_QUIZ_2, KAHOOT_QUIZ_3, KAHOOT_QUIZ_4, KAHOOT_QUIZ_5, KAHOOT_QUIZ_6, KAHOOT_QUIZ_7, KAHOOT_QUIZ_8, KAHOOT_QUIZ_9, KAHOOT_QUIZ_10 } from '../../constants';
@@ -16,70 +15,53 @@ interface TheNexusProps {
   onOpenMenu?: () => void;
 }
 
+type EnergyMode = 'focus' | 'flux';
+
 const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
   const [surgicalDrill, setSurgicalDrill] = useState<any | null>(null);
   const [activeArenaQuiz, setActiveArenaQuiz] = useState<number | null>(null);
+  const [energyMode, setEnergyMode] = useState<EnergyMode>('flux');
+  const [bootSequence, setBootSequence] = useState(true);
   
-  // 3D Tilt State
-  const [tilt, setTilt] = useState<{id: string, x: number, y: number} | null>(null);
-
-  // Connect to C.O.R.E.
   const { track } = useSuperAI();
   
-  React.useEffect(() => {
+  useEffect(() => {
       track('ENTER_NEXUS', { type: 'general', result: 'neutral' });
+      const timer = setTimeout(() => setBootSequence(false), 1500);
+      return () => clearTimeout(timer);
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent, id: string) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) - 0.5;
-      const y = ((e.clientY - rect.top) / rect.height) - 0.5;
-      setTilt({ id, x: x * 10, y: y * -10 }); // Multiplier for intensity
-  };
-
-  const handleMouseLeave = () => {
-      setTilt(null);
-  }
-
   const modules = [
-    { 
-        id: 'task2', 
-        title: 'LOGIC PROTOCOL', 
-        solarDesc: 'Task 2 Argumentation.',
-        lunarDesc: 'Deep coherence structures.',
-        icon: <Brain size={20} />,
-        locked: false
-    },
     { 
         id: 'class', 
         title: 'MASTER CLASS', 
         solarDesc: 'Tactical theory & error elimination.',
-        lunarDesc: 'Deep protocol analysis.',
+        lunarDesc: 'Deep protocol structural analysis.',
         icon: <BookOpenCheck size={20} />,
         locked: false
     },
     { 
         id: 'flight', 
         title: 'Flight Data', 
-        solarDesc: 'Data identification training.',
-        lunarDesc: 'Structural analysis logic.',
+        solarDesc: 'Rapid data identification training.',
+        lunarDesc: 'Inverse logic & trend deconstruction.',
         icon: <Activity size={20} />,
         locked: false
     },
     { 
         id: 'housing', 
         title: 'Tenure Trends', 
-        solarDesc: 'Demographic shifting.',
-        lunarDesc: 'Trend deconstruction.',
+        solarDesc: 'Demographic shift tracking.',
+        lunarDesc: 'Intersection point analysis.',
         icon: <Layers size={20} />,
         locked: false
     },
     { 
         id: 'transport', 
         title: 'Emission Stats', 
-        solarDesc: 'Magnitude comparison.',
-        lunarDesc: 'Impact logic mapping.',
+        solarDesc: 'Magnitude comparison drills.',
+        lunarDesc: 'Environmental impact logic mapping.',
         icon: <Network size={20} />,
         locked: false
     },
@@ -87,39 +69,39 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
         id: 'fish', 
         title: 'Fish Consumption', 
         solarDesc: 'Multi-line trend tracking.',
-        lunarDesc: 'Dietary shift analysis.',
+        lunarDesc: 'Dietary shift correlation.',
         icon: <Fish size={20} />,
         locked: false
     },
     { 
         id: 'tea', 
         title: 'Tea Sales', 
-        solarDesc: '5-Country comparison.',
-        lunarDesc: 'Fluctuation logic.',
+        solarDesc: '5-Country fluctuation spotting.',
+        lunarDesc: 'Complex variability logic.',
         icon: <Coffee size={20} />,
         locked: false
     },
     { 
         id: 'sugar', 
         title: 'Sugar Process', 
-        solarDesc: 'Sequential flow ID.',
-        lunarDesc: 'Manufacturing matrix.',
+        solarDesc: 'Sequential flow identification.',
+        lunarDesc: 'Manufacturing matrix breakdown.',
         icon: <Factory size={20} />,
         locked: false
     },
     { 
         id: 'salmon', 
         title: 'Salmon Life Cycle', 
-        solarDesc: 'Cyclical biology.',
-        lunarDesc: 'Descriptive logic.',
+        solarDesc: 'Cyclical biology active recall.',
+        lunarDesc: 'Natural process descriptive logic.',
         icon: <RefreshCcw size={20} />,
         locked: false
     },
     { 
         id: 'sports', 
         title: 'Sports Centre', 
-        solarDesc: 'Map comparison.',
-        lunarDesc: 'Redevelopment analysis.',
+        solarDesc: 'Map comparison speed runs.',
+        lunarDesc: 'Infrastructure redevelopment analysis.',
         icon: <Map size={20} />,
         locked: false
     }
@@ -138,40 +120,7 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
       { id: 10, title: 'Error Correction', data: KAHOOT_QUIZ_10 },
   ];
 
-  // Advanced Navigation Logic
-  const handleNextModule = () => {
-    const currentIndex = modules.findIndex(m => m.id === activeModuleId);
-    if (currentIndex >= 0 && currentIndex < modules.length - 1) {
-        setActiveModuleId(modules[currentIndex + 1].id);
-    } else {
-        setActiveModuleId(null); 
-    }
-  };
-
-  const handlePrevModule = () => {
-    const currentIndex = modules.findIndex(m => m.id === activeModuleId);
-    if (currentIndex > 0) {
-        setActiveModuleId(modules[currentIndex - 1].id);
-    } else {
-        setActiveModuleId(null);
-    }
-  };
-
-  if (activeModuleId === 'task2') {
-      return (
-          <NexusTask2Masterclass 
-             onBack={() => setActiveModuleId(null)}
-          />
-      );
-  }
-
-  if (activeModuleId === 'class') {
-      return (
-          <NexusMasterclass 
-             onBack={() => setActiveModuleId(null)}
-          />
-      );
-  }
+  if (activeModuleId === 'class') return <NexusMasterclass onBack={() => setActiveModuleId(null)} />;
 
   if (activeModuleId) {
       return (
@@ -179,257 +128,215 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
             moduleId={activeModuleId} 
             onBack={() => setActiveModuleId(null)} 
             onExit={onExit}
-            onNext={handleNextModule}
-            onPrev={handlePrevModule}
-            isFirst={modules.findIndex(m => m.id === activeModuleId) === 0}
-            isLast={modules.findIndex(m => m.id === activeModuleId) === modules.length - 1}
+            onNext={() => {}}
+            onPrev={() => {}}
+            isFirst={false}
+            isLast={false}
         />
       );
   }
 
+  // --- STYLE SYSTEM ---
+  const isFlux = energyMode === 'flux';
+  
+  // Dynamic Theme Config
+  const theme = {
+      bg: isFlux ? 'bg-[#020617]' : 'bg-[#0f172a]',
+      gridColor: isFlux ? 'rgba(20, 184, 166, 0.07)' : 'rgba(99, 102, 241, 0.05)',
+      primary: isFlux ? 'text-teal-400' : 'text-indigo-400',
+      border: isFlux ? 'border-teal-500/20' : 'border-indigo-500/20',
+      glow: isFlux ? 'shadow-[0_0_30px_rgba(20,184,166,0.15)]' : 'shadow-[0_0_30px_rgba(99,102,241,0.05)]',
+      cardBg: isFlux ? 'bg-[#0a0f1e]/80' : 'bg-[#1e1b4b]/20',
+      accentGradient: isFlux ? 'from-teal-500 to-cyan-500' : 'from-indigo-500 to-violet-500',
+  };
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-teal-500 selection:text-white relative overflow-hidden perspective-2000">
-        {/* Animated Background */}
-        <NexusCanvas />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#020617_90%)] pointer-events-none z-0"></div>
+    <div className={`min-h-screen ${theme.bg} text-slate-200 font-sans relative overflow-hidden transition-colors duration-1000`}>
         
-        {/* 3D AI COMPANION */}
-        <NexusAvatar />
+        {/* --- DYNAMIC BACKGROUND CANVAS --- */}
+        <NexusCanvas mode={energyMode} />
+        
+        {/* --- GRID OVERLAY --- */}
+        <div 
+            className="absolute inset-0 pointer-events-none z-0 transition-opacity duration-1000"
+            style={{ 
+                backgroundImage: `linear-gradient(${theme.gridColor} 1px, transparent 1px), linear-gradient(90deg, ${theme.gridColor} 1px, transparent 1px)`,
+                backgroundSize: '40px 40px',
+                animation: isFlux ? 'grid-move 20s linear infinite' : 'none'
+            }}
+        ></div>
+        
+        {/* --- 3D INTERACTIVE AVATAR --- */}
+        <NexusAvatar energyMode={energyMode} contextTitle={isFlux ? "Nexus Flux" : "Nexus Focus"} />
 
-        {/* Surgical Drill Modal */}
+        {/* --- BOOT SEQUENCE OVERLAY --- */}
+        {bootSequence && (
+            <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center font-mono text-teal-500 text-xs">
+                <div className="space-y-2">
+                    <div className="animate-pulse">> INITIALIZING BRIDGE PROTOCOL...</div>
+                    <div className="animate-pulse delay-100">> CALIBRATING NEURO-PLASTICITY...</div>
+                    <div className="animate-pulse delay-200">> WELCOME, ARCHITECT.</div>
+                </div>
+            </div>
+        )}
+
+        {/* --- SURGICAL DRILL MODAL (HIGH PRIORITY) --- */}
         {surgicalDrill && (
-            <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-6 animate-fade-in">
-                <div className="max-w-2xl w-full bg-[#020617] border-2 border-red-500/50 rounded-sm p-12 relative shadow-[0_0_100px_rgba(239,68,68,0.2)]">
-                    <button 
-                        onClick={() => setSurgicalDrill(null)}
-                        className="absolute top-4 right-4 text-slate-500 hover:text-white"
-                    >
-                        <X size={24} />
-                    </button>
-                    
+            <div className="fixed inset-0 z-[90] bg-black/80 backdrop-blur-xl flex items-center justify-center p-6 animate-fade-in-up">
+                <div className="max-w-2xl w-full bg-[#050b1d] border-2 border-red-500/50 rounded-lg p-12 relative shadow-[0_0_100px_rgba(239,68,68,0.2)]">
+                    <button onClick={() => setSurgicalDrill(null)} className="absolute top-4 right-4 text-slate-500 hover:text-white"><X size={24} /></button>
                     <div className="mb-8 border-b border-red-900/30 pb-4">
-                        <div className="flex items-center gap-3 text-red-500 font-bold font-mono text-sm tracking-widest uppercase mb-2">
-                             <Activity size={16} /> Surgical Intervention Active
+                        <div className="text-red-500 font-mono text-xs uppercase tracking-widest mb-2 flex items-center gap-2">
+                             <Zap size={12} className="fill-current animate-pulse"/> Neural Fracture Detected
                         </div>
-                        <h2 className="text-3xl font-black text-white">{surgicalDrill.diagnosis}</h2>
-                        <p className="text-slate-400 mt-2 font-mono text-xs">DRILL_TYPE: {surgicalDrill.drill_type}</p>
+                        <h2 className="text-3xl font-black text-white font-heading tracking-tight">{surgicalDrill.diagnosis}</h2>
                     </div>
-
-                    <div className="mb-8">
-                        <p className="text-xl font-medium text-slate-200 leading-relaxed">{surgicalDrill.question}</p>
-                    </div>
-
+                    <div className="mb-8"><p className="text-xl font-medium text-slate-200 leading-relaxed font-serif italic">"{surgicalDrill.question}"</p></div>
                     <div className="grid gap-3 mb-8">
                         {surgicalDrill.options?.map((opt: string, i: number) => (
-                            <button 
-                                key={i}
-                                onClick={() => {
-                                    const isCorrect = i === surgicalDrill.correctIndex;
-                                    track(isCorrect ? 'DRILL_SUCCESS' : 'DRILL_FAILURE', { type: 'general', result: isCorrect ? 'success' : 'failure' });
-                                    if (isCorrect) {
-                                        alert("CORRECTION APPLIED. NEURAL MAP UPDATED.");
-                                        setSurgicalDrill(null);
-                                    } else {
-                                        alert("INCORRECT. FOCUS.");
-                                    }
-                                }}
-                                className="p-4 bg-slate-900 hover:bg-red-900/20 border border-slate-800 hover:border-red-500/50 text-left transition-all text-slate-300 hover:text-red-300 group"
-                            >
-                                <span className="font-mono text-xs text-slate-500 mr-3 group-hover:text-red-500">[{String.fromCharCode(65+i)}]</span>
-                                {opt}
+                            <button key={i} onClick={() => {
+                                const isCorrect = i === surgicalDrill.correctIndex;
+                                track(isCorrect ? 'DRILL_SUCCESS' : 'DRILL_FAILURE', { type: 'general', result: isCorrect ? 'success' : 'failure' });
+                                if (isCorrect) { alert("CORRECTION APPLIED. NEURAL MAP UPDATED."); setSurgicalDrill(null); } else { alert("INCORRECT. RE-CALIBRATE."); }
+                            }} className="p-4 bg-slate-900 hover:bg-red-900/20 border border-slate-800 hover:border-red-500/50 text-left transition-all text-slate-300 hover:text-red-300 group font-mono text-sm flex items-center gap-4">
+                                <span className="font-bold text-slate-500 group-hover:text-red-500">0{i+1}</span> {opt}
                             </button>
                         ))}
                     </div>
-
-                    <div className="text-[10px] text-slate-600 font-mono text-center">
-                        FAILING TO COMPLETE THIS DRILL WILL RESULT IN LOCKED MODULES.
-                    </div>
                 </div>
             </div>
         )}
 
-        {/* ARENA QUIZ MODAL */}
-        {activeArenaQuiz && (
-            <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-4 animate-fade-in overflow-y-auto">
-                <div className="w-full max-w-4xl relative">
-                     <button 
-                        onClick={() => setActiveArenaQuiz(null)}
-                        className="absolute -top-12 right-0 text-white hover:text-red-400 transition-colors flex items-center gap-2"
-                     >
-                         <span className="text-xs font-mono uppercase tracking-widest">Abort Protocol</span> <X size={24} />
-                     </button>
-                     <GamifiedQuiz 
-                        questions={arenaQuizzes.find(q => q.id === activeArenaQuiz)?.data || []} 
-                        title={`ARENA PROTOCOL ${activeArenaQuiz}`}
-                        onComplete={(score) => {
-                             track('ARENA_COMPLETE', { type: 'general', result: score > 10 ? 'success' : 'failure' });
-                        }} 
-                     />
-                </div>
-            </div>
-        )}
-
+        {/* --- MAIN INTERFACE --- */}
         <div className="max-w-7xl mx-auto px-6 py-8 relative z-10 flex flex-col min-h-screen">
+            
             {/* Header */}
-            <header className="flex justify-between items-start mb-12 border-b border-slate-800/50 pb-6 backdrop-blur-sm sticky top-0 z-40 bg-slate-950/80">
-                <div className="flex flex-col gap-4">
-                     <div className="flex items-center gap-6">
-                        {onOpenMenu && (
-                            <button onClick={onOpenMenu} className="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg">
-                                <Menu size={24} />
-                            </button>
-                        )}
-                        <button onClick={onExit} className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-teal-400 transition-colors group">
-                            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-                            System Exit
-                        </button>
-                    </div>
-                    <div className="animate-fade-in-up">
-                        <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter mb-1 drop-shadow-lg">
-                            THE <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400 animate-pulse-glow">NEXUS</span>
+            <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 border-b border-white/5 pb-6 backdrop-blur-sm sticky top-0 z-40">
+                <div className="flex items-center gap-6 mb-4 md:mb-0">
+                    {onOpenMenu && <button onClick={onOpenMenu} className="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg"><Menu size={24} /></button>}
+                    <div>
+                        <div className="flex items-center gap-2 mb-1">
+                            <Cpu size={14} className={theme.primary} />
+                            <span className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">Ko'prik Interface v2.5</span>
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter drop-shadow-lg font-heading">
+                            THE <span className={`text-transparent bg-clip-text bg-gradient-to-r ${theme.accentGradient} animate-pulse-glow`}>NEXUS</span>
                         </h1>
-                        <p className="text-sm font-mono text-teal-500/60 uppercase tracking-widest flex items-center gap-2">
-                            <Radio size={12} className="animate-pulse" /> Neural Bridge Active
-                        </p>
                     </div>
                 </div>
 
-                <div className="hidden md:flex gap-4">
-                    <div className="bg-slate-900/50 border border-slate-800 p-4 rounded-lg backdrop-blur-sm w-40">
-                        <div className="flex justify-between text-[10px] text-slate-500 uppercase tracking-wider mb-2">
-                             <span>Cognitive Load</span>
-                             <Cpu size={12} />
-                        </div>
-                        <div className="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
-                             <div className="h-full bg-teal-500 w-[45%] animate-[pulse_3s_infinite]"></div>
-                        </div>
-                        <div className="mt-2 text-xs font-mono text-teal-400">OPTIMAL</div>
-                    </div>
+                {/* BI-MODAL SWITCH */}
+                <div className="flex bg-black/40 p-1 rounded-full border border-white/10 backdrop-blur-md">
+                    <button 
+                        onClick={() => setEnergyMode('focus')}
+                        className={`flex items-center gap-2 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-500 ${!isFlux ? 'bg-indigo-600 text-white shadow-[0_0_20px_rgba(99,102,241,0.5)]' : 'text-slate-500 hover:text-slate-300'}`}
+                    >
+                        <Moon size={14} /> Focus
+                    </button>
+                    <button 
+                        onClick={() => setEnergyMode('flux')}
+                        className={`flex items-center gap-2 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-500 ${isFlux ? 'bg-teal-600 text-white shadow-[0_0_20px_rgba(20,184,166,0.5)]' : 'text-slate-500 hover:text-slate-300'}`}
+                    >
+                        <Sun size={14} /> Flux
+                    </button>
                 </div>
             </header>
 
-            {/* C.O.R.E. HUD */}
-            <div className="mb-12 animate-fade-in-up">
-                <CoreInterface onStartChallenge={setSurgicalDrill} />
+            {/* Core Status HUD */}
+            <div className="mb-12">
+                <CoreInterface onStartChallenge={setSurgicalDrill} energyMode={energyMode} />
             </div>
 
+            {/* Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+                
                 {/* Modules Grid */}
-                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 content-start animate-fade-in-up stagger-1">
-                    {modules.map((mod, idx) => {
-                        const isHovered = tilt?.id === mod.id;
-                        const tX = isHovered ? tilt.y : 0; // rotateX
-                        const tY = isHovered ? tilt.x : 0; // rotateY
-
-                        return (
-                            <div 
-                                key={mod.id}
-                                onMouseMove={(e) => handleMouseMove(e, mod.id)}
-                                onMouseLeave={handleMouseLeave}
-                                style={{
-                                    transform: `perspective(1000px) rotateX(${tX}deg) rotateY(${tY}deg) scale(${isHovered ? 1.02 : 1})`,
-                                    transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.5s ease-out'
-                                }}
-                                className={`group relative bg-slate-900/40 border rounded-xl overflow-hidden flex flex-col backdrop-blur-sm transform-style-3d shadow-2xl ${mod.locked ? 'opacity-50 grayscale' : ''} ${mod.id === 'class' ? 'border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.1)]' : (mod.id === 'task2' ? 'border-indigo-500/50 shadow-[0_0_20px_rgba(99,102,241,0.2)]' : 'border-slate-800 hover:border-teal-500/30')}`}
-                            >
-                                {/* Holographic Sheen */}
-                                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10" style={{ transform: 'translateZ(20px)' }}></div>
-
-                                <div className={`p-6 border-b transition-colors relative z-0 ${mod.id === 'class' ? 'bg-amber-900/10 border-amber-900/30' : (mod.id === 'task2' ? 'bg-indigo-900/10 border-indigo-900/30' : 'border-slate-800 group-hover:bg-slate-800/30')}`}>
-                                    <div className="flex justify-between items-start mb-4">
-                                        <div className={`w-10 h-10 rounded flex items-center justify-center shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] border ${mod.id === 'class' ? 'bg-amber-950 text-amber-400 border-amber-800' : (mod.id === 'task2' ? 'bg-indigo-950 text-indigo-400 border-indigo-800' : 'bg-slate-950 text-teal-500 border-slate-800')}`}>
-                                            {mod.locked ? <Lock size={16} /> : mod.icon}
-                                        </div>
-                                        <span className={`font-mono text-[9px] px-2 py-1 rounded border ${mod.id === 'class' ? 'bg-amber-950 text-amber-500 border-amber-800' : (mod.id === 'task2' ? 'bg-indigo-950 text-indigo-500 border-indigo-800' : 'bg-slate-950 text-slate-600 border-slate-800')}`}>{mod.id === 'class' ? 'PRIORITY' : (mod.id === 'task2' ? 'NEW' : `SEC_0${idx+1}`)}</span>
+                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 content-start">
+                    {modules.map((mod, idx) => (
+                        <div 
+                            key={mod.id} 
+                            style={{ animationDelay: `${idx * 100}ms` }}
+                            className={`group relative ${theme.cardBg} border backdrop-blur-md rounded-xl overflow-hidden flex flex-col transition-all duration-500 ${theme.glow} ${mod.locked ? 'opacity-50 grayscale' : ''} ${theme.border} hover:border-opacity-100 hover:-translate-y-1 animate-fade-in-up`}
+                        >
+                            <div className="p-6 border-b border-white/5">
+                                <div className="flex justify-between items-start mb-4">
+                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center shadow-lg bg-black/40 ${isFlux ? 'text-teal-400 border border-teal-500/30' : 'text-indigo-400 border border-indigo-500/30'} transition-colors duration-500`}>
+                                        {mod.locked ? <Lock size={20} /> : mod.icon}
                                     </div>
-                                    <h3 className={`text-xl font-bold mb-1 transition-colors ${mod.id === 'class' ? 'text-amber-100' : (mod.id === 'task2' ? 'text-indigo-100' : 'text-slate-200 group-hover:text-white')}`}>{mod.title}</h3>
+                                    <div className={`text-[9px] font-mono px-2 py-1 rounded border uppercase tracking-wider ${isFlux ? 'bg-teal-950/40 text-teal-400 border-teal-500/20' : 'bg-indigo-950/40 text-indigo-400 border-indigo-500/20'}`}>
+                                        {isFlux ? 'Action' : 'Structure'}
+                                    </div>
                                 </div>
-
-                                <div className="flex-1 flex flex-col divide-y divide-slate-800 relative z-0">
-                                    <button 
-                                        onClick={() => !mod.locked && setActiveModuleId(mod.id)}
-                                        className="flex-1 p-6 hover:bg-amber-500/5 transition-all text-left flex flex-col justify-center group/solar relative overflow-hidden"
-                                        disabled={mod.locked}
-                                    >
-                                        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-amber-500 opacity-0 group-hover/solar:opacity-100 transition-all"></div>
-                                        <div className="flex items-center justify-between mb-1">
-                                            <div className="flex items-center gap-2 text-amber-500 font-bold text-[10px] uppercase tracking-wider">
-                                                <Sun size={12} /> Solar / Active
-                                            </div>
-                                            <Zap size={14} className="text-amber-500 opacity-0 group-hover/solar:opacity-100 transform translate-x-2 group-hover/solar:translate-x-0 transition-all" />
-                                        </div>
-                                        <p className="text-xs text-slate-500 group-hover/solar:text-slate-300 transition-colors">{mod.solarDesc}</p>
-                                    </button>
-
-                                    <button 
-                                        onClick={() => !mod.locked && setActiveModuleId(mod.id)}
-                                        className="flex-1 p-6 hover:bg-indigo-500/5 transition-all text-left flex flex-col justify-center group/lunar relative overflow-hidden"
-                                        disabled={mod.locked}
-                                    >
-                                        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-indigo-500 opacity-0 group-hover/lunar:opacity-100 transition-all"></div>
-                                        <div className="flex items-center justify-between mb-1">
-                                            <div className="flex items-center gap-2 text-indigo-400 font-bold text-[10px] uppercase tracking-wider">
-                                                <Moon size={12} /> Lunar / Deep
-                                            </div>
-                                            <Brain size={14} className="text-indigo-400 opacity-0 group-hover/lunar:opacity-100 transform translate-x-2 group-hover/lunar:translate-x-0 transition-all" />
-                                        </div>
-                                        <p className="text-xs text-slate-500 group-hover/lunar:text-slate-300 transition-colors">{mod.lunarDesc}</p>
-                                    </button>
-                                </div>
+                                <h3 className="text-2xl font-bold mb-1 text-slate-200 group-hover:text-white transition-colors font-heading">{mod.title}</h3>
                             </div>
-                        );
-                    })}
+                            
+                            <button 
+                                onClick={() => !mod.locked && setActiveModuleId(mod.id)} 
+                                className="flex-1 p-6 hover:bg-white/5 transition-all text-left flex flex-col justify-center relative overflow-hidden group/btn" 
+                                disabled={mod.locked}
+                            >
+                                <div className="relative z-10">
+                                    <p className={`text-sm text-slate-400 transition-all duration-500 ${isFlux ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0 absolute'}`}>
+                                        {mod.solarDesc}
+                                    </p>
+                                    <p className={`text-sm text-slate-400 transition-all duration-500 ${!isFlux ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0 absolute'}`}>
+                                        {mod.lunarDesc}
+                                    </p>
+                                </div>
+                                <div className={`absolute bottom-0 left-0 h-0.5 w-0 group-hover/btn:w-full transition-all duration-700 ${isFlux ? 'bg-teal-500' : 'bg-indigo-500'}`}></div>
+                            </button>
+                        </div>
+                    ))}
                 </div>
 
-                {/* ARENA: Kahoot Quizzes */}
-                <div className="lg:col-span-4 bg-slate-900/40 border border-slate-800 rounded-sm p-6 backdrop-blur-sm animate-fade-in-up stagger-2 flex flex-col shadow-2xl relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+                {/* Sidebar: Adaptive Arena */}
+                <div className={`lg:col-span-4 sticky top-28 h-fit transition-all duration-500 ${isFlux ? 'bg-[#0a0f1e]/80 border-teal-500/20' : 'bg-[#1e1b4b]/20 border-indigo-500/20'} border rounded-xl p-6 backdrop-blur-xl flex flex-col shadow-2xl overflow-hidden`}>
                     
-                    <div className="flex items-center gap-3 mb-6 border-b border-slate-800 pb-4 relative z-10">
-                        <Swords className="text-red-500" size={20} />
+                    {/* Decorative Header */}
+                    <div className="flex items-center gap-3 mb-6 border-b border-white/10 pb-4 relative z-10">
+                        {isFlux ? <Swords className="text-teal-400" size={24} /> : <BookOpenCheck className="text-indigo-400" size={24} />}
                         <div>
-                            <h3 className="font-bold text-white text-lg">NEXUS ARENA</h3>
-                            <div className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">Ranked Drills</div>
+                            <h3 className="font-bold text-white text-lg tracking-wide font-heading">{isFlux ? 'FLUX ARENA' : 'FOCUS DRILLS'}</h3>
+                            <div className={`text-[10px] uppercase tracking-widest font-mono ${theme.primary}`}>
+                                {isFlux ? 'Ranked Competitions' : 'Structural Validation'}
+                            </div>
                         </div>
                     </div>
                     
-                    <div className="flex-1 overflow-y-auto pr-2 space-y-2 max-h-[400px] no-scrollbar relative z-10">
+                    <div className="flex-1 space-y-2 relative z-10 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
                         {arenaQuizzes.map((quiz) => (
                              <button 
-                                key={quiz.id}
-                                onClick={() => setActiveArenaQuiz(quiz.id)}
-                                className="w-full flex items-center justify-between p-3 bg-slate-950 border border-slate-800 hover:border-red-500/50 hover:bg-red-900/10 rounded transition-all group relative overflow-hidden"
+                                key={quiz.id} 
+                                onClick={() => setActiveArenaQuiz(quiz.id)} 
+                                className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all group relative overflow-hidden ${
+                                    isFlux 
+                                    ? 'bg-slate-900/50 border-slate-800 hover:border-teal-500/50 hover:bg-teal-900/10' 
+                                    : 'bg-indigo-950/10 border-indigo-500/10 hover:border-indigo-500/50 hover:bg-indigo-900/20'
+                                }`}
                              >
-                                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-500 transform -translate-x-full group-hover:translate-x-0 transition-transform"></div>
                                  <div className="flex items-center gap-3">
-                                     <div className="w-6 h-6 rounded bg-slate-900 border border-slate-800 flex items-center justify-center text-[10px] font-mono text-slate-500 group-hover:text-red-400 transition-colors shadow-inner">
-                                         {quiz.id}
-                                     </div>
-                                     <div className="text-left">
-                                         <div className="text-sm font-bold text-slate-300 group-hover:text-white">{quiz.title}</div>
-                                         <div className="text-[10px] text-slate-600">15 Questions • Speed</div>
-                                     </div>
+                                     <span className={`font-mono text-[10px] ${isFlux ? 'text-slate-600' : 'text-indigo-700'}`}>0{quiz.id}</span>
+                                     <div className={`text-sm font-bold tracking-wide ${isFlux ? 'text-slate-300 group-hover:text-white' : 'text-slate-400 group-hover:text-indigo-100'}`}>{quiz.title}</div>
                                  </div>
-                                 <Play size={14} className="text-slate-600 group-hover:text-red-500 transition-colors" />
+                                 <div className={`opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0 ${theme.primary}`}>
+                                    {isFlux ? "START" : "STUDY"}
+                                 </div>
                              </button>
                         ))}
                     </div>
-
-                    <div className="mt-6 pt-4 border-t border-slate-800 text-[10px] text-slate-500 text-center font-mono relative z-10">
-                        <Trophy size={12} className="inline mr-2 text-yellow-600" />
-                        COMPLETE ALL PROTOCOLS FOR RANK UP
-                    </div>
                 </div>
             </div>
-
-            <div className="mt-8 pt-6 border-t border-slate-800/50 flex justify-between items-center text-[10px] font-mono text-slate-600">
-                 <div>SERVER: NEXUS-PRIME // LATENCY: 12ms</div>
-                 <div className="flex gap-4">
-                     <span>BUILD: v2.5.0</span>
-                     <span className="text-teal-500/50">SECURE CONNECTION</span>
-                 </div>
-            </div>
         </div>
+
+        {/* --- ARENA QUIZ OVERLAY --- */}
+        {activeArenaQuiz && (
+            <div className="fixed inset-0 z-[100] bg-[#020617]/95 backdrop-blur-xl flex items-center justify-center p-4 animate-fade-in">
+                <div className="w-full max-w-4xl relative">
+                     <button onClick={() => setActiveArenaQuiz(null)} className="absolute -top-12 right-0 text-white hover:text-red-400 transition-colors flex items-center gap-2 font-bold uppercase tracking-wider font-mono text-xs"><X size={18} /> Abort</button>
+                     <GamifiedQuiz questions={arenaQuizzes.find(q => q.id === activeArenaQuiz)?.data || []} title={`PROTOCOL ${activeArenaQuiz}`} onComplete={(score) => track('ARENA_COMPLETE', { type: 'general', result: score > 10 ? 'success' : 'failure' })} />
+                </div>
+            </div>
+        )}
     </div>
   );
 };

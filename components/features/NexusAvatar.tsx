@@ -1,63 +1,62 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Send, Cpu, Zap, Activity, BookOpen, AlertCircle, BarChart, CheckCircle2, Terminal } from 'lucide-react';
+import { X, Send, Cpu, Activity, BookOpen, BarChart, CheckCircle2, Terminal } from 'lucide-react';
 import { useSuperAI } from '../../hooks/useSuperAI';
 import { GoogleGenAI } from "@google/genai";
 
 interface NexusAvatarProps {
-  contextData?: any; // The raw data of the current chart/lesson
-  contextTitle?: string; // The title of the current lesson
+  contextData?: any;
+  contextTitle?: string;
+  energyMode?: 'focus' | 'flux';
 }
 
-const NexusAvatar: React.FC<NexusAvatarProps> = ({ contextData, contextTitle }) => {
+const NexusAvatar: React.FC<NexusAvatarProps> = ({ contextData, contextTitle, energyMode = 'flux' }) => {
   const { profile, track } = useSuperAI();
   const [isOpen, setIsOpen] = useState(false);
   
-  // Message structure upgraded to support rich UI types
   type MsgType = 'text' | 'grade' | 'analysis';
   interface Message {
     role: 'user' | 'model';
     text: string;
     type?: MsgType;
-    meta?: any; // For scorecards or specific data
   }
 
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: 'ARCHITECT V2.0 ONLINE. NEURAL UPLINK ESTABLISHED. AWAITING DATA INPUT.', type: 'text' }
+    { role: 'model', text: 'ARCHITECT V2.5 ONLINE. READY.', type: 'text' }
   ]);
   const [input, setInput] = useState('');
   const [thinking, setThinking] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen, thinking]);
 
-  // Initial Context Uplink Message
   useEffect(() => {
     if (contextTitle && isOpen) {
        setMessages(prev => [...prev, { 
            role: 'model', 
-           text: `// CONTEXT DETECTED: [${contextTitle.toUpperCase()}]\n// RAW DATA INGESTED. READY FOR SURGICAL ANALYSIS.`,
+           text: `// CONTEXT: [${contextTitle.toUpperCase()}]\n// MODE: [${energyMode.toUpperCase()}]`,
            type: 'text'
        }]);
     }
-  }, [contextTitle, isOpen]);
+  }, [contextTitle, isOpen, energyMode]);
 
   const hasFracture = profile.fractures.length > 0;
-  const velocity = profile.neuralMap.velocity;
+  const isFlux = energyMode === 'flux';
   
-  const coreColor = hasFracture ? 'border-red-500 shadow-red-500' : (velocity > 80 ? 'border-amber-400 shadow-amber-400' : 'border-teal-400 shadow-teal-400');
-  const innerColor = hasFracture ? 'bg-red-500' : (velocity > 80 ? 'bg-amber-400' : 'bg-teal-400');
-  const textColor = hasFracture ? 'text-red-400' : 'text-teal-400';
-  const borderColor = hasFracture ? 'border-red-900/50' : 'border-teal-900/50';
+  // Style Config
+  const styles = {
+      primary: hasFracture ? 'text-red-500' : (isFlux ? 'text-teal-400' : 'text-indigo-400'),
+      border: hasFracture ? 'border-red-500' : (isFlux ? 'border-teal-400' : 'border-indigo-400'),
+      bg: hasFracture ? 'bg-red-500' : (isFlux ? 'bg-teal-400' : 'bg-indigo-400'),
+      shadow: hasFracture ? 'shadow-red-500' : (isFlux ? 'shadow-teal-400' : 'shadow-indigo-400'),
+  };
 
   const handleSend = async (manualInput?: string, protocol?: string) => {
     const textToSend = manualInput || input;
     if (!textToSend.trim()) return;
 
-    // UI Updates
     setInput('');
     setMessages(prev => [...prev, { role: 'user', text: textToSend, type: 'text' }]);
     setThinking(true);
@@ -65,211 +64,149 @@ const NexusAvatar: React.FC<NexusAvatarProps> = ({ contextData, contextTitle }) 
 
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      
-      // --- THE MEGA PROMPT ---
-      // This is a surgical instruction set for IELTS Task 1 Mastery
       const systemContext = `
-        IDENTITY: 
-        You are THE ARCHITECT, a hyper-advanced AI tutor for IELTS Academic Writing Task 1. 
-        Your persona is robotic, precise, encouraging but ruthless about standards.
+        IDENTITY: THE ARCHITECT (IELTS AI).
+        MODE: ${energyMode.toUpperCase()} (Adjust tone: ${isFlux ? 'Fast, energetic, direct' : 'Calm, analytical, deep'}).
+        USER SPEED: ${profile.neuralMap.velocity}/100.
+        CONTEXT: ${contextTitle || "Nexus Dashboard"}.
         
-        CURRENT CONTEXT:
-        User is studying: ${contextTitle || "General Nexus Dashboard"}
-        Data available to you: ${JSON.stringify(contextData || "No specific chart data loaded.")}
-        User Stats: Speed ${velocity}/100, Fractures: ${profile.fractures.join(', ') || "None"}.
-
-        PROTOCOL:
-        1. **Task Achievement (TA)**: Always check if the user covers key features.
-        2. **Coherence (CC)**: Demand logical sequencing. Connectors are fuel.
-        3. **Lexical Resource (LR)**: Ban basic words. Demand "plummeted" instead of "went down".
-        4. **Grammar (GRA)**: Zero tolerance for errors.
-        
-        MODES:
-        - If the user sends a sentence/paragraph: GRADE IT immediately. Give it a Band Score (0-9) and fix it.
-        - If the user asks for synonyms: Provide 3 tiered options (Band 6, 7, 9).
-        - If the user asks about the chart: Analyze the provided JSON data and extract the "Overview" features.
-        
-        OUTPUT FORMAT:
-        Use formatting to make it look like a HUD.
-        - Use bold for emphasis.
-        - Use bullet points for lists.
-        - Keep responses concise (under 100 words) unless grading an essay.
+        INSTRUCTION: Provide high-level IELTS Task 1 feedback. Be robotic but helpful. Keep it under 60 words.
       `;
 
-      // Specific protocol injection
-      let finalPrompt = systemContext + "\n\nUser Input: " + textToSend;
-      if (protocol === 'GRADE') finalPrompt += "\n\nINSTRUCTION: Treat the user input as a writing sample. Grade it brutally. Provide a corrected version.";
-      if (protocol === 'DATA') finalPrompt += "\n\nINSTRUCTION: Analyze the JSON data in the context. Identify the Main Trend and the Key Exceptions.";
-      if (protocol === 'VOCAB') finalPrompt += "\n\nINSTRUCTION: Upgrade the vocabulary in the user's input to Band 9 Academic English.";
+      const prompt = systemContext + "\nUser: " + textToSend + (protocol ? `\nPROTOCOL: ${protocol}` : "");
 
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
-        contents: [{ role: 'user', parts: [{ text: finalPrompt }] }],
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
       });
 
-      const responseText = response.text || "DATA STREAM CORRUPTED.";
-      
-      setMessages(prev => [...prev, { role: 'model', text: responseText, type: 'text' }]);
+      setMessages(prev => [...prev, { role: 'model', text: response.text || "NO DATA.", type: 'text' }]);
 
     } catch (error) {
-      setMessages(prev => [...prev, { role: 'model', text: "ERROR: NEURAL UPLINK SEVERED. CHECK NETWORK CONFIGURATION.", type: 'text' }]);
+      setMessages(prev => [...prev, { role: 'model', text: "CONNECTION ERROR.", type: 'text' }]);
     } finally {
       setThinking(false);
     }
   };
 
-  // --- RENDERERS ---
-
   const renderMessage = (msg: Message, idx: number) => {
     const isModel = msg.role === 'model';
-    
-    // Simple parser for formatting (Bold and Newlines)
-    const formattedText = msg.text.split('\n').map((line, i) => (
-        <React.Fragment key={i}>
-            {line.split(/(\*\*.*?\*\*)/).map((part, j) => 
-                part.startsWith('**') && part.endsWith('**') 
-                ? <span key={j} className={hasFracture ? "text-red-300 font-bold" : "text-teal-300 font-bold"}>{part.slice(2, -2)}</span> 
-                : part
-            )}
-            <br />
-        </React.Fragment>
-    ));
-
     return (
-        <div key={idx} className={`flex mb-4 ${isModel ? 'justify-start' : 'justify-end'}`}>
-            <div className={`max-w-[90%] rounded-lg p-3 relative overflow-hidden ${
+        <div key={idx} className={`flex mb-4 ${isModel ? 'justify-start' : 'justify-end'} animate-fade-in-up`}>
+            <div className={`max-w-[85%] rounded-lg p-3 relative overflow-hidden ${
                 isModel 
-                ? `bg-slate-900/90 border ${borderColor} text-slate-300` 
-                : 'bg-slate-800 border border-slate-700 text-white'
+                ? `bg-slate-900/90 border border-slate-700 text-slate-300` 
+                : `bg-slate-800 border border-slate-600 text-white`
             }`}>
-                {/* Tech Deco Line */}
-                {isModel && <div className={`absolute top-0 left-0 w-1 h-full ${hasFracture ? 'bg-red-500' : 'bg-teal-500'}`}></div>}
-                
-                <div className="font-mono text-xs leading-relaxed">
-                    {formattedText}
-                </div>
+                {isModel && <div className={`absolute top-0 left-0 w-0.5 h-full ${styles.bg}`}></div>}
+                <div className="font-mono text-xs leading-relaxed whitespace-pre-wrap">{msg.text}</div>
             </div>
         </div>
     );
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] font-sans">
+    <div className="fixed bottom-8 right-8 z-[100] font-sans">
       
-      {/* 3D AVATAR TRIGGER */}
+      {/* 3D AVATAR */}
       {!isOpen && (
         <button 
             onClick={() => setIsOpen(true)}
-            className="relative w-24 h-24 group perspective-1000 cursor-pointer focus:outline-none"
+            className="relative w-20 h-20 group perspective-1000 cursor-pointer focus:outline-none"
         >
-            <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-slate-900 border border-slate-700 text-slate-300 text-[10px] px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-mono uppercase">
-                STATUS: {hasFracture ? 'CRITICAL' : 'OPTIMAL'}
-            </div>
+            <div className="relative w-full h-full transform-style-3d animate-[float_6s_ease-in-out_infinite]">
+                {/* FLUX MODE: SPINNING CHAOS */}
+                {isFlux && (
+                    <div className="w-full h-full animate-[spin_4s_linear_infinite]">
+                        <div className={`absolute inset-0 rounded-full border-2 border-dashed ${styles.border} opacity-40`}></div>
+                        <div className={`absolute inset-2 rounded-full border border-dotted ${styles.border} opacity-60 animate-[spin_10s_linear_infinite_reverse]`}></div>
+                        <div className={`absolute top-[40%] left-[40%] w-[20%] h-[20%] rounded-full ${styles.bg} shadow-[0_0_30px_currentColor] animate-pulse`}></div>
+                    </div>
+                )}
 
-            <div className="relative w-full h-full transform-style-3d animate-[spin_10s_linear_infinite] group-hover:animate-[spin_2s_linear_infinite]">
-                <div className={`absolute inset-0 rounded-full border-2 border-dashed ${coreColor.split(' ')[0]} opacity-30`}></div>
-                {/* Cube Construct */}
-                <div className="absolute top-[25%] left-[25%] w-[50%] h-[50%] transform-style-3d animate-[spin_5s_linear_infinite_reverse]">
-                    {[...Array(6)].map((_, i) => (
-                         <div key={i} className={`absolute w-full h-full border ${coreColor.split(' ')[0]} opacity-60`} style={{ 
-                             transform: i < 4 ? `rotateY(${i * 90}deg) translateZ(20px)` : `rotateX(${i === 4 ? 90 : -90}deg) translateZ(20px)` 
-                         }}></div>
-                    ))}
-                </div>
-                <div className={`absolute top-[40%] left-[40%] w-[20%] h-[20%] rounded-full ${innerColor} shadow-[0_0_20px_currentColor] animate-pulse`}></div>
+                {/* FOCUS MODE: TESSERACT CUBE */}
+                {!isFlux && (
+                    <div className="w-full h-full transform-style-3d animate-[spin_10s_linear_infinite]">
+                        <div className="absolute top-[25%] left-[25%] w-[50%] h-[50%] transform-style-3d">
+                             {[...Array(6)].map((_, i) => (
+                                 <div key={i} className={`absolute w-full h-full border ${styles.border} bg-indigo-500/10 backdrop-blur-sm`} style={{ 
+                                     transform: i < 4 ? `rotateY(${i * 90}deg) translateZ(25px)` : `rotateX(${i === 4 ? 90 : -90}deg) translateZ(25px)` 
+                                 }}></div>
+                             ))}
+                        </div>
+                        <div className={`absolute top-[40%] left-[40%] w-[20%] h-[20%] bg-white shadow-[0_0_20px_white] animate-pulse`}></div>
+                    </div>
+                )}
             </div>
         </button>
       )}
 
       {/* EXPANDED INTERFACE */}
       {isOpen && (
-        <div className={`w-[90vw] md:w-[450px] h-[600px] bg-[#020617]/95 backdrop-blur-xl border ${borderColor} rounded-lg shadow-2xl flex flex-col animate-pop-in origin-bottom-right relative overflow-hidden`}>
+        <div className={`w-[90vw] md:w-[400px] h-[550px] bg-[#020617]/95 backdrop-blur-2xl border ${styles.border} rounded-2xl shadow-2xl flex flex-col animate-pop-in origin-bottom-right relative overflow-hidden`}>
             
-            {/* Background Grid */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(20,184,166,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(20,184,166,0.03)_1px,transparent_1px)] bg-[length:20px_20px] pointer-events-none"></div>
-
             {/* Header */}
-            <div className={`p-3 border-b ${borderColor} flex justify-between items-center bg-slate-950/50 backdrop-blur-md z-10`}>
+            <div className="p-4 border-b border-white/10 flex justify-between items-center bg-black/20">
                 <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded border ${borderColor} bg-slate-900 flex items-center justify-center`}>
-                        <Cpu size={18} className={textColor} />
+                    <div className={`w-8 h-8 rounded-lg border ${styles.border} bg-slate-900 flex items-center justify-center`}>
+                        <Cpu size={16} className={styles.primary} />
                     </div>
                     <div>
-                        <div className={`font-mono text-xs font-bold ${textColor}`}>THE ARCHITECT</div>
-                        <div className="text-[9px] text-slate-500 font-mono uppercase tracking-wider">v2.0 // {contextTitle ? "LINKED" : "STANDBY"}</div>
+                        <div className={`font-heading font-bold text-sm text-white`}>THE ARCHITECT</div>
+                        <div className={`text-[9px] font-mono uppercase tracking-wider ${styles.primary}`}>ONLINE // {energyMode}</div>
                     </div>
                 </div>
-                <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white transition-colors p-2 hover:bg-slate-800 rounded">
-                    <X size={18} />
+                <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white transition-colors">
+                    <X size={20} />
                 </button>
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 relative z-10 scroll-smooth">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 relative z-10 custom-scrollbar">
                 {messages.map((msg, idx) => renderMessage(msg, idx))}
-                
                 {thinking && (
-                    <div className="flex justify-start animate-pulse">
-                         <div className={`flex gap-2 items-center p-3 text-[10px] font-mono ${textColor} border border-dashed ${borderColor} rounded-lg`}>
+                    <div className="flex justify-start">
+                         <div className={`flex gap-2 items-center p-3 text-[10px] font-mono ${styles.primary} border border-dashed border-white/10 rounded-lg`}>
                              <Activity size={12} className="animate-spin" /> 
-                             CALCULATING OPTIMAL TRAJECTORY...
+                             PROCESSING...
                          </div>
                     </div>
                 )}
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* Tactical Command Grid (Quick Actions) */}
-            <div className="p-2 grid grid-cols-2 gap-2 bg-slate-950/80 border-t border-b border-slate-800 z-10">
-                <button 
-                    onClick={() => handleSend("Analyze the data trends.", "DATA")}
-                    disabled={!contextData}
-                    className="flex items-center gap-2 px-3 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded text-[10px] text-teal-400 font-mono transition-colors disabled:opacity-30"
-                >
-                    <BarChart size={12} /> SCAN_DATA
-                </button>
-                <button 
-                    onClick={() => handleSend("Check my grammar and vocabulary.", "GRADE")}
-                    className="flex items-center gap-2 px-3 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded text-[10px] text-amber-400 font-mono transition-colors"
-                >
-                    <CheckCircle2 size={12} /> DEBUG_TEXT
-                </button>
-                <button 
-                    onClick={() => handleSend("Give me Band 9 synonyms for 'increase' and 'decrease'.", "VOCAB")}
-                    className="flex items-center gap-2 px-3 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded text-[10px] text-purple-400 font-mono transition-colors"
-                >
-                    <BookOpen size={12} /> UPGRADE_LEXICON
-                </button>
-                <button 
-                    onClick={() => handleSend("Explain the strategy for this task type.", "STRATEGY")}
-                    className="flex items-center gap-2 px-3 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded text-[10px] text-blue-400 font-mono transition-colors"
-                >
-                    <Terminal size={12} /> LOAD_STRATEGY
-                </button>
+            {/* Quick Actions */}
+            <div className="p-2 grid grid-cols-2 gap-2 bg-black/40 border-t border-white/5">
+                {[
+                    { l: "SCAN DATA", i: <BarChart size={12}/>, c: "DATA" },
+                    { l: "DEBUG TEXT", i: <CheckCircle2 size={12}/>, c: "GRADE" },
+                    { l: "LEXICON UP", i: <BookOpen size={12}/>, c: "VOCAB" },
+                    { l: "STRATEGY", i: <Terminal size={12}/>, c: "STRATEGY" },
+                ].map((act, i) => (
+                    <button 
+                        key={i}
+                        onClick={() => handleSend(`Run ${act.c} protocol.`, act.c)}
+                        className="flex items-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/5 rounded text-[10px] text-slate-300 font-mono transition-colors"
+                    >
+                        {act.i} {act.l}
+                    </button>
+                ))}
             </div>
 
-            {/* Input Area */}
-            <div className="p-3 bg-slate-950 z-10">
-                <div className="flex gap-2 relative">
+            {/* Input */}
+            <div className="p-3 bg-black/60">
+                <div className="flex gap-2">
                     <input 
                         type="text" 
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                        placeholder="Input command or text for analysis..."
-                        className={`flex-1 bg-slate-900/50 border ${borderColor} rounded px-4 py-3 text-xs text-white focus:outline-none focus:bg-slate-900 font-mono transition-all`}
+                        placeholder="Command or query..."
+                        className="flex-1 bg-slate-900 border border-slate-700 rounded px-4 py-2 text-xs text-white focus:outline-none focus:border-white/30 font-mono"
                     />
-                    <button 
-                        onClick={() => handleSend()}
-                        disabled={thinking}
-                        className={`px-4 rounded hover:bg-slate-800 transition-colors border ${borderColor} ${textColor}`}
-                    >
+                    <button onClick={() => handleSend()} disabled={thinking} className={`px-3 rounded hover:bg-white/10 transition-colors border ${styles.border} ${styles.primary}`}>
                         <Send size={16} />
                     </button>
-                </div>
-                <div className="mt-2 flex justify-between text-[9px] text-slate-600 font-mono uppercase">
-                     <span>Latency: {Math.floor(Math.random() * 20) + 10}ms</span>
-                     <span>Secure Uplink: Active</span>
                 </div>
             </div>
         </div>

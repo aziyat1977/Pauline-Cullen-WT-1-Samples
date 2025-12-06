@@ -1,7 +1,11 @@
 
 import React, { useEffect, useRef } from 'react';
 
-const NexusCanvas: React.FC = () => {
+interface NexusCanvasProps {
+  mode: 'focus' | 'flux';
+}
+
+const NexusCanvas: React.FC<NexusCanvasProps> = ({ mode }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -13,10 +17,10 @@ const NexusCanvas: React.FC = () => {
     let w = canvas.width = window.innerWidth;
     let h = canvas.height = window.innerHeight;
 
-    const particles: Particle[] = [];
-    const particleCount = Math.min(100, Math.floor((w * h) / 15000)); // Responsive density
-    const connectionDistance = 150;
-    let mouse = { x: -1000, y: -1000 };
+    const isFlux = mode === 'flux';
+    const color = isFlux ? '20, 184, 166' : '99, 102, 241'; // Teal vs Indigo
+    const speedMult = isFlux ? 1.5 : 0.5;
+    const connectionDist = isFlux ? 150 : 200;
 
     class Particle {
       x: number;
@@ -24,73 +28,54 @@ const NexusCanvas: React.FC = () => {
       vx: number;
       vy: number;
       size: number;
-      depth: number; // Simulate Z-axis for parallax
 
       constructor() {
         this.x = Math.random() * w;
         this.y = Math.random() * h;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.depth = Math.random() * 2 + 0.5; // 0.5 to 2.5
-        this.size = Math.random() * 1.5 + 0.5;
+        this.vx = (Math.random() - 0.5) * speedMult;
+        this.vy = (Math.random() - 0.5) * speedMult;
+        this.size = Math.random() * (isFlux ? 2 : 3) + 1;
       }
 
       update() {
-        this.x += this.vx * this.depth;
-        this.y += this.vy * this.depth;
+        this.x += this.vx;
+        this.y += this.vy;
 
-        // Bounce
-        if (this.x < 0 || this.x > w) this.vx *= -1;
-        if (this.y < 0 || this.y > h) this.vy *= -1;
-
-        // Mouse Repel
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        
-        if (dist < 200) {
-            const force = (200 - dist) / 200;
-            this.x -= (dx / dist) * force * 2 * this.depth;
-            this.y -= (dy / dist) * force * 2 * this.depth;
-        }
+        if (this.x < 0 || this.x > w) this.vx = -this.vx;
+        if (this.y < 0 || this.y > h) this.vy = -this.vy;
       }
 
       draw() {
         if (!ctx) return;
-        const opacity = (this.depth - 0.5) / 2; // Closer = brighter
-        ctx.fillStyle = `rgba(45, 212, 191, ${opacity * 0.5})`; // Teal
+        ctx.fillStyle = `rgba(${color}, 0.5)`;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size * this.depth, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
-    // Init
-    for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-    }
+    const particles: Particle[] = [];
+    const particleCount = w < 768 ? 40 : 80;
+
+    for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
     const draw = () => {
-        // Trail effect
-        ctx.fillStyle = 'rgba(2, 6, 23, 0.1)'; // Dark slate with trail
-        ctx.fillRect(0, 0, w, h);
-
+        ctx.clearRect(0, 0, w, h);
+        
         particles.forEach((p, i) => {
             p.update();
             p.draw();
 
-            // Connections (Neural Pathways)
             for (let j = i; j < particles.length; j++) {
                 const p2 = particles[j];
                 const dx = p.x - p2.x;
                 const dy = p.y - p2.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
+                const dist = Math.sqrt(dx*dx + dy*dy);
 
-                if (dist < connectionDistance) {
-                    const alpha = (1 - dist / connectionDistance) * 0.15;
-                    ctx.strokeStyle = `rgba(45, 212, 191, ${alpha})`;
-                    ctx.lineWidth = 0.5 * p.depth;
+                if (dist < connectionDist) {
                     ctx.beginPath();
+                    ctx.strokeStyle = `rgba(${color}, ${1 - dist/connectionDist})`;
+                    ctx.lineWidth = isFlux ? 0.5 : 1;
                     ctx.moveTo(p.x, p.y);
                     ctx.lineTo(p2.x, p2.y);
                     ctx.stroke();
@@ -98,37 +83,24 @@ const NexusCanvas: React.FC = () => {
             }
         });
 
-        // Scanline overlay
-        const time = Date.now() * 0.0005;
-        const scanY = (time * 100) % h;
-        ctx.fillStyle = 'rgba(45, 212, 191, 0.03)';
-        ctx.fillRect(0, scanY, w, 2);
-
         requestAnimationFrame(draw);
     };
 
-    draw();
+    const animId = requestAnimationFrame(draw);
 
     const handleResize = () => {
         w = canvas.width = window.innerWidth;
         h = canvas.height = window.innerHeight;
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-    };
-
     window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
-
     return () => {
         window.removeEventListener('resize', handleResize);
-        window.removeEventListener('mousemove', handleMouseMove);
+        cancelAnimationFrame(animId);
     };
-  }, []);
+  }, [mode]);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 opacity-100 pointer-events-none mix-blend-screen" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 opacity-30 pointer-events-none transition-opacity duration-1000" />;
 };
 
 export default NexusCanvas;
