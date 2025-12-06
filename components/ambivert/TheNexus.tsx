@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, Moon, Sun, Layers, Network, Zap, Cpu, X, Swords, Fish, Coffee, Factory, RefreshCcw, Map, BookOpenCheck, Lock, BrainCircuit, Activity } from 'lucide-react';
+import { Menu, Moon, Sun, Layers, Network, Zap, Cpu, X, Swords, Fish, Coffee, Factory, RefreshCcw, Map, BookOpenCheck, Lock, BrainCircuit, Activity, Target } from 'lucide-react';
 import FluxLesson from './FluxLesson';
 import NexusCanvas from '../features/NexusCanvas';
 import CoreInterface from './CoreInterface';
 import NexusAvatar from '../features/NexusAvatar';
 import NexusMasterclass from './NexusMasterclass';
+import NexusIntroOverview from './NexusIntroOverview';
 import { useSuperAI } from '../../hooks/useSuperAI';
 import GamifiedQuiz from '../features/GamifiedQuiz';
 import { KAHOOT_QUIZ_1, KAHOOT_QUIZ_2, KAHOOT_QUIZ_3, KAHOOT_QUIZ_4, KAHOOT_QUIZ_5, KAHOOT_QUIZ_6, KAHOOT_QUIZ_7, KAHOOT_QUIZ_8, KAHOOT_QUIZ_9, KAHOOT_QUIZ_10 } from '../../constants';
@@ -33,6 +34,14 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
   }, []);
 
   const modules = [
+    { 
+        id: 'intro_overview',
+        title: 'PRECISION PROTOCOL',
+        solarDesc: 'Surgical intro accuracy drills.',
+        lunarDesc: 'Pauline Cullen methodology.',
+        icon: <Target size={20} />,
+        locked: false
+    },
     { 
         id: 'class', 
         title: 'MASTER CLASS', 
@@ -120,6 +129,7 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
       { id: 10, title: 'Error Correction', data: KAHOOT_QUIZ_10 },
   ];
 
+  if (activeModuleId === 'intro_overview') return <NexusIntroOverview onBack={() => setActiveModuleId(null)} />;
   if (activeModuleId === 'class') return <NexusMasterclass onBack={() => setActiveModuleId(null)} />;
 
   if (activeModuleId) {
