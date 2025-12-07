@@ -327,9 +327,9 @@ const NexusIntroOverview: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         <div className="flex items-center gap-4 w-full md:w-auto">
           <button 
             onClick={onBack} 
-            className="p-2 hover:bg-teal-900/20 rounded-lg text-teal-500 transition-all border border-transparent hover:border-teal-500/30"
+            className="p-2 hover:bg-teal-900/20 rounded-lg text-teal-500 transition-all border border-transparent hover:border-teal-500/30 group"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           </button>
           <div className="h-8 w-px bg-teal-900/50"></div>
           <div>
@@ -368,7 +368,7 @@ const NexusIntroOverview: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         {/* CHECKLIST MODE */}
         {activeTab === 'checklist' && (
             <div className="w-full flex items-center justify-center p-8 animate-fade-in-up overflow-y-auto">
-                <div className="max-w-2xl w-full bg-[#0a0f1e] border border-emerald-500/30 rounded-2xl p-8 shadow-[0_0_50px_rgba(16,185,129,0.1)] relative overflow-hidden">
+                <div className="max-w-2xl w-full bg-[#0a0f1e] border border-emerald-500/30 rounded-2xl p-8 shadow-[0_0_50px_rgba(16,185,129,0.1)] relative overflow-hidden group hover:border-emerald-500/50 transition-colors">
                     <div className="absolute top-0 right-0 p-8 opacity-5"><ListChecks size={200} /></div>
                     
                     <h2 className="text-3xl font-black text-white mb-2 flex items-center gap-3">
@@ -378,7 +378,7 @@ const NexusIntroOverview: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         PROTOCOL: EXECUTE BEFORE DETAILS PARAGRAPH
                     </p>
 
-                    <div className="space-y-4">
+                    <div className="space-y-4 relative z-10">
                         {[
                             "INTRO: Did you paraphrase 'What, Where, When'?",
                             "INTRO: Did you avoid listing every single category?",
@@ -386,9 +386,13 @@ const NexusIntroOverview: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                             "OVERVIEW: Did you remove ALL numbers? (Critical)",
                             "OVERVIEW: Did you identify the highest/lowest or main trend?"
                         ].map((item, i) => (
-                            <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-emerald-950/20 border border-emerald-900/30 hover:border-emerald-500/50 transition-colors group cursor-pointer">
+                            <div 
+                                key={i} 
+                                className="flex items-center gap-4 p-4 rounded-xl bg-emerald-950/20 border border-emerald-900/30 hover:border-emerald-500/50 transition-all hover:translate-x-1 hover:bg-emerald-900/30 group cursor-pointer"
+                                style={{ animationDelay: `${i * 100}ms` }}
+                            >
                                 <div className="w-6 h-6 rounded-full border-2 border-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 transition-colors">
-                                    <div className="w-2 h-2 bg-emerald-300 rounded-full opacity-0 group-hover:opacity-100"></div>
+                                    <div className="w-2 h-2 bg-emerald-300 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                 </div>
                                 <span className="text-slate-300 group-hover:text-emerald-200 transition-colors font-medium">{item}</span>
                             </div>
@@ -406,7 +410,7 @@ const NexusIntroOverview: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 border-b border-amber-900/30 pb-6 gap-4">
                         <div>
                             <h2 className="text-3xl md:text-4xl font-black text-white flex items-center gap-3">
-                                <Zap size={32} className="text-amber-500" /> CALIBRATION TEST
+                                <Zap size={32} className="text-amber-500 animate-pulse" /> CALIBRATION TEST
                             </h2>
                             <p className="text-amber-500/60 font-mono text-xs mt-2 uppercase tracking-widest">Verify Neural Pathways // 10 Questions</p>
                         </div>
@@ -428,7 +432,7 @@ const NexusIntroOverview: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
                     <div className="grid gap-6 pb-20">
                         {PRECISION_TEST_DATA.map((item, idx) => (
-                            <div key={item.id} className="bg-[#0a0f1e] border border-amber-500/20 p-6 md:p-8 rounded-2xl relative overflow-hidden group hover:border-amber-500/40 transition-colors">
+                            <div key={item.id} className="bg-[#0a0f1e] border border-amber-500/20 p-6 md:p-8 rounded-2xl relative overflow-hidden group hover:border-amber-500/40 transition-all hover:shadow-[0_0_30px_rgba(245,158,11,0.1)]">
                                 <div className="flex justify-between mb-4">
                                     <span className="text-[10px] font-mono text-amber-500/50 uppercase tracking-widest border border-amber-500/20 px-2 py-1 rounded">Query Sequence 0{idx+1}</span>
                                 </div>
@@ -461,11 +465,11 @@ const NexusIntroOverview: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                                             <button 
                                                 key={oIdx}
                                                 onClick={() => handleTestSelect(item.id, oIdx)}
-                                                className={`p-4 text-left rounded-xl border transition-all text-sm font-medium flex items-center justify-between group/opt ${style}`}
+                                                className={`p-4 text-left rounded-xl border transition-all duration-300 text-sm font-medium flex items-center justify-between group/opt ${style} ${isSelected ? 'scale-[1.02]' : ''}`}
                                                 disabled={showTestAnswers}
                                             >
                                                 <div className="flex items-center gap-3">
-                                                    <span className={`font-mono text-xs w-6 h-6 rounded flex items-center justify-center border ${isSelected || (showTestAnswers && isCorrect) ? 'border-current opacity-100' : 'border-slate-700 opacity-50 bg-black/20'}`}>
+                                                    <span className={`font-mono text-xs w-6 h-6 rounded flex items-center justify-center border transition-all ${isSelected || (showTestAnswers && isCorrect) ? 'border-current opacity-100 bg-white/10' : 'border-slate-700 opacity-50 bg-black/20'}`}>
                                                         {['A','B','C','D'][oIdx]}
                                                     </span>
                                                     {opt}
@@ -492,20 +496,20 @@ const NexusIntroOverview: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     <button
                         key={v.id}
                         onClick={() => setActiveId(v.id)}
-                        className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-all border ${
+                        className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-all border group ${
                         activeId === v.id 
                             ? 'bg-teal-950/40 border-teal-500/30 text-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.1)]' 
-                            : 'bg-transparent border-transparent text-slate-500 hover:text-slate-300 hover:bg-white/5'
+                            : 'bg-transparent border-transparent text-slate-500 hover:text-slate-300 hover:bg-white/5 hover:border-slate-800'
                         }`}
                     >
-                        <div className={`p-1.5 rounded ${activeId === v.id ? 'bg-teal-500 text-black' : 'bg-slate-800'}`}>
+                        <div className={`p-1.5 rounded transition-transform group-hover:scale-110 ${activeId === v.id ? 'bg-teal-500 text-black' : 'bg-slate-800'}`}>
                             {v.icon}
                         </div>
                         <div>
                             <div className="text-[10px] font-mono uppercase tracking-wider opacity-60">Visual 0{v.id}</div>
                             <div className="font-bold text-xs">{v.title}</div>
                         </div>
-                        {activeId === v.id && <ChevronRight size={14} className="ml-auto" />}
+                        {activeId === v.id && <ChevronRight size={14} className="ml-auto animate-pulse" />}
                     </button>
                     ))}
                 </div>
@@ -522,7 +526,7 @@ const NexusIntroOverview: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                                     Target Visual 0{activeSection.id}
                                 </span>
                             </div>
-                            <h2 className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tight">{activeSection.title}</h2>
+                            <h2 className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tight drop-shadow-lg">{activeSection.title}</h2>
                             <p className="text-lg text-slate-400 font-light flex items-center gap-2">
                                 <Eye size={16} className="text-teal-500" />
                                 Context: <span className="text-teal-200">{activeSection.context}</span>
@@ -530,9 +534,9 @@ const NexusIntroOverview: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         </div>
 
                         {/* Part A: Intro Drills */}
-                        <section>
+                        <section style={{ animationDelay: '100ms' }} className="animate-fade-in-up">
                             <div className="flex items-center gap-3 mb-6">
-                                <div className="w-10 h-10 rounded-full bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold font-mono">A</div>
+                                <div className="w-10 h-10 rounded-full bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold font-mono shadow-[0_0_15px_rgba(99,102,241,0.2)]">A</div>
                                 <h3 className="text-xl font-bold text-white">Introduction Accuracy</h3>
                             </div>
                             
@@ -551,9 +555,9 @@ const NexusIntroOverview: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         </section>
 
                         {/* Part B: Overview Drills */}
-                        <section>
+                        <section style={{ animationDelay: '200ms' }} className="animate-fade-in-up">
                             <div className="flex items-center gap-3 mb-6">
-                                <div className="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold font-mono">B</div>
+                                <div className="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold font-mono shadow-[0_0_15px_rgba(245,158,11,0.2)]">B</div>
                                 <h3 className="text-xl font-bold text-white">Overview & Trends</h3>
                             </div>
                             
@@ -592,25 +596,54 @@ const DrillCard: React.FC<DrillCardProps> = ({ drill, idx, section, isOpen, onTo
     const isOverview = section === 'over';
     const accentColor = isOverview ? 'text-amber-400 border-amber-500/30 bg-amber-500/5' : 'text-indigo-400 border-indigo-500/30 bg-indigo-500/5';
     
+    // 3D Tilt Logic
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const card = e.currentTarget;
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        // Gentle tilt max 3 degrees
+        const rotateX = ((y - centerY) / centerY) * -3; 
+        const rotateY = ((x - centerX) / centerX) * 3;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+        card.style.zIndex = '10';
+    };
+
+    const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.currentTarget.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        e.currentTarget.style.zIndex = '1';
+    };
+
     return (
-        <div className={`relative group p-6 rounded-xl border bg-[#0a0f1e] transition-all duration-300 ${isOpen ? 'border-teal-500/40 shadow-[0_0_20px_rgba(20,184,166,0.1)]' : 'border-slate-800 hover:border-slate-700'}`}>
+        <div 
+            className={`relative group p-6 rounded-xl border bg-[#0a0f1e] transition-all duration-500 ease-out transform-style-3d cursor-default ${isOpen ? 'border-teal-500/40 shadow-[0_0_20px_rgba(20,184,166,0.15)]' : 'border-slate-800 hover:border-slate-600 hover:shadow-xl'}`}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+        >
             <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1 block">Query 0{idx + 1}</span>
+                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1 block group-hover:text-teal-500/70 transition-colors">Query 0{idx + 1}</span>
                     <p className="text-slate-200 font-medium text-lg leading-relaxed">{drill.q}</p>
                 </div>
                 <button 
-                    onClick={onToggle}
-                    className={`shrink-0 w-8 h-8 rounded flex items-center justify-center border transition-all ${isOpen ? 'bg-teal-500 border-teal-500 text-black rotate-180' : 'bg-transparent border-slate-700 text-slate-500 hover:text-white hover:border-slate-500'}`}
+                    onClick={(e) => { e.stopPropagation(); onToggle(); }}
+                    className={`shrink-0 w-8 h-8 rounded flex items-center justify-center border transition-all duration-300 ${isOpen ? 'bg-teal-500 border-teal-500 text-black rotate-180 scale-110' : 'bg-transparent border-slate-700 text-slate-500 hover:text-white hover:border-teal-500/50 hover:bg-teal-500/10'}`}
                 >
                     <ChevronRight size={16} />
                 </button>
             </div>
 
-            <div className={`overflow-hidden transition-all duration-500 ease-out ${isOpen ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'}`}>
-                <div className={`p-4 rounded-lg border flex items-start gap-3 ${accentColor}`}>
-                    <Zap size={16} className="shrink-0 mt-1" />
-                    <div className="font-mono text-sm leading-relaxed">
+            <div 
+                className="overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                style={{ maxHeight: isOpen ? '200px' : '0px', opacity: isOpen ? 1 : 0, marginTop: isOpen ? '16px' : '0px' }}
+            >
+                <div className={`p-4 rounded-lg border flex items-start gap-3 backdrop-blur-sm ${accentColor}`}>
+                    <Zap size={16} className="shrink-0 mt-1 animate-pulse" />
+                    <div className="font-mono text-sm leading-relaxed w-full">
                         <span className="font-bold opacity-70 block text-[10px] uppercase tracking-wider mb-1">Correction / Answer</span>
                         {drill.a}
                     </div>

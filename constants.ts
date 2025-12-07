@@ -1,5 +1,4 @@
 
-
 import { ChartDataPoint, QuizQuestion, VocabItem, StepItem, HousingDataPoint, TransportDataPoint, CoffeeDataPoint, PieDataPoint, TableDataPoint } from './types';
 
 // ... (Existing Data Preserved)
@@ -10,12 +9,60 @@ export const CHART_DATA: ChartDataPoint[] = [
 ];
 
 export const VOCAB_LIST: VocabItem[] = [
-  { term: "Inverse relationship", def: "When one thing goes up (candles), the other goes down (time).", ex: "There is an inverse relationship between the heat source and the flight duration." },
-  { term: "Duration", def: "The length of time something lasts.", ex: "The duration of the flight." },
-  { term: "Consecutive", def: "Following continuously.", ex: "With each consecutive candle added, the time dropped." },
-  { term: "Diminish", def: "To make or become less.", ex: "Flight times diminished as more candles were lit." },
-  { term: "Hover", def: "To stay at or near a particular level.", ex: "The average hovered around 15 seconds." },
-  { term: "Setup / Conditions", def: "Used to describe the different categories.", ex: "Under the three-candle conditions..." },
+  { 
+    term: "Inverse relationship", 
+    def: "When one thing goes up, the other goes down.", 
+    ex: "There is an inverse relationship between candles and time.",
+    translations: {
+      ru: { term: "Обратная зависимость", def: "Когда один показатель растет, другой падает." },
+      uz: { term: "Teskari bog'liqlik", def: "Bir narsa ko'tarilganda, ikkinchisi pasayadi." }
+    }
+  },
+  { 
+    term: "Duration", 
+    def: "The length of time something lasts.", 
+    ex: "The duration of the flight.",
+    translations: {
+      ru: { term: "Продолжительность", def: "Длительность времени, в течение которого что-то происходит." },
+      uz: { term: "Davomiylik", def: "Biror narsaning davom etish vaqti." }
+    }
+  },
+  { 
+    term: "Consecutive", 
+    def: "Following continuously.", 
+    ex: "With each consecutive candle added, the time dropped.",
+    translations: {
+      ru: { term: "Последовательный", def: "Следующий непрерывно один за другим." },
+      uz: { term: "Ketma-ket", def: "Uzluksiz davom etadigan." }
+    }
+  },
+  { 
+    term: "Diminish", 
+    def: "To make or become less.", 
+    ex: "Flight times diminished as more candles were lit.",
+    translations: {
+      ru: { term: "Уменьшаться", def: "Становиться меньше." },
+      uz: { term: "Kamaymoq", def: "Kamroq bo'lmoq yoki qilmoq." }
+    }
+  },
+  { 
+    term: "Hover", 
+    def: "To stay at or near a particular level.", 
+    ex: "The average hovered around 15 seconds.",
+    translations: {
+      ru: { term: "Колебаться (около)", def: "Оставаться на или около определенного уровня." },
+      uz: { term: "Bir maromda turmoq", def: "Ma'lum bir darajada yoki unga yaqin turmoq." }
+    }
+  },
+  { 
+    term: "Setup", 
+    def: "The way in which something is organized.", 
+    ex: "Under the three-candle setup...",
+    translations: {
+      ru: { term: "Установка / Условия", def: "Способ организации чего-либо." },
+      uz: { term: "O'rnatish / Sharoit", def: "Biror narsaning tashkil etilish usuli." }
+    }
+  },
 ];
 
 export const QUIZ_A: QuizQuestion[] = [
@@ -64,12 +111,60 @@ export const HOUSING_CHART_DATA: HousingDataPoint[] = [
 ];
 
 export const HOUSING_VOCAB_LIST: VocabItem[] = [
-  { term: "Overtake", def: "To catch up with and pass something else.", ex: "Ownership finally overtook renting in 1971." },
-  { term: "Inverse trend", def: "Two trends moving in opposite directions.", ex: "The two categories display a clear inverse trend over the period." },
-  { term: "Predominant", def: "The strongest or main element.", ex: "Rented accommodation was the predominant form of housing in 1918." },
-  { term: "Steady rise", def: "A consistent increase over time.", ex: "There was a steady rise in home ownership." },
-  { term: "Intersection", def: "The point where two lines or values meet.", ex: "The intersection point occurred in 1971 when both figures stood at 50%." },
-  { term: "Tenure", def: "The conditions under which a building is occupied.", ex: "The chart displays changes in housing tenure." },
+  { 
+    term: "Overtake", 
+    def: "To catch up with and pass something else.", 
+    ex: "Ownership finally overtook renting in 1971.",
+    translations: {
+      ru: { term: "Обогнать", def: "Догонять и проходить мимо чего-то другого." },
+      uz: { term: "Quvib o'tmoq", def: "Yetib olmoq va o'tib ketmoq." }
+    }
+  },
+  { 
+    term: "Inverse trend", 
+    def: "Two trends moving in opposite directions.", 
+    ex: "The two categories display a clear inverse trend.",
+    translations: {
+      ru: { term: "Обратная тенденция", def: "Два тренда движутся в противоположных направлениях." },
+      uz: { term: "Teskari tendentsiya", def: "Ikki tendentsiya qarama-qarshi yo'nalishda harakatlanmoqda." }
+    }
+  },
+  { 
+    term: "Predominant", 
+    def: "The strongest or main element.", 
+    ex: "Rented accommodation was the predominant form.",
+    translations: {
+      ru: { term: "Преобладающий", def: "Самый сильный или основной элемент." },
+      uz: { term: "Ustun", def: "Eng kuchli yoki asosiy element." }
+    }
+  },
+  { 
+    term: "Steady rise", 
+    def: "A consistent increase over time.", 
+    ex: "There was a steady rise in home ownership.",
+    translations: {
+      ru: { term: "Устойчивый рост", def: "Постоянное увеличение с течением времени." },
+      uz: { term: "Barqaror o'sish", def: "Vaqt o'tishi bilan izchil o'sish." }
+    }
+  },
+  { 
+    term: "Intersection", 
+    def: "The point where two lines meet.", 
+    ex: "The intersection occurred in 1971.",
+    translations: {
+      ru: { term: "Пересечение", def: "Точка, где встречаются две линии." },
+      uz: { term: "Kesisish", def: "Ikki chiziq uchrashadigan nuqta." }
+    }
+  },
+  { 
+    term: "Tenure", 
+    def: "Conditions under which a building is occupied.", 
+    ex: "Changes in housing tenure.",
+    translations: {
+      ru: { term: "Владение", def: "Условия, на которых занимается здание (аренда/собственность)." },
+      uz: { term: "Egalik qilish", def: "Bino egallab turilgan shartlar (ijara/mulk)." }
+    }
+  },
 ];
 
 export const HOUSING_QUIZ_A: QuizQuestion[] = [
@@ -118,12 +213,60 @@ export const TRANSPORT_CHART_DATA: TransportDataPoint[] = [
 ];
 
 export const TRANSPORT_VOCAB_LIST: VocabItem[] = [
-  { term: "Carbon footprint", def: "The amount of carbon dioxide released into the atmosphere.", ex: "Air travel leaves the largest carbon footprint per passenger." },
-  { term: "Passenger-kilometre", def: "A unit of measurement: one passenger travelling one kilometre.", ex: "Emissions are measured in grams per passenger-kilometre." },
-  { term: "Occupancy rate", def: "The average number of people using a vehicle.", ex: "Despite a high occupancy rate, planes remain the most polluting." },
-  { term: "Disproportionate", def: "Too large or too small in comparison with something else.", ex: "The plane produces a disproportionate amount of CO2." },
-  { term: "Environmentally friendly", def: "Not harmful to the environment.", ex: "Trams are significantly more environmentally friendly than cars." },
-  { term: "Negligible", def: "So small or unimportant as to be not worth considering.", ex: "Walking and cycling produce negligible (zero) emissions." },
+  { 
+    term: "Carbon footprint", 
+    def: "The amount of carbon dioxide released.", 
+    ex: "Air travel leaves the largest carbon footprint.",
+    translations: {
+      ru: { term: "Углеродный след", def: "Количество выброшенного углекислого газа." },
+      uz: { term: "Uglerod izi", def: "Chiqarilgan karbonat angidrid miqdori." }
+    }
+  },
+  { 
+    term: "Passenger-kilometre", 
+    def: "Unit: one passenger travelling one kilometre.", 
+    ex: "Emissions are measured in grams per passenger-kilometre.",
+    translations: {
+      ru: { term: "Пассажиро-километр", def: "Единица измерения: один пассажир на один километр." },
+      uz: { term: "Yo'lovchi-kilometr", def: "Birlik: bir yo'lovchi bir kilometrga sayohat qiladi." }
+    }
+  },
+  { 
+    term: "Occupancy rate", 
+    def: "Average number of people in a vehicle.", 
+    ex: "Despite a high occupancy rate, planes pollute.",
+    translations: {
+      ru: { term: "Заполняемость", def: "Среднее количество людей в транспортном средстве." },
+      uz: { term: "Bandlik darajasi", def: "Transport vositasidagi odamlarning o'rtacha soni." }
+    }
+  },
+  { 
+    term: "Disproportionate", 
+    def: "Too large or small in comparison.", 
+    ex: "The plane produces a disproportionate amount of CO2.",
+    translations: {
+      ru: { term: "Непропорциональный", def: "Слишком большой или маленький по сравнению с чем-то." },
+      uz: { term: "Nomutanosib", def: "Taqqoslashda juda katta yoki kichik." }
+    }
+  },
+  { 
+    term: "Environmentally friendly", 
+    def: "Not harmful to the environment.", 
+    ex: "Trams are more environmentally friendly.",
+    translations: {
+      ru: { term: "Экологичный", def: "Не вредный для окружающей среды." },
+      uz: { term: "Ekologik toza", def: "Atrof-muhit uchun zararli emas." }
+    }
+  },
+  { 
+    term: "Negligible", 
+    def: "So small it is unimportant.", 
+    ex: "Walking produces negligible emissions.",
+    translations: {
+      ru: { term: "Ничтожный", def: "Настолько мал, что неважен." },
+      uz: { term: "Arzimas", def: "Shunchalik kichikki, ahamiyatsiz." }
+    }
+  },
 ];
 
 export const TRANSPORT_QUIZ_A: QuizQuestion[] = [
@@ -179,12 +322,60 @@ export const BANANA_DATA: CoffeeDataPoint[] = [
 ];
 
 export const COFFEE_VOCAB_LIST: VocabItem[] = [
-  { term: "Exponential growth", def: "An extremely rapid increase.", ex: "Sales of coffee in the UK experienced exponential growth, rising from 1.5 to 20 million." },
-  { term: "Two distinct periods", def: "Referring to the specific years mentioned.", ex: "The tables compare sales figures across two distinct periods: 1999 and 2004." },
-  { term: "More than tripled", def: "Increased by a factor of 3 or more.", ex: "Banana sales in Switzerland more than tripled, reaching 47 million euros." },
-  { term: "Marginal rise", def: "A very small increase.", ex: "Denmark saw only a marginal rise in coffee sales." },
-  { term: "Conversely", def: "Used to introduce an opposite idea.", ex: "Conversely, banana sales in Sweden and Denmark declined." },
-  { term: "Dominant market", def: "The place with the most sales.", ex: "Switzerland remained the dominant market for Fairtrade bananas." },
+  { 
+    term: "Exponential growth", 
+    def: "An extremely rapid increase.", 
+    ex: "Sales of coffee experienced exponential growth.",
+    translations: {
+      ru: { term: "Экспоненциальный рост", def: "Чрезвычайно быстрый рост." },
+      uz: { term: "Eksponensial o'sish", def: "Juda tez o'sish." }
+    }
+  },
+  { 
+    term: "Two distinct periods", 
+    def: "Referring to the specific years.", 
+    ex: "The tables compare sales across two distinct periods.",
+    translations: {
+      ru: { term: "Два отдельных периода", def: "Ссылка на конкретные годы." },
+      uz: { term: "Ikkita alohida davr", def: "Maxsus yillarga ishora." }
+    }
+  },
+  { 
+    term: "Tripled", 
+    def: "Increased by a factor of 3.", 
+    ex: "Sales more than tripled.",
+    translations: {
+      ru: { term: "Утроился", def: "Увеличился в 3 раза." },
+      uz: { term: "Uch barobar oshdi", def: "3 baravar ko'paydi." }
+    }
+  },
+  { 
+    term: "Marginal rise", 
+    def: "A very small increase.", 
+    ex: "Denmark saw only a marginal rise.",
+    translations: {
+      ru: { term: "Незначительный рост", def: "Очень маленькое увеличение." },
+      uz: { term: "Arzimas o'sish", def: "Juda kichik o'sish." }
+    }
+  },
+  { 
+    term: "Conversely", 
+    def: "Used to introduce an opposite idea.", 
+    ex: "Conversely, sales in Sweden declined.",
+    translations: {
+      ru: { term: "Наоборот", def: "Используется для введения противоположной идеи." },
+      uz: { term: "Aksincha", def: "Qarama-qarshi g'oyani kiritish uchun ishlatiladi." }
+    }
+  },
+  { 
+    term: "Dominant market", 
+    def: "The place with the most sales.", 
+    ex: "Switzerland remained the dominant market.",
+    translations: {
+      ru: { term: "Доминирующий рынок", def: "Место с наибольшим объемом продаж." },
+      uz: { term: "Asosiy bozor", def: "Eng ko'p sotiladigan joy." }
+    }
+  },
 ];
 
 export const COFFEE_QUIZ_A: QuizQuestion[] = [
@@ -237,12 +428,60 @@ export const DEGRADATION_TABLE_DATA: TableDataPoint[] = [
 ];
 
 export const DEGRADATION_VOCAB_LIST: VocabItem[] = [
-  { term: "Degradation", def: "The process of damaging or ruining land.", ex: "The chart highlights the primary causes of worldwide land degradation." },
-  { term: "Over-grazing", def: "Farming animals too intensively (eating all the grass).", ex: "In Region 3, over-grazing is the sole significant contributor." },
-  { term: "Deforestation", def: "The clearing or removal of trees.", ex: "Deforestation accounts for the largest share of global land damage (35%)." },
-  { term: "Over-cultivation", def: "Growing crops to the point of exhausting the soil.", ex: "Over-cultivation is the main culprit in Region 1." },
-  { term: "Primary culprit", def: "The main cause of a problem.", ex: "In Europe (Region 2), removing trees is the primary culprit." },
-  { term: "Cumulative", def: "Increasing by successive additions.", ex: "Region 2 had the highest cumulative level of degraded land at 23%." },
+  { 
+    term: "Degradation", 
+    def: "The process of damaging land.", 
+    ex: "The chart highlights causes of land degradation.",
+    translations: {
+      ru: { term: "Деградация", def: "Процесс ухудшения состояния земли." },
+      uz: { term: "Degradatsiya", def: "Yerning zararlanish jarayoni." }
+    }
+  },
+  { 
+    term: "Over-grazing", 
+    def: "Farming animals too intensively.", 
+    ex: "Over-grazing is significant in Region 3.",
+    translations: {
+      ru: { term: "Чрезмерный выпас", def: "Слишком интенсивный выпас скота." },
+      uz: { term: "Haddan tashqari o'tlatish", def: "Hayvonlarni juda intensiv boqish." }
+    }
+  },
+  { 
+    term: "Deforestation", 
+    def: "Removal of trees.", 
+    ex: "Deforestation accounts for the largest share.",
+    translations: {
+      ru: { term: "Обезлесение", def: "Вырубка деревьев." },
+      uz: { term: "O'rmonlarni kesish", def: "Daraxtlarni olib tashlash." }
+    }
+  },
+  { 
+    term: "Over-cultivation", 
+    def: "Growing crops to exhaustion.", 
+    ex: "Over-cultivation exhausts the soil.",
+    translations: {
+      ru: { term: "Чрезмерная культивация", def: "Выращивание культур до истощения почвы." },
+      uz: { term: "Haddan tashqari dehqonchilik", def: "Tuproqni toliqtiradigan darajada ekin ekish." }
+    }
+  },
+  { 
+    term: "Primary culprit", 
+    def: "The main cause.", 
+    ex: "Removing trees is the primary culprit.",
+    translations: {
+      ru: { term: "Основной виновник", def: "Главная причина." },
+      uz: { term: "Asosiy sababchi", def: "Bosh sabab." }
+    }
+  },
+  { 
+    term: "Cumulative", 
+    def: "Increasing by additions.", 
+    ex: "The highest cumulative level of degraded land.",
+    translations: {
+      ru: { term: "Совокупный", def: "Увеличивающийся за счет сложения." },
+      uz: { term: "Yig'indi", def: "Qo'shilish orqali ortib boruvchi." }
+    }
+  },
 ];
 
 export const DEGRADATION_QUIZ_A: QuizQuestion[] = [
@@ -282,12 +521,60 @@ export const DEGRADATION_QUIZ_B: QuizQuestion[] = [
 ];
 
 export const MAP_VOCAB_LIST: VocabItem[] = [
-  { term: "Constructed / Erected", def: "Built or put up (used for buildings).", ex: "A new reception block was constructed in the centre of the island." },
-  { term: "Converted", def: "Changed in form or function.", ex: "The deserted island was converted into a holiday resort." },
-  { term: "Amenities", def: "Useful or desirable features of a place (e.g., pools, restaurants).", ex: "The island now boasts several tourist amenities including a restaurant." },
-  { term: "Infrastructure", def: "Basic physical structures (roads, power, piers).", ex: "Infrastructure such as vehicle tracks and a pier was added." },
-  { term: "Adjacent to", def: "Next to or adjoining something else.", ex: "The restaurant is located adjacent to the reception area." },
-  { term: "Untouched", def: "Not changed or damaged.", ex: "The eastern part of the island remains largely untouched." },
+  { 
+    term: "Constructed", 
+    def: "Built or put up.", 
+    ex: "A new reception block was constructed.",
+    translations: {
+      ru: { term: "Построен", def: "Возведен или создан." },
+      uz: { term: "Qurilgan", def: "Bunyod etilgan." }
+    }
+  },
+  { 
+    term: "Converted", 
+    def: "Changed in form or function.", 
+    ex: "The island was converted into a resort.",
+    translations: {
+      ru: { term: "Преобразован", def: "Изменен по форме или функции." },
+      uz: { term: "O'zgartirilgan", def: "Shakli yoki vazifasi o'zgartirilgan." }
+    }
+  },
+  { 
+    term: "Amenities", 
+    def: "Useful features.", 
+    ex: "The island boasts several amenities.",
+    translations: {
+      ru: { term: "Удобства", def: "Полезные функции или услуги." },
+      uz: { term: "Qulayliklar", def: "Foydali xususiyatlar." }
+    }
+  },
+  { 
+    term: "Infrastructure", 
+    def: "Basic physical structures.", 
+    ex: "Infrastructure was added.",
+    translations: {
+      ru: { term: "Инфраструктура", def: "Базовые физические структуры." },
+      uz: { term: "Infratuzilma", def: "Asosiy jismoniy tuzilmalar." }
+    }
+  },
+  { 
+    term: "Adjacent to", 
+    def: "Next to.", 
+    ex: "Located adjacent to the reception.",
+    translations: {
+      ru: { term: "Прилегающий к", def: "Находящийся рядом." },
+      uz: { term: "Yonma-yon", def: "Yoni yoki atrofida." }
+    }
+  },
+  { 
+    term: "Untouched", 
+    def: "Not changed.", 
+    ex: "The eastern part remains untouched.",
+    translations: {
+      ru: { term: "Нетронутый", def: "Не измененный." },
+      uz: { term: "Tegilmagan", def: "O'zgarishsiz qolgan." }
+    }
+  },
 ];
 
 export const MAP_QUIZ_A: QuizQuestion[] = [
@@ -356,12 +643,60 @@ export const FISH_DATA = [
 ];
 
 export const FISH_VOCAB: VocabItem[] = [
-  { term: "Overtook", def: "Passed in value/amount.", ex: "Chicken consumption overtook beef around 1989." },
-  { term: "Downward trend", def: "A general decrease.", ex: "Beef and lamb showed a significant downward trend." },
-  { term: "Soared", def: "Increased rapidly.", ex: "Consumption of chicken soared to 250 grams." },
-  { term: "Remained stable", def: "Stayed roughly the same.", ex: "Fish consumption remained relatively stable." },
-  { term: "Consumption", def: "The act of eating or using.", ex: "Weekly consumption per person." },
-  { term: "Plummeted", def: "Fell quickly.", ex: "Beef consumption plummeted after 1980." }
+  { 
+    term: "Overtook", 
+    def: "Passed in amount.", 
+    ex: "Chicken overtook beef.",
+    translations: {
+      ru: { term: "Обогнал", def: "Превзошел по количеству." },
+      uz: { term: "Quvib o'tdi", def: "Miqdori bo'yicha o'zib ketdi." }
+    }
+  },
+  { 
+    term: "Downward trend", 
+    def: "A general decrease.", 
+    ex: "Beef showed a downward trend.",
+    translations: {
+      ru: { term: "Тенденция к снижению", def: "Общее уменьшение." },
+      uz: { term: "Pasayish tendentsiyasi", def: "Umumiy kamayish." }
+    }
+  },
+  { 
+    term: "Soared", 
+    def: "Increased rapidly.", 
+    ex: "Chicken soared to 250g.",
+    translations: {
+      ru: { term: "Взлетел", def: "Резко вырос." },
+      uz: { term: "Keskin oshdi", def: "Tez ko'tarildi." }
+    }
+  },
+  { 
+    term: "Remained stable", 
+    def: "Stayed the same.", 
+    ex: "Fish remained stable.",
+    translations: {
+      ru: { term: "Оставался стабильным", def: "Не изменился." },
+      uz: { term: "Barqaror qoldi", def: "O'zgarishsiz qoldi." }
+    }
+  },
+  { 
+    term: "Consumption", 
+    def: "The act of eating.", 
+    ex: "Weekly consumption.",
+    translations: {
+      ru: { term: "Потребление", def: "Процесс использования или поедания." },
+      uz: { term: "Iste'mol", def: "Yeyish jarayoni." }
+    }
+  },
+  { 
+    term: "Plummeted", 
+    def: "Fell quickly.", 
+    ex: "Beef plummeted.",
+    translations: {
+      ru: { term: "Рухнул", def: "Резко упал." },
+      uz: { term: "Keskin tushib ketdi", def: "Juda tez pasaydi." }
+    }
+  }
 ];
 
 export const FISH_QUIZ: QuizQuestion[] = [
@@ -382,12 +717,60 @@ export const TEA_DATA = [
 ];
 
 export const TEA_VOCAB: VocabItem[] = [
-    { term: "Upward trajectory", def: "A path going up.", ex: "Country A followed an upward trajectory." },
-    { term: "Fluctuated", def: "Rose and fell irregularly.", ex: "Sales in Country B fluctuated before declining." },
-    { term: "Steadily declined", def: "Went down consistently.", ex: "Country C sales steadily declined over the period." },
-    { term: "Plateaued", def: "Flattened out.", ex: "Sales plateaued after 2010." },
-    { term: "Marginal change", def: "Very small difference.", ex: "There was only a marginal change in Country E." },
-    { term: "Peaked", def: "Reached the highest point.", ex: "Country B peaked in 2005." }
+    { 
+      term: "Upward trajectory", 
+      def: "A path going up.", 
+      ex: "Country A followed an upward trajectory.",
+      translations: {
+        ru: { term: "Восходящая траектория", def: "Путь вверх." },
+        uz: { term: "Yuqori traektoriya", def: "Yuqoriga yo'nalgan yo'l." }
+      }
+    },
+    { 
+      term: "Fluctuated", 
+      def: "Rose and fell irregularly.", 
+      ex: "Sales fluctuated.",
+      translations: {
+        ru: { term: "Колебался", def: "Неравномерно поднимался и падал." },
+        uz: { term: "O'zgarib turdi", def: "Ko'tarilib va tushib turdi." }
+      }
+    },
+    { 
+      term: "Steadily declined", 
+      def: "Went down consistently.", 
+      ex: "Sales steadily declined.",
+      translations: {
+        ru: { term: "Неуклонно снижался", def: "Постоянно падал." },
+        uz: { term: "Barqaror pasaydi", def: "Doimiy ravishda kamaydi." }
+      }
+    },
+    { 
+      term: "Plateaued", 
+      def: "Flattened out.", 
+      ex: "Sales plateaued.",
+      translations: {
+        ru: { term: "Стабилизировался", def: "Выровнялся." },
+        uz: { term: "Bir xil darajada qoldi", def: "O'zgarishsiz davom etdi." }
+      }
+    },
+    { 
+      term: "Marginal change", 
+      def: "Very small difference.", 
+      ex: "Only a marginal change.",
+      translations: {
+        ru: { term: "Незначительное изменение", def: "Очень маленькая разница." },
+        uz: { term: "Arzimas o'zgarish", def: "Juda kichik farq." }
+      }
+    },
+    { 
+      term: "Peaked", 
+      def: "Reached the highest point.", 
+      ex: "Sales peaked in 2005.",
+      translations: {
+        ru: { term: "Достиг пика", def: "Достиг высшей точки." },
+        uz: { term: "Cho'qqiga chiqdi", def: "Eng yuqori nuqtaga yetdi." }
+      }
+    }
 ];
 
 export const TEA_QUIZ: QuizQuestion[] = [
@@ -410,12 +793,60 @@ export const SUGAR_STEPS = [
 ];
 
 export const SUGAR_VOCAB: VocabItem[] = [
-    { term: "Cultivation", def: "Growing plants.", ex: "The process begins with the cultivation of sugar cane." },
-    { term: "Extracted", def: "Taken out.", ex: "Juice is extracted from the cane." },
-    { term: "Purified", def: "Cleaned.", ex: "The juice is purified using a limestone filter." },
-    { term: "Evaporates", def: "Turns from liquid to gas.", ex: "Heat evaporates the water, leaving syrup." },
-    { term: "Separated", def: "Divided.", ex: "Sugar crystals are separated from the syrup." },
-    { term: "Manufacturing", def: "Making something on a large scale.", ex: "The diagram shows the sugar manufacturing process." }
+    { 
+      term: "Cultivation", 
+      def: "Growing plants.", 
+      ex: "Cultivation of sugar cane.",
+      translations: {
+        ru: { term: "Выращивание", def: "Культивация растений." },
+        uz: { term: "Yetishtirish", def: "O'simliklarni parvarishlash." }
+      }
+    },
+    { 
+      term: "Extracted", 
+      def: "Taken out.", 
+      ex: "Juice is extracted.",
+      translations: {
+        ru: { term: "Извлечен", def: "Добыт или выжат." },
+        uz: { term: "Ajratib olingan", def: "Siqib chiqarilgan." }
+      }
+    },
+    { 
+      term: "Purified", 
+      def: "Cleaned.", 
+      ex: "The juice is purified.",
+      translations: {
+        ru: { term: "Очищен", def: "Сделан чистым." },
+        uz: { term: "Tozalangan", def: "Poklangan." }
+      }
+    },
+    { 
+      term: "Evaporates", 
+      def: "Turns from liquid to gas.", 
+      ex: "Heat evaporates water.",
+      translations: {
+        ru: { term: "Испаряется", def: "Превращается из жидкости в газ." },
+        uz: { term: "Bug'lanadi", def: "Suyuqlikdan gazga aylanadi." }
+      }
+    },
+    { 
+      term: "Separated", 
+      def: "Divided.", 
+      ex: "Crystals are separated.",
+      translations: {
+        ru: { term: "Разделен", def: "Отделен." },
+        uz: { term: "Ajratilgan", def: "Bo'lingan." }
+      }
+    },
+    { 
+      term: "Manufacturing", 
+      def: "Making on a large scale.", 
+      ex: "Sugar manufacturing.",
+      translations: {
+        ru: { term: "Производство", def: "Изготовление в промышленных масштабах." },
+        uz: { term: "Ishlab chiqarish", def: "Katta hajmda tayyorlash." }
+      }
+    }
 ];
 
 export const SUGAR_QUIZ: QuizQuestion[] = [
@@ -435,12 +866,60 @@ export const SALMON_CYCLE = [
 ];
 
 export const SALMON_VOCAB: VocabItem[] = [
-    { term: "Life cycle", def: "The series of changes in the life of an organism.", ex: "The diagram illustrates the life cycle of the salmon." },
-    { term: "Fry", def: "Baby fish.", ex: "The young fish, known as fry, live in the lower river." },
-    { term: "Estuary", def: "Where the river meets the sea.", ex: "Smolts migrate to the estuary." },
-    { term: "Inhabit", def: "Live in.", ex: "Adult salmon inhabit the open sea for approx 5 years." },
-    { term: "Spawning", def: "Releasing eggs.", ex: "Adults return to the upper river for spawning." },
-    { term: "Migrate", def: "Move from one region to another.", ex: "The fish migrate upstream." }
+    { 
+      term: "Life cycle", 
+      def: "Series of changes in life.", 
+      ex: "The life cycle of the salmon.",
+      translations: {
+        ru: { term: "Жизненный цикл", def: "Серия изменений в жизни организма." },
+        uz: { term: "Hayot tsikli", def: "Hayot davomidagi o'zgarishlar ketma-ketligi." }
+      }
+    },
+    { 
+      term: "Fry", 
+      def: "Baby fish.", 
+      ex: "The fry live in the river.",
+      translations: {
+        ru: { term: "Мальки", def: "Молодые рыбки." },
+        uz: { term: "Chavoqlar", def: "Yosh baliqchalar." }
+      }
+    },
+    { 
+      term: "Estuary", 
+      def: "Where river meets sea.", 
+      ex: "Migrate to the estuary.",
+      translations: {
+        ru: { term: "Устье реки", def: "Место впадения реки в море." },
+        uz: { term: "Daryo quyilishi", def: "Daryo dengizga quyiladigan joy." }
+      }
+    },
+    { 
+      term: "Inhabit", 
+      def: "Live in.", 
+      ex: "They inhabit the sea.",
+      translations: {
+        ru: { term: "Обитать", def: "Жить в определенном месте." },
+        uz: { term: "Yashamoq", def: "Istiqomat qilmoq." }
+      }
+    },
+    { 
+      term: "Spawning", 
+      def: "Releasing eggs.", 
+      ex: "Return for spawning.",
+      translations: {
+        ru: { term: "Нерест", def: "Откладывание икры." },
+        uz: { term: "Tuxum qo'yish", def: "Urug' sochish." }
+      }
+    },
+    { 
+      term: "Migrate", 
+      def: "Move region to region.", 
+      ex: "Fish migrate upstream.",
+      translations: {
+        ru: { term: "Мигрировать", def: "Перемещаться из одного региона в другой." },
+        uz: { term: "Ko'chib yurmoq", def: "Bir joydan boshqa joyga o'tmoq." }
+      }
+    }
 ];
 
 export const SALMON_QUIZ: QuizQuestion[] = [
@@ -458,12 +937,60 @@ export const SPORTS_MAP_DATA = {
 };
 
 export const SPORTS_VOCAB: VocabItem[] = [
-    { term: "Redevelopment", def: "Changing an area/building.", ex: "The plan shows the proposed redevelopment of the centre." },
-    { term: "Extension", def: "Adding to a building.", ex: "The gym will undergo an extension." },
-    { term: "Converted", def: "Changed use.", ex: "The outdoor courts will be converted into a sports hall." },
-    { term: "Relocated", def: "Moved.", ex: "The changing room will be relocated." },
-    { term: "Boast", def: "Feature something good.", ex: "The new centre will boast a leisure pool." },
-    { term: "Amenities", def: "Facilities.", ex: "New amenities like a cafe and shop will be added." }
+    { 
+      term: "Redevelopment", 
+      def: "Changing a building/area.", 
+      ex: "Proposed redevelopment.",
+      translations: {
+        ru: { term: "Перепланировка", def: "Изменение здания или территории." },
+        uz: { term: "Qayta qurish", def: "Bino yoki hududni o'zgartirish." }
+      }
+    },
+    { 
+      term: "Extension", 
+      def: "Adding to a building.", 
+      ex: "The gym extension.",
+      translations: {
+        ru: { term: "Расширение", def: "Пристройка к зданию." },
+        uz: { term: "Kengaytirish", def: "Binoga qo'shimcha qilish." }
+      }
+    },
+    { 
+      term: "Converted", 
+      def: "Changed use.", 
+      ex: "Courts will be converted.",
+      translations: {
+        ru: { term: "Переделан", def: "Изменено назначение." },
+        uz: { term: "O'zgartirilgan", def: "Foydalanish maqsadi o'zgargan." }
+      }
+    },
+    { 
+      term: "Relocated", 
+      def: "Moved.", 
+      ex: "Reception relocated.",
+      translations: {
+        ru: { term: "Перемещен", def: "Сдвинут на новое место." },
+        uz: { term: "Ko'chirildi", def: "Boshqa joyga olib o'tildi." }
+      }
+    },
+    { 
+      term: "Boast", 
+      def: "Feature something good.", 
+      ex: "The centre will boast a pool.",
+      translations: {
+        ru: { term: "Гордиться (иметь)", def: "Иметь что-то хорошее." },
+        uz: { term: "Maqtana olmoq", def: "Yaxshi xususiyatga ega bo'lmoq." }
+      }
+    },
+    { 
+      term: "Amenities", 
+      def: "Facilities.", 
+      ex: "New amenities added.",
+      translations: {
+        ru: { term: "Удобства", def: "Сооружения или услуги." },
+        uz: { term: "Qulayliklar", def: "Imkoniyatlar." }
+      }
+    }
 ];
 
 export const SPORTS_QUIZ: QuizQuestion[] = [

@@ -1,13 +1,17 @@
+
 import React, { useState, useRef, MouseEvent } from 'react';
-import { Zap } from 'lucide-react';
+import { Zap, Globe } from 'lucide-react';
 import { VocabItem } from '../../types';
 
 interface FlipCardProps extends VocabItem {
   large?: boolean;
 }
 
-const FlipCard: React.FC<FlipCardProps> = ({ term, def, ex, large = false }) => {
+type Lang = 'en' | 'ru' | 'uz';
+
+const FlipCard: React.FC<FlipCardProps> = ({ term, def, ex, large = false, translations }) => {
   const [flipped, setFlipped] = useState(false);
+  const [lang, setLang] = useState<Lang>('en');
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
@@ -32,6 +36,14 @@ const FlipCard: React.FC<FlipCardProps> = ({ term, def, ex, large = false }) => 
     setRotate({ x: 0, y: 0 });
     setGlare(prev => ({ ...prev, opacity: 0 }));
   };
+
+  const handleLangClick = (e: React.MouseEvent, target: Lang) => {
+    e.stopPropagation();
+    setLang(target);
+  };
+
+  const displayTerm = lang === 'en' ? term : translations?.[lang]?.term || term;
+  const displayDef = lang === 'en' ? def : translations?.[lang]?.def || def;
 
   return (
     <div 
@@ -69,11 +81,33 @@ const FlipCard: React.FC<FlipCardProps> = ({ term, def, ex, large = false }) => 
         </div>
         
         {/* Back */}
-        <div className="absolute w-full h-full bg-gradient-to-br from-indigo-600 to-indigo-900 dark:from-indigo-900 dark:to-slate-900 text-white rounded-[2rem] p-8 shadow-2xl rotate-y-180 backface-hidden flex flex-col items-center justify-center text-center border border-white/10">
+        <div className="absolute w-full h-full bg-gradient-to-br from-indigo-600 to-indigo-900 dark:from-indigo-900 dark:to-slate-900 text-white rounded-[2rem] p-8 shadow-2xl rotate-y-180 backface-hidden flex flex-col items-center justify-center text-center border border-white/10 relative">
+          
+          {/* Language Switcher */}
+          {translations && large && (
+            <div className="absolute top-4 right-4 flex gap-1 z-20">
+                {(['en', 'ru', 'uz'] as Lang[]).map((l) => (
+                    <button
+                        key={l}
+                        onClick={(e) => handleLangClick(e, l)}
+                        className={`text-[10px] font-bold uppercase px-2 py-1 rounded border transition-colors ${lang === l ? 'bg-white text-indigo-900 border-white' : 'bg-transparent text-indigo-200 border-indigo-700 hover:border-white'}`}
+                    >
+                        {l}
+                    </button>
+                ))}
+            </div>
+          )}
+
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-          <p className={`${large ? 'text-2xl md:text-3xl' : 'text-base'} font-bold mb-6 leading-snug drop-shadow-md relative z-10`}>{def}</p>
-          <div className="bg-white/10 backdrop-blur-md p-4 rounded-xl w-full border border-white/10 shadow-inner relative z-10 transform translate-z-10">
-            <p className={`${large ? 'text-lg' : 'text-xs'} text-indigo-50 italic font-medium`}>"{ex}"</p>
+          
+          {/* Content */}
+          <div className="relative z-10 flex flex-col items-center">
+              {lang !== 'en' && <div className="text-indigo-200 text-sm font-bold uppercase tracking-widest mb-2">{term}</div>}
+              <p className={`${large ? 'text-2xl md:text-3xl' : 'text-base'} font-bold mb-6 leading-snug drop-shadow-md`}>{displayDef}</p>
+              
+              <div className="bg-white/10 backdrop-blur-md p-4 rounded-xl w-full border border-white/10 shadow-inner transform translate-z-10">
+                <p className={`${large ? 'text-lg' : 'text-xs'} text-indigo-50 italic font-medium`}>"{ex}"</p>
+              </div>
           </div>
         </div>
       </div>

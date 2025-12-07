@@ -1,5 +1,4 @@
 
-
 export interface ChartDataPoint {
   label: string;
   f1: number;
@@ -46,6 +45,10 @@ export interface VocabItem {
   term: string;
   def: string;
   ex: string;
+  translations?: {
+    ru: { term: string; def: string };
+    uz: { term: string; def: string };
+  };
 }
 
 export interface QuizQuestion {

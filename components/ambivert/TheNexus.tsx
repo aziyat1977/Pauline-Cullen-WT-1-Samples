@@ -172,7 +172,7 @@ const TheNexus: React.FC<TheNexusProps> = ({ onExit, onOpenMenu }) => {
             style={{ 
                 backgroundImage: `linear-gradient(${theme.gridColor} 1px, transparent 1px), linear-gradient(90deg, ${theme.gridColor} 1px, transparent 1px)`,
                 backgroundSize: '40px 40px',
-                animation: isFlux ? 'grid-move 20s linear infinite' : 'none'
+                animation: 'grid-move 60s linear infinite' // Slow breathing move
             }}
         ></div>
         
